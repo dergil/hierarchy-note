@@ -29,8 +29,8 @@ public interface NoteDao {
     @Query("DELETE FROM note_table")
     void deleteAll();
 
-    @Query("SELECT * FROM note_table ORDER BY name ASC")
-    LiveData<List<Note>> getAlphabetizedWords();
+    @Query("SELECT * FROM note_table WHERE directory_name = :directory_name ORDER BY name ASC")
+    LiveData<List<Note>> getAlphabetizedWords(String directory_name);
 
 }
 

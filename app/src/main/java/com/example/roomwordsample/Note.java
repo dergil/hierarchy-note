@@ -16,11 +16,18 @@ public class Note {
     @ColumnInfo(name = "text")
     private String text;
 
-    public Note(@NonNull String mName, String text) {
+    @ColumnInfo(name = "directory_name")
+    private String directory_name;
+
+    @ColumnInfo(name = "isDir")
+    private boolean isDir;
+
+    public Note(@NonNull String mName, String text, String directory_name, boolean isDir) {
         this.mName = mName;
         this.text = text;
+        this.directory_name = directory_name;
+        this.isDir = isDir;
     }
-
 
 //    public Note(@NonNull String mName) {
 //        this.mName = mName;
@@ -37,6 +44,14 @@ public class Note {
 
     public void setText(String text) {
         this.text = text;
+    }
+
+    public String getDirectory_name() {
+        return directory_name;
+    }
+
+    public boolean isDir() {
+        return isDir;
     }
 }
 

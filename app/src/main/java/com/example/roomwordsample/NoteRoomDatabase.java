@@ -11,10 +11,11 @@ import androidx.sqlite.db.SupportSQLiteDatabase;
 import java.util.concurrent.ExecutorService;
 import java.util.concurrent.Executors;
 
-@Database(entities = {Note.class}, version = 7, exportSchema = false)
+@Database(entities = {Note.class, Directory.class}, version = 10, exportSchema = false)
 public abstract class NoteRoomDatabase extends RoomDatabase {
 
     public abstract NoteDao wordDao();
+    public abstract DirectoryDao directoryDao();
 
     private static volatile NoteRoomDatabase INSTANCE;
     private static final int NUMBER_OF_THREADS = 4;
@@ -48,11 +49,11 @@ public abstract class NoteRoomDatabase extends RoomDatabase {
                 // If you want to start with more words, just add them.
                 NoteDao dao = INSTANCE.wordDao();
                 dao.deleteAll();
-
-                Note note = new Note("Hello", "Text");
-                dao.insert(note);
-                note = new Note("World", "Text");
-                dao.insert(note);
+//
+//                Note note = new Note("Hello", "Text");
+//                dao.insert(note);
+//                note = new Note("World", "Text");
+//                dao.insert(note);
             });
         }
     };

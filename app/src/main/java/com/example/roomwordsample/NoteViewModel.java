@@ -8,18 +8,22 @@ import androidx.lifecycle.LiveData;
 import java.util.List;
 
 public class NoteViewModel extends AndroidViewModel {
+    public static final String DIRECTORY_NAME = "MYDIR";
+
 
     private NoteRepository mRepository;
 
-    private final LiveData<List<Note>> mAllWords;
+    private LiveData<List<Note>> mAllWords;
 
     public NoteViewModel(Application application) {
         super(application);
         mRepository = new NoteRepository(application);
-        mAllWords = mRepository.getAllWords();
+        mAllWords = mRepository.getAllWords(DIRECTORY_NAME);
     }
 
-    LiveData<List<Note>> getAllWords() { return mAllWords; }
+    LiveData<List<Note>> getAllWords(String directory_name) {
+        mAllWords = mRepository.getAllWords(directory_name);
+        return mAllWords; }
 
     public void insert(Note note) { mRepository.insert(note); }
 

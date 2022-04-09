@@ -10,6 +10,8 @@ class NoteRepository {
 
     private NoteDao mNoteDao;
     private LiveData<List<Note>> mAllWords;
+    public static final String DIRECTORY_NAME = "MYDIR";
+
 
     // Note that in order to unit test the WordRepository, you have to remove the Application
     // dependency. This adds complexity and much more code, and this sample is not about testing.
@@ -18,12 +20,13 @@ class NoteRepository {
     NoteRepository(Application application) {
         NoteRoomDatabase db = NoteRoomDatabase.getDatabase(application);
         mNoteDao = db.wordDao();
-        mAllWords = mNoteDao.getAlphabetizedWords();
+        mAllWords = mNoteDao.getAlphabetizedWords(DIRECTORY_NAME);
     }
 
     // Room executes all queries on a separate thread.
     // Observed LiveData will notify the observer when the data has changed.
-    LiveData<List<Note>> getAllWords() {
+    LiveData<List<Note>> getAllWords(String directory_name) {
+        mAllWords = mNoteDao.getAlphabetizedWords(directory_name);
         return mAllWords;
     }
 
