@@ -11,6 +11,7 @@
         android:theme="@style/Theme.RoomWordSample">
         <activity
             android:name=".NewNoteActivity"
+            android:parentActivityName="com.example.roomwordsample.MainActivity"
             android:exported="false" />
         <activity
             android:name=".MainActivity"

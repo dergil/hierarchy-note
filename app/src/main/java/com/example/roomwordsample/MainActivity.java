@@ -18,6 +18,7 @@ public class MainActivity extends AppCompatActivity {
     public static final int NEW_DIR_ACTIVITY_REQUEST_CODE = 3;
     public static final int NEW_MAIN_ACTIVITY_REQUEST_CODE = 4;
     public static String DIRECTORY_NAME = "MYDIR";
+    public static String PREVIOUS_DIRECTORY_NAME;
 
 
     private NoteViewModel mNoteViewModel;
@@ -26,11 +27,15 @@ public class MainActivity extends AppCompatActivity {
     @Override
     protected void onCreate(Bundle savedInstanceState) {
         super.onCreate(savedInstanceState);
+
+
         setContentView(R.layout.activity_main);
 
         Intent creationIntent = getIntent();
         if (creationIntent.hasExtra(DIRECTORY_NAME))
             DIRECTORY_NAME = creationIntent.getStringExtra(DIRECTORY_NAME);
+        if (creationIntent.hasExtra(PREVIOUS_DIRECTORY_NAME))
+            PREVIOUS_DIRECTORY_NAME = creationIntent.getStringExtra(PREVIOUS_DIRECTORY_NAME);
 
         RecyclerView recyclerView = findViewById(R.id.recyclerview);
         final NoteListAdapter adapter = new NoteListAdapter(new NoteListAdapter.WordDiff());
@@ -45,13 +50,13 @@ public class MainActivity extends AppCompatActivity {
         });
 
         FloatingActionButton fab = findViewById(R.id.fab);
-        fab.setOnClickListener( view -> {
+        fab.setOnClickListener(view -> {
             Intent intent = new Intent(MainActivity.this, NewNoteActivity.class);
             startActivityForResult(intent, NEW_NOTE_ACTIVITY_REQUEST_CODE);
         });
 
         FloatingActionButton add_dir = findViewById(R.id.add_dir);
-        add_dir.setOnClickListener( view -> {
+        add_dir.setOnClickListener(view -> {
             Intent intent = new Intent(MainActivity.this, NewNoteActivity.class);
 //            intent.putExtra(MainActivity.DIRECTORY_NAME, "MYDIR2");
             startActivityForResult(intent, NEW_DIR_ACTIVITY_REQUEST_CODE);
@@ -60,12 +65,12 @@ public class MainActivity extends AppCompatActivity {
         adapter.setOnItemClickListener(new NoteListAdapter.OnItemClickListener() {
             @Override
             public void onItemClick(Note note) {
-                if (note.isDir()){
+                if (note.isDir()) {
                     Intent intent = new Intent(MainActivity.this, MainActivity.class);
                     intent.putExtra(MainActivity.DIRECTORY_NAME, note.getName());
+                    intent.putExtra(MainActivity.PREVIOUS_DIRECTORY_NAME, DIRECTORY_NAME);
                     startActivityForResult(intent, NEW_MAIN_ACTIVITY_REQUEST_CODE);
-                }
-                else {
+                } else {
 
                     Intent intent = new Intent(MainActivity.this, NewNoteActivity.class);
                     intent.putExtra(NewNoteActivity.EXTRA_REQUEST_NAME, note.getName());
@@ -76,13 +81,20 @@ public class MainActivity extends AppCompatActivity {
         });
 
 
+    }
 
+    @Override
+    public void onBackPressed() {
+        Intent intent = new Intent(MainActivity.this, MainActivity.class);
+        intent.putExtra(MainActivity.DIRECTORY_NAME, PREVIOUS_DIRECTORY_NAME);
+        intent.putExtra(MainActivity.PREVIOUS_DIRECTORY_NAME, DIRECTORY_NAME);
+        startActivityForResult(intent, NEW_MAIN_ACTIVITY_REQUEST_CODE);
     }
 
     public void onActivityResult(int requestCode, int resultCode, Intent data) {
         super.onActivityResult(requestCode, resultCode, data);
 
-        if (resultCode == RESULT_OK && data.getStringExtra(NewNoteActivity.EXTRA_DELETE) != null){
+        if (resultCode == RESULT_OK && data.getStringExtra(NewNoteActivity.EXTRA_DELETE) != null) {
 //            Note note = new Note(data.getStringExtra(NewNoteActivity.EXTRA_REPLY_NAME), data.getStringExtra(NewNoteActivity.EXTRA_REPLY_TEXT));
 //            System.out.println("LOGGING HERE LOOK AT ME");
 //            System.out.println(data.getStringExtra(NewNoteActivity.EXTRA_REPLY_NAME));
@@ -111,5 +123,4 @@ public class MainActivity extends AppCompatActivity {
 //                    Toast.LENGTH_LONG).show();
 //        }
     }
-
 }
