@@ -14,7 +14,7 @@ public class NewNoteActivity extends AppCompatActivity {
     public static final String EXTRA_REPLY_TEXT= "com.example.android.wordlistsql.REPLY_TEXT";
     public static final String EXTRA_REQUEST_NAME= "com.example.android.wordlistsql.REQUEST_NAME";
     public static final String EXTRA_REQUEST_TEXT= "com.example.android.wordlistsql.REQUEST_TEXT";
-//    public static final String EXTRA_DELETE= "com.example.android.wordlistsql.DELETE";
+    public static final String EXTRA_DELETE= "com.example.android.wordlistsql.DELETE";
 
     private EditText mEditNameView;
     private EditText mEditTextView;
@@ -47,11 +47,14 @@ public class NewNoteActivity extends AppCompatActivity {
             finish();
         });
 
-//        final Button button_delete = findViewById(R.id.button_delete);
-//        button_delete.setOnClickListener(view -> {
-//            Intent replyIntent = new Intent();
-//            replyIntent.putExtra(EXTRA_DELETE, "DELETE");
-//            setResult(RESULT_OK, replyIntent);
-//        });
+        final Button button_delete = findViewById(R.id.button_delete);
+        button_delete.setOnClickListener(view -> {
+            Intent replyIntent = new Intent();
+            replyIntent.putExtra(EXTRA_DELETE, "DELETE");
+            String name = mEditNameView.getText().toString();
+            replyIntent.putExtra(EXTRA_REPLY_NAME, name);
+            setResult(RESULT_OK, replyIntent);
+            finish();
+        });
     }
 }

@@ -41,10 +41,10 @@ class NoteRepository {
         });
     }
 
-//    void delete(Note note){
-//        NoteRoomDatabase.databaseWriteExecutor.execute(() -> {
-//            mNoteDao.delete(note);
-//        });
-//    }
+    void delete(String name){
+        NoteRoomDatabase.databaseWriteExecutor.execute(() -> {
+            mNoteDao.deleteById(name);
+        });
+    }
 }
 

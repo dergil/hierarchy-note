@@ -56,10 +56,12 @@ public class MainActivity extends AppCompatActivity {
     public void onActivityResult(int requestCode, int resultCode, Intent data) {
         super.onActivityResult(requestCode, resultCode, data);
 
-//        if (resultCode == RESULT_OK && data.getStringExtra(NewNoteActivity.EXTRA_DELETE).equals("DELETE")){
+        if (resultCode == RESULT_OK && data.getStringExtra(NewNoteActivity.EXTRA_DELETE) != null){
 //            Note note = new Note(data.getStringExtra(NewNoteActivity.EXTRA_REPLY_NAME), data.getStringExtra(NewNoteActivity.EXTRA_REPLY_TEXT));
-//            mNoteViewModel.delete(note);
-//        }
+            System.out.println("LOGGING HERE LOOK AT ME");
+            System.out.println(data.getStringExtra(NewNoteActivity.EXTRA_REPLY_NAME));
+            mNoteViewModel.deleteById(data.getStringExtra(NewNoteActivity.EXTRA_REPLY_NAME));
+        }
 
         if (requestCode == NEW_NOTE_ACTIVITY_REQUEST_CODE && resultCode == RESULT_OK) {
             Note note = new Note(data.getStringExtra(NewNoteActivity.EXTRA_REPLY_NAME), data.getStringExtra(NewNoteActivity.EXTRA_REPLY_TEXT));

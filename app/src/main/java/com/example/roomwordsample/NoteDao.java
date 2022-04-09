@@ -23,6 +23,8 @@ public interface NoteDao {
 
 //    @Delete
 //    void delete(Note note);
+    @Query("DELETE FROM note_table WHERE name = :name")
+    void deleteById(String name);
 
     @Query("DELETE FROM note_table")
     void deleteAll();
