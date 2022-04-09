@@ -57,7 +57,7 @@ public class MainActivity extends AppCompatActivity {
 
         FloatingActionButton add_dir = findViewById(R.id.add_dir);
         add_dir.setOnClickListener(view -> {
-            Intent intent = new Intent(MainActivity.this, NewNoteActivity.class);
+            Intent intent = new Intent(MainActivity.this, NewDirectory.class);
 //            intent.putExtra(MainActivity.DIRECTORY_NAME, "MYDIR2");
             startActivityForResult(intent, NEW_DIR_ACTIVITY_REQUEST_CODE);
         });
@@ -112,8 +112,8 @@ public class MainActivity extends AppCompatActivity {
             mNoteViewModel.update(note);
         }
         if (requestCode == NEW_DIR_ACTIVITY_REQUEST_CODE && resultCode == RESULT_OK) {
-            Note note = new Note(data.getStringExtra(NewNoteActivity.EXTRA_REPLY_NAME),
-                    data.getStringExtra(NewNoteActivity.EXTRA_REPLY_TEXT), DIRECTORY_NAME, true);
+            Note note = new Note(data.getStringExtra(NewDirectory.EXTRA_REPLY_DIRECTORY_NAME), "filler",
+                    DIRECTORY_NAME, true);
             mNoteViewModel.insert(note);
         }
 //        else {

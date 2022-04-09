@@ -1,11 +1,13 @@
 package com.example.roomwordsample;
 
 import android.content.Context;
+import android.graphics.Color;
 import android.view.LayoutInflater;
 import android.view.View;
 import android.view.ViewGroup;
 import android.widget.TextView;
 
+import androidx.annotation.ColorInt;
 import androidx.annotation.NonNull;
 import androidx.recyclerview.widget.DiffUtil;
 import androidx.recyclerview.widget.ListAdapter;
@@ -35,7 +37,7 @@ public class NoteListAdapter extends ListAdapter<Note, NoteListAdapter.NoteViewH
     @Override
     public void onBindViewHolder(NoteViewHolder holder, int position) {
         Note current = getItem(position);
-        holder.bind(current.getName());
+        holder.bind(current.getName(), position);
     }
 
 //    @Override
@@ -84,8 +86,10 @@ public class NoteListAdapter extends ListAdapter<Note, NoteListAdapter.NoteViewH
             wordItemView = itemView.findViewById(R.id.textView);
         }
 
-        public void bind(String text) {
+        public void bind(String text, int position) {
             wordItemView.setText(text);
+            if (getItem(position).isDir())
+                wordItemView.setBackgroundColor(Color.parseColor("#FF03DAC5"));
         }
 
 //        static com.example.roomwordsample.NoteViewHolder create(ViewGroup parent) {

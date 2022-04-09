@@ -10,9 +10,12 @@
         android:supportsRtl="true"
         android:theme="@style/Theme.RoomWordSample">
         <activity
-            android:name=".NewNoteActivity"
-            android:parentActivityName="com.example.roomwordsample.MainActivity"
+            android:name=".NewDirectory"
             android:exported="false" />
+        <activity
+            android:name=".NewNoteActivity"
+            android:exported="false"
+            android:parentActivityName=".MainActivity" />
         <activity
             android:name=".MainActivity"
             android:exported="true">
