@@ -19,7 +19,7 @@ public class NoteViewModel extends AndroidViewModel {
     public NoteViewModel(Application application) {
         super(application);
         mRepository = new NoteRepository(application);
-        mAllWords = mRepository.getAllWords(DIRECTORY_NAME);
+//        mAllWords = mRepository.getAllWords(DIRECTORY_NAME);
     }
 
     LiveData<List<Note>> getAllWords(String directory_name) {
@@ -30,6 +30,6 @@ public class NoteViewModel extends AndroidViewModel {
 
     public void update(Note note) { mRepository.update(note);}
 
-    public void deleteById(long id) { mRepository.delete(id);}
+    public void deleteById(Long id) { mRepository.delete(id);}
 }
 

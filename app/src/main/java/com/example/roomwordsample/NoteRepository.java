@@ -19,6 +19,7 @@ import okhttp3.Request;
 import okhttp3.RequestBody;
 import okhttp3.logging.HttpLoggingInterceptor;
 import retrofit2.Call;
+import retrofit2.Callback;
 import retrofit2.Response;
 import retrofit2.Retrofit;
 import retrofit2.converter.gson.GsonConverterFactory;
@@ -40,9 +41,9 @@ class NoteRepository {
     // https://github.com/googlesamples
     NoteRepository(Application application) {
         NoteRoomDatabase db = NoteRoomDatabase.getDatabase(application);
+        start();
         mNoteDao = db.wordDao();
         mAllWords = mNoteDao.getAlphabetizedWords(DIRECTORY_NAME);
-        start();
     }
 
     private void start() {
@@ -76,20 +77,43 @@ class NoteRepository {
     // Room executes all queries on a separate thread.
     // Observed LiveData will notify the observer when the data has changed.
     LiveData<List<Note>> getAllWords(String directory_name) {
-//        Call<List<Note>> questions = serverDB.getNotes();
+        List<Note> remoteNotes = new ArrayList<>();
+        Call<List<Note>> questions1 = serverDB.getNotes();
+        questions1.enqueue(new Callback<List<Note>>() {
+            @Override
+            public void onResponse(Call<List<Note>> call, Response<List<Note>> response) {
+                System.out.println(response.body());
+                System.out.println(response.isSuccessful());
+//                remoteNotes.addAll(response.body());
+            }
+
+            @Override
+            public void onFailure(Call<List<Note>> call, Throwable t) {
+                //Handle failure
+                System.err.println("READ FAILED");
+                System.out.println(t.toString());
+            }
+        });
 //        try {
-//            Response<List<Note>> execute = questions.execute();
-//            System.out.println(execute.body());
-//            System.out.println(execute.isSuccessful());
-//        } catch (IOException e) {
+//            Call<List<Note>> questions1 = serverDB.getNotes();
+//            try {
+//                Response<List<Note>> execute = questions1.execute();
+//                System.out.println(execute.body());
+//                System.out.println(execute.isSuccessful());
+//            } catch (IOException e) {
+//                e.printStackTrace();
+//            }
+//        } catch (Exception e){
 //            e.printStackTrace();
 //        }
 
 
         mAllWords = mNoteDao.getAlphabetizedWords(directory_name);
-//        HashSet<Note> tempSet = new HashSet<>();
+        HashSet<Note> tempSet = new HashSet<>();
+        System.out.println(mAllWords.getValue());
 //        tempSet.addAll(mAllWords.getValue());
-//        tempSet.addAll()
+//        TODO: remote und local diffen, dann mergen durch hinzufügen zu lokaler DB
+//        tempSet.addAll(remoteNotes);
         return mAllWords;
 
 //        OkHttpClient client = new OkHttpClient();
@@ -110,7 +134,7 @@ class NoteRepository {
     // that you're not doing any long running operations on the main thread, blocking the UI.
     void insert(Note note) {
         NoteRoomDatabase.databaseWriteExecutor.execute(() -> {
-            long id = mNoteDao.insert(note);
+            Long id = mNoteDao.insert(note);
             note.setId(id);
 
 
@@ -146,7 +170,7 @@ class NoteRepository {
 
     void update(Note note){
         NoteRoomDatabase.databaseWriteExecutor.execute(() -> {
-            long id = note.getId();
+            Long id = note.getId();
             Note oldNote = mNoteDao.find(id);
 
             if (!oldNote.getName().equals(note.getName())) {
@@ -161,7 +185,7 @@ class NoteRepository {
         });
     }
 
-    void sendUpdate(long id, UpdateFileDto updateFileDto){
+    void sendUpdate(Long id, UpdateFileDto updateFileDto){
         List<UpdateFileDto> updateBody = new ArrayList<>();
         updateBody.add(updateFileDto);
         Call<ResponseDto> questions = serverDB.editNote(id, updateBody);
@@ -174,7 +198,7 @@ class NoteRepository {
         }
     }
 
-    void delete(long id){
+    void delete(Long id){
         NoteRoomDatabase.databaseWriteExecutor.execute(() -> {
             mNoteDao.deleteById(id);
 

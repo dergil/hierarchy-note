@@ -1,6 +1,7 @@
 package com.example.roomwordsample;
 
 public class ResponseDto {
+    private Long id;
     private String name;
     private String text;
     private String directory;
@@ -38,10 +39,19 @@ public class ResponseDto {
         isDir = dir;
     }
 
+    public Long getId() {
+        return id;
+    }
+
+    public void setId(Long id) {
+        this.id = id;
+    }
+
     @Override
     public String toString() {
         return "ResponseDto{" +
-                "name='" + name + '\'' +
+                "id=" + id +
+                ", name='" + name + '\'' +
                 ", text='" + text + '\'' +
                 ", directory='" + directory + '\'' +
                 ", isDir=" + isDir +

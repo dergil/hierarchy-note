@@ -14,7 +14,7 @@ import java.util.List;
 public interface NoteDao {
 
 @Insert(onConflict = OnConflictStrategy.IGNORE)
-long insert(Note note);
+Long insert(Note note);
 
 @Query("SELECT * FROM note_table WHERE id = :id")
 Note find(Long id);
@@ -23,7 +23,7 @@ Note find(Long id);
 void update(Note note);
 
 @Query("DELETE FROM note_table WHERE id = :id")
-void deleteById(long id);
+void deleteById(Long id);
 
 @Query("DELETE FROM note_table")
 void deleteAll();
