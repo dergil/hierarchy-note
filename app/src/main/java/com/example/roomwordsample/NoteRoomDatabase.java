@@ -11,7 +11,7 @@ import androidx.sqlite.db.SupportSQLiteDatabase;
 import java.util.concurrent.ExecutorService;
 import java.util.concurrent.Executors;
 
-@Database(entities = {Note.class, Directory.class}, version = 10, exportSchema = false)
+@Database(entities = {Note.class, Directory.class}, version = 21, exportSchema = false)
 public abstract class NoteRoomDatabase extends RoomDatabase {
 
     public abstract NoteDao wordDao();
@@ -22,7 +22,7 @@ public abstract class NoteRoomDatabase extends RoomDatabase {
     static final ExecutorService databaseWriteExecutor =
             Executors.newFixedThreadPool(NUMBER_OF_THREADS);
 
-    static NoteRoomDatabase getDatabase(final Context context) {
+    public static NoteRoomDatabase getDatabase(final Context context) {
         if (INSTANCE == null) {
             synchronized (NoteRoomDatabase.class) {
                 if (INSTANCE == null) {

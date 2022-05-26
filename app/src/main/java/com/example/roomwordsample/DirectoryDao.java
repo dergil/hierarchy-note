@@ -7,5 +7,5 @@ import androidx.room.OnConflictStrategy;
 @Dao
 public interface DirectoryDao {
     @Insert(onConflict = OnConflictStrategy.IGNORE)
-    void insert(Directory directory);
+    public void insert(Directory directory);
 }

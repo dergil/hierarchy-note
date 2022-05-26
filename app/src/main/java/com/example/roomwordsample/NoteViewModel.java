@@ -5,6 +5,7 @@ import android.app.Application;
 import androidx.lifecycle.AndroidViewModel;
 import androidx.lifecycle.LiveData;
 
+import java.util.HashSet;
 import java.util.List;
 
 public class NoteViewModel extends AndroidViewModel {
@@ -29,6 +30,6 @@ public class NoteViewModel extends AndroidViewModel {
 
     public void update(Note note) { mRepository.update(note);}
 
-    public void deleteById(String name) { mRepository.delete(name);}
+    public void deleteById(long id) { mRepository.delete(id);}
 }
 

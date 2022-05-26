@@ -10,6 +10,7 @@ import android.widget.EditText;
 
 public class NewNoteActivity extends AppCompatActivity {
 
+    public static final String EXTRA_ID = "com.example.android.wordlistsql.ID";
     public static final String EXTRA_REPLY_NAME = "com.example.android.wordlistsql.REPLY_NAME";
     public static final String EXTRA_REPLY_TEXT= "com.example.android.wordlistsql.REPLY_TEXT";
     public static final String EXTRA_REQUEST_NAME= "com.example.android.wordlistsql.REQUEST_NAME";
@@ -40,6 +41,7 @@ public class NewNoteActivity extends AppCompatActivity {
             } else {
                 String name = mEditNameView.getText().toString();
                 String text = mEditTextView.getText().toString();
+                replyIntent.putExtra(EXTRA_ID, intent.getLongExtra(EXTRA_ID, -1));
                 replyIntent.putExtra(EXTRA_REPLY_NAME, name);
                 replyIntent.putExtra(EXTRA_REPLY_TEXT, text);
                 setResult(RESULT_OK, replyIntent);
@@ -50,9 +52,10 @@ public class NewNoteActivity extends AppCompatActivity {
         final Button button_delete = findViewById(R.id.button_delete);
         button_delete.setOnClickListener(view -> {
             Intent replyIntent = new Intent();
+            replyIntent.putExtra(EXTRA_ID, intent.getLongExtra(EXTRA_ID, -1));
             replyIntent.putExtra(EXTRA_DELETE, "DELETE");
-            String name = mEditNameView.getText().toString();
-            replyIntent.putExtra(EXTRA_REPLY_NAME, name);
+//            String name = mEditNameView.getText().toString();
+//            replyIntent.putExtra(EXTRA_REPLY_NAME, name);
             setResult(RESULT_OK, replyIntent);
             finish();
         });
