@@ -22,6 +22,12 @@ public class NoteViewModel extends AndroidViewModel {
 //        mAllWords = mRepository.getAllWords(DIRECTORY_NAME);
     }
 
+//    public Note getParentDir(String directory_name) {
+//        mRepository.getParentDir(directory_name);
+//        Note note = mRepository.parentDir;
+//        return note;
+//    }
+
     LiveData<List<Note>> getAllWords(String directory_name) {
         mAllWords = mRepository.getAllWords(directory_name);
         return mAllWords; }

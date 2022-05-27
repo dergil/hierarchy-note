@@ -16,6 +16,7 @@ import androidx.recyclerview.widget.RecyclerView;
 public class NoteListAdapter extends ListAdapter<Note, NoteListAdapter.NoteViewHolder>
 {
     private OnItemClickListener listener;
+    public Note currentNote;
 
 //    Context context;
     public NoteListAdapter(@NonNull DiffUtil.ItemCallback<Note> diffCallback) {
@@ -37,6 +38,7 @@ public class NoteListAdapter extends ListAdapter<Note, NoteListAdapter.NoteViewH
     @Override
     public void onBindViewHolder(NoteViewHolder holder, int position) {
         Note current = getItem(position);
+        currentNote = current;
         holder.bind(current.getName(), position);
     }
 
@@ -101,6 +103,10 @@ public class NoteListAdapter extends ListAdapter<Note, NoteListAdapter.NoteViewH
 
     public interface OnItemClickListener {
         void onItemClick(Note note);
+    }
+
+    public Note getNoteAt(int pos) {
+        return getItem(pos);
     }
 
     public void setOnItemClickListener(OnItemClickListener listener) {

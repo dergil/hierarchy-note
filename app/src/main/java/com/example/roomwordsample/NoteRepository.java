@@ -7,16 +7,13 @@ import androidx.lifecycle.LiveData;
 import com.google.gson.Gson;
 import com.google.gson.GsonBuilder;
 
-import java.io.File;
 import java.io.IOException;
 import java.util.ArrayList;
 import java.util.HashSet;
 import java.util.List;
+import java.util.concurrent.atomic.AtomicReference;
 
-import okhttp3.MediaType;
 import okhttp3.OkHttpClient;
-import okhttp3.Request;
-import okhttp3.RequestBody;
 import okhttp3.logging.HttpLoggingInterceptor;
 import retrofit2.Call;
 import retrofit2.Callback;
@@ -29,6 +26,7 @@ class NoteRepository {
 
     private NoteDao mNoteDao;
     private LiveData<List<Note>> mAllWords;
+    public Note parentDir;
     public static final String DIRECTORY_NAME = "MYDIR";
 
     static final String BASE_URL = "http://10.0.2.2:8080/";
@@ -72,11 +70,6 @@ class NoteRepository {
 //        Call<List<File>> call = serverDB.loadChanges("status:open");
 //        call.enqueue(this);
 
-    }
-
-    // Room executes all queries on a separate thread.
-    // Observed LiveData will notify the observer when the data has changed.
-    LiveData<List<Note>> getAllWords(String directory_name) {
         List<Note> remoteNotes = new ArrayList<>();
         Call<List<Note>> questions1 = serverDB.getNotes();
         questions1.enqueue(new Callback<List<Note>>() {
@@ -85,6 +78,13 @@ class NoteRepository {
                 System.out.println(response.body());
                 System.out.println(response.isSuccessful());
 //                remoteNotes.addAll(response.body());
+                List<Note> remoteNotes = response.body();
+                Note newNote = new Note("hro_name", "htoText", "MYDIR", false);
+                NoteRoomDatabase.databaseWriteExecutor.execute(() -> {
+                    for (Note remoteNote : remoteNotes) {
+                        mNoteDao.insert(remoteNote);
+                    }
+                });
             }
 
             @Override
@@ -94,23 +94,19 @@ class NoteRepository {
                 System.out.println(t.toString());
             }
         });
-//        try {
-//            Call<List<Note>> questions1 = serverDB.getNotes();
-//            try {
-//                Response<List<Note>> execute = questions1.execute();
-//                System.out.println(execute.body());
-//                System.out.println(execute.isSuccessful());
-//            } catch (IOException e) {
-//                e.printStackTrace();
-//            }
-//        } catch (Exception e){
-//            e.printStackTrace();
-//        }
+    }
 
+//    Note getParentDir(String directory_name) {
+//        NoteRoomDatabase.databaseWriteExecutor.execute(() -> {
+//            parentDir = mNoteDao.getParentDir(directory_name);
+//        });
+//        return parentDir;
+//    }
 
+    // Room executes all queries on a separate thread.
+    // Observed LiveData will notify the observer when the data has changed.
+    LiveData<List<Note>> getAllWords(String directory_name) {
         mAllWords = mNoteDao.getAlphabetizedWords(directory_name);
-        HashSet<Note> tempSet = new HashSet<>();
-        System.out.println(mAllWords.getValue());
 //        tempSet.addAll(mAllWords.getValue());
 //        TODO: remote und local diffen, dann mergen durch hinzufügen zu lokaler DB
 //        tempSet.addAll(remoteNotes);

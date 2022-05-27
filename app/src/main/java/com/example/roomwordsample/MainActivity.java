@@ -1,14 +1,20 @@
 package com.example.roomwordsample;
 
+import androidx.annotation.NonNull;
 import androidx.appcompat.app.AppCompatActivity;
+import androidx.lifecycle.LiveData;
 import androidx.lifecycle.ViewModelProvider;
+import androidx.recyclerview.widget.ItemTouchHelper;
 import androidx.recyclerview.widget.LinearLayoutManager;
 import androidx.recyclerview.widget.RecyclerView;
 
 import android.content.Intent;
 import android.os.Bundle;
+import android.widget.Toast;
 
 import com.google.android.material.floatingactionbutton.FloatingActionButton;
+
+import java.util.List;
 
 public class MainActivity extends AppCompatActivity {
     public static final int NEW_NOTE_ACTIVITY_REQUEST_CODE = 1;
@@ -16,9 +22,9 @@ public class MainActivity extends AppCompatActivity {
     public static final int NEW_DIR_ACTIVITY_REQUEST_CODE = 3;
     public static final int NEW_MAIN_ACTIVITY_REQUEST_CODE = 4;
     public static String DIRECTORY_NAME = "MYDIR";
-    public static String PREVIOUS_DIRECTORY_NAME;
+    public static String PREVIOUS_DIRECTORY_NAME = "";
 
-
+//    private NoteListAdapter adapter;
     private NoteViewModel mNoteViewModel;
 
 
@@ -32,11 +38,11 @@ public class MainActivity extends AppCompatActivity {
         Intent creationIntent = getIntent();
         if (creationIntent.hasExtra(DIRECTORY_NAME))
             DIRECTORY_NAME = creationIntent.getStringExtra(DIRECTORY_NAME);
-        if (creationIntent.hasExtra(PREVIOUS_DIRECTORY_NAME))
-            PREVIOUS_DIRECTORY_NAME = creationIntent.getStringExtra(PREVIOUS_DIRECTORY_NAME);
+//        if (creationIntent.hasExtra(PREVIOUS_DIRECTORY_NAME))
+//            PREVIOUS_DIRECTORY_NAME = creationIntent.getStringExtra(PREVIOUS_DIRECTORY_NAME);
 
         RecyclerView recyclerView = findViewById(R.id.recyclerview);
-        final NoteListAdapter adapter = new NoteListAdapter(new NoteListAdapter.WordDiff());
+        NoteListAdapter adapter = new NoteListAdapter(new NoteListAdapter.WordDiff());
         recyclerView.setAdapter(adapter);
         recyclerView.setLayoutManager(new LinearLayoutManager(this));
 
@@ -46,6 +52,22 @@ public class MainActivity extends AppCompatActivity {
             // Update the cached copy of the words in the adapter.
             adapter.submitList(words);
         });
+
+        new ItemTouchHelper(new ItemTouchHelper.SimpleCallback(0, ItemTouchHelper.
+                LEFT | ItemTouchHelper.RIGHT) {
+            @Override
+            public boolean onMove(@NonNull RecyclerView recyclerView, @NonNull RecyclerView.ViewHolder viewHolder, @NonNull RecyclerView.ViewHolder target) {
+                return false;
+            }
+
+            @Override
+            public void onSwiped(@NonNull RecyclerView.ViewHolder viewHolder, int direction) {
+
+                mNoteViewModel.deleteById(adapter.getNoteAt(viewHolder.getAdapterPosition()).getId());
+                Toast.makeText(MainActivity.this, "File Deleted", Toast.LENGTH_SHORT).show();
+            }
+        }).attachToRecyclerView(recyclerView);
+
 
         FloatingActionButton add_note = findViewById(R.id.fab);
         add_note.setOnClickListener(view -> {
@@ -65,8 +87,10 @@ public class MainActivity extends AppCompatActivity {
             public void onItemClick(Note note) {
                 if (note.isDir()) {
                     Intent intent = new Intent(MainActivity.this, MainActivity.class);
-                    intent.putExtra(MainActivity.DIRECTORY_NAME, note.getName());
-                    intent.putExtra(MainActivity.PREVIOUS_DIRECTORY_NAME, DIRECTORY_NAME);
+                    String noteName = note.getName();
+                    intent.putExtra(MainActivity.DIRECTORY_NAME, noteName);
+//                    String dirName = adapter.currentNote.getDirectory_name();
+//                    intent.putExtra(MainActivity.PREVIOUS_DIRECTORY_NAME, note.getDirectory_name());
                     startActivityForResult(intent, NEW_MAIN_ACTIVITY_REQUEST_CODE);
                 } else {
                     Intent intent = new Intent(MainActivity.this, NewNoteActivity.class);
@@ -84,8 +108,18 @@ public class MainActivity extends AppCompatActivity {
     @Override
     public void onBackPressed() {
         Intent intent = new Intent(MainActivity.this, MainActivity.class);
-        intent.putExtra(MainActivity.DIRECTORY_NAME, PREVIOUS_DIRECTORY_NAME);
-        intent.putExtra(MainActivity.PREVIOUS_DIRECTORY_NAME, DIRECTORY_NAME);
+//        LiveData<List<Note>> allWords = mNoteViewModel.getAllWords(DIRECTORY_NAME);
+//        System.out.println("MAINACTIVITY");
+//        System.out.println(allWords.getValue().get(0));
+//        try {
+//            Note parentDirNote = mNoteViewModel.getParentDir(DIRECTORY_NAME);
+//            String parentDir = parentDirNote.getDirectory_name();
+//        } catch (Exception e){
+//            e.printStackTrace();
+//        }
+//        String parentDir = adapter.currentNote.getDirectory_name();
+        intent.putExtra(MainActivity.DIRECTORY_NAME, "MYDIR");
+//        intent.putExtra(MainActivity.PREVIOUS_DIRECTORY_NAME, DIRECTORY_NAME);
         startActivityForResult(intent, NEW_MAIN_ACTIVITY_REQUEST_CODE);
     }
 

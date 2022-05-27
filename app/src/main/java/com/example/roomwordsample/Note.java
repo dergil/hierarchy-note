@@ -9,7 +9,7 @@ import androidx.room.PrimaryKey;
 import com.google.gson.annotations.Expose;
 import com.google.gson.annotations.SerializedName;
 
-@Entity(tableName = "note_table")
+@Entity(tableName = "note_table", indices = {@Index(value = "name", unique = true)})
 public class Note {
 
     @PrimaryKey(autoGenerate = true)
@@ -22,6 +22,7 @@ public class Note {
     @ColumnInfo(name = "name")
     @SerializedName("name")
     @Expose
+
     private String name;
 
     @ColumnInfo(name = "text")
