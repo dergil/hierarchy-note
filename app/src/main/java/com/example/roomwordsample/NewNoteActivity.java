@@ -35,7 +35,7 @@ public class NewNoteActivity extends AppCompatActivity {
 
         final Button button_save = findViewById(R.id.button_save);
         button_save.setOnClickListener(view -> {
-            Intent replyIntent = new Intent();
+            Intent replyIntent = new Intent(getApplicationContext(), MainActivity.class);
             if (TextUtils.isEmpty(mEditNameView.getText()) || TextUtils.isEmpty(mEditNameView.getText())) {
                 setResult(RESULT_CANCELED, replyIntent);
             } else {

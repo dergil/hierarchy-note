@@ -19,6 +19,9 @@ Long insert(Note note);
 @Query("SELECT * FROM note_table WHERE id = :id")
 Note find(Long id);
 
+@Query("SELECT * FROM note_table")
+List<Note> findAll();
+
 @Update
 void update(Note note);
 

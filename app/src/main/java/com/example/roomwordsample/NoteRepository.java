@@ -26,7 +26,6 @@ class NoteRepository {
 
     private NoteDao mNoteDao;
     private LiveData<List<Note>> mAllWords;
-    public Note parentDir;
     public static final String DIRECTORY_NAME = "MYDIR";
 
     static final String BASE_URL = "http://10.0.2.2:8080/";
@@ -67,10 +66,7 @@ class NoteRepository {
 
         serverDB = retrofit.create(ServerDB.class);
 
-//        Call<List<File>> call = serverDB.loadChanges("status:open");
-//        call.enqueue(this);
 
-        List<Note> remoteNotes = new ArrayList<>();
         Call<List<Note>> questions1 = serverDB.getNotes();
         questions1.enqueue(new Callback<List<Note>>() {
             @Override
@@ -79,11 +75,13 @@ class NoteRepository {
                 System.out.println(response.isSuccessful());
 //                remoteNotes.addAll(response.body());
                 List<Note> remoteNotes = response.body();
-                Note newNote = new Note("hro_name", "htoText", "MYDIR", false);
+//                Note newNote = new Note("hro_name", "htoText", "MYDIR", false);
                 NoteRoomDatabase.databaseWriteExecutor.execute(() -> {
                     for (Note remoteNote : remoteNotes) {
+                        remoteNote.setSynced(Boolean.TRUE);
                         mNoteDao.insert(remoteNote);
                     }
+                    sync();
                 });
             }
 
@@ -107,31 +105,14 @@ class NoteRepository {
     // Observed LiveData will notify the observer when the data has changed.
     LiveData<List<Note>> getAllWords(String directory_name) {
         mAllWords = mNoteDao.getAlphabetizedWords(directory_name);
-//        tempSet.addAll(mAllWords.getValue());
-//        TODO: remote und local diffen, dann mergen durch hinzufügen zu lokaler DB
-//        tempSet.addAll(remoteNotes);
         return mAllWords;
-
-//        OkHttpClient client = new OkHttpClient();
-//        String url = "http://10.0.2.2:8080/api/core/file/find-all";
-//        Request request = new Request.Builder()
-//                .url(url)
-//                .build();
-//
-//        try (Response response = client.newCall(request).execute()) {
-//            System.out.println(response.body().string());
-//        } catch (IOException exception) {
-//            exception.printStackTrace();
-//        }
-
     }
 
     // You must call this on a non-UI thread or your app will throw an exception. Room ensures
     // that you're not doing any long running operations on the main thread, blocking the UI.
     void insert(Note note) {
         NoteRoomDatabase.databaseWriteExecutor.execute(() -> {
-            Long id = mNoteDao.insert(note);
-            note.setId(id);
+
 
 
 //            MediaType JSON = MediaType.get("application/json; charset=utf-8");
@@ -157,41 +138,78 @@ class NoteRepository {
             try {
                 Response<ResponseDto> execute = questions.execute();
                 ResponseDto body = execute.body();
-                System.out.println(body.toString());
+                if (execute.isSuccessful()){
+                    note.setId(body.getId());
+                    note.setSynced(Boolean.TRUE);
+                }
+                mNoteDao.insert(note);
             } catch (IOException e) {
                 e.printStackTrace();
+                mNoteDao.insert(note);
             }
         });
+    }
+
+    private void sync() {
+        List<Note> localFiles = mNoteDao.findAll();
+        Long id = null;
+        for (Note localFile : localFiles) {
+            if (!localFile.getSynced()) {
+                id = insertRemotely(localFile);
+            }
+            if (id != null){
+                Long oldFileId = localFile.getId();
+                mNoteDao.deleteById(oldFileId);
+                localFile.setId(id);
+                localFile.setSynced(Boolean.TRUE);
+                mNoteDao.insert(localFile);
+            }
+        }
+    }
+
+    private Long insertRemotely(Note note) {
+        Call<ResponseDto> questions = serverDB.saveNote(note);
+        try {
+            Response<ResponseDto> execute = questions.execute();
+            if (execute.isSuccessful()){
+                return execute.body().getId();
+            }
+        } catch (IOException e) {
+            e.printStackTrace();
+        }
+        return null;
     }
 
     void update(Note note){
+//        TODO: update requests idealerweise zusammenfassen, wegen synced status
         NoteRoomDatabase.databaseWriteExecutor.execute(() -> {
             Long id = note.getId();
             Note oldNote = mNoteDao.find(id);
-
+            boolean syncSuccessful = false;
             if (!oldNote.getName().equals(note.getName())) {
-                sendUpdate(id, new UpdateFileDto("replace", "/name", note.getName()));
+                syncSuccessful = sendUpdate(id, new UpdateFileDto("replace", "/name", note.getName()));
             }
             if (!oldNote.getText().equals(note.getText())) {
-                sendUpdate(id, new UpdateFileDto("replace", "/text", note.getText()));
+                syncSuccessful = sendUpdate(id, new UpdateFileDto("replace", "/text", note.getText()));
             }
-
+            if (syncSuccessful)
+                note.setSynced(Boolean.TRUE);
             mNoteDao.update(note);
-
         });
     }
 
-    void sendUpdate(Long id, UpdateFileDto updateFileDto){
+    boolean sendUpdate(Long id, UpdateFileDto updateFileDto){
         List<UpdateFileDto> updateBody = new ArrayList<>();
         updateBody.add(updateFileDto);
         Call<ResponseDto> questions = serverDB.editNote(id, updateBody);
         try {
             Response<ResponseDto> execute = questions.execute();
-            ResponseDto body = execute.body();
-            System.out.println(body.toString());
+            if (execute.isSuccessful())
+                return true;
         } catch (IOException e) {
             e.printStackTrace();
         }
+        return false;
     }
 
     void delete(Long id){

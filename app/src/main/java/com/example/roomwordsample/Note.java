@@ -40,11 +40,17 @@ public class Note {
     @Expose
     private Boolean isDir;
 
-    public Note(String name, String text, String directory_name, boolean isDir) {
+    @ColumnInfo(name = "synced")
+    @SerializedName("synced")
+    @Expose
+    private transient Boolean synced = false;
+
+    public Note(String name, String text, String directory_name, Boolean isDir, Boolean synced) {
         this.name = name;
         this.text = text;
         this.directory_name = directory_name;
         this.isDir = isDir;
+        this.synced = synced;
     }
 
     public Long getId() {
@@ -79,12 +85,20 @@ public class Note {
         this.directory_name = directory_name;
     }
 
-    public boolean isDir() {
+    public Boolean isDir() {
         return isDir;
     }
 
-    public void setDir(boolean dir) {
+    public void setDir(Boolean dir) {
         isDir = dir;
+    }
+
+    public Boolean getSynced() {
+        return synced;
+    }
+
+    public void setSynced(Boolean synced) {
+        this.synced = synced;
     }
 }
 

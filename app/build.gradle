@@ -35,6 +35,8 @@ dependencies {
 
     // Room components
     implementation "androidx.room:room-runtime:$rootProject.roomVersion"
+    implementation 'androidx.test.espresso:espresso-intents:3.4.0'
+    implementation 'androidx.test.espresso:espresso-contrib:3.4.0'
     annotationProcessor "androidx.room:room-compiler:$rootProject.roomVersion"
     androidTestImplementation "androidx.room:room-testing:$rootProject.roomVersion"
 
@@ -55,7 +57,8 @@ dependencies {
 //        exclude module: 'support-annotations'
     })
     androidTestImplementation "androidx.test.ext:junit:$rootProject.androidxJunitVersion"
-
+//    androidTestImplementation ("com.android.support.test.espresso:espresso-intents:$rootProject.espressoVersion")
+    androidTestImplementation 'androidx.test.espresso:espresso-contrib:' + rootProject.espressoVersion;
     implementation 'com.google.code.gson:gson:2.8.7'
     implementation 'com.squareup.retrofit2:retrofit:2.9.0'
     implementation 'com.squareup.retrofit2:converter-gson:2.9.0'
@@ -64,8 +67,26 @@ dependencies {
 
 //    implementation("com.squareup.okhttp3:okhttp:4.9.3")
 
-    androidTestImplementation ("com.android.support.test.espresso:espresso-intents:$espressoVersion")
+//    androidTestImplementation ("com.android.support.test.espresso:espresso-intents:$espressoVersion")
 //    androidTestImplementation "com.android.support.test.espresso:espresso-intents:3.0.1"
+
+
+    // Testing-only dependencies
+//    androidTestImplementation "org.jetbrains.kotlin:kotlin-stdlib:$kotlinVersion"
+//    androidTestImplementation 'androidx.test:core:' + rootProject.coreVersion
+//    androidTestImplementation 'androidx.test:core-ktx:' + rootProject.coreVersion
+//    androidTestImplementation 'androidx.test.ext:junit:' + rootProject.extJUnitVersion
+//    androidTestImplementation 'androidx.test.ext:junit-ktx:' + rootProject.extJUnitVersion
+//    androidTestImplementation 'androidx.test:runner:' + rootProject.runnerVersion
+//    androidTestImplementation 'androidx.test.espresso:espresso-core:' + rootProject.espressoVersion
+//
+//    testImplementation 'androidx.test:core:' + rootProject.coreVersion;
+//    testImplementation 'androidx.test.ext:junit:' + rootProject.extJUnitVersion
+//    testImplementation 'junit:junit:4.12'
+//    testImplementation 'org.robolectric:robolectric:' + rootProject.robolectricVersion
+//    testImplementation 'androidx.test.espresso:espresso-core:' + rootProject.espressoVersion
+//    testImplementation 'androidx.test.espresso:espresso-intents:' + rootProject.espressoVersion
+//    testImplementation 'androidx.test.ext:truth:' + rootProject.extTruthVersion
 }
 
 

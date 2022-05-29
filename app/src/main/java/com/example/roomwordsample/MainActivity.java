@@ -129,7 +129,7 @@ public class MainActivity extends AppCompatActivity {
         if (requestCode == NEW_NOTE_ACTIVITY_REQUEST_CODE && resultCode == RESULT_OK) {
             String name = data.getStringExtra(NewNoteActivity.EXTRA_REPLY_NAME);
             String text = data.getStringExtra(NewNoteActivity.EXTRA_REPLY_TEXT);
-            Note note = new Note(name, text, DIRECTORY_NAME, false);
+            Note note = new Note(name, text, DIRECTORY_NAME, false, false);
             mNoteViewModel.insert(note);
         }
         if (requestCode == EDIT_NOTE_ACTIVITY_REQUEST_CODE && resultCode == RESULT_OK) {
@@ -138,13 +138,13 @@ public class MainActivity extends AppCompatActivity {
             long id = data.getLongExtra(NewNoteActivity.EXTRA_ID, -1);
             String name = data.getStringExtra(NewNoteActivity.EXTRA_REPLY_NAME);
             String text = data.getStringExtra(NewNoteActivity.EXTRA_REPLY_TEXT);
-            Note note = new Note(name, text, DIRECTORY_NAME, false);
+            Note note = new Note(name, text, DIRECTORY_NAME, false, false);
             note.setId(id);
             mNoteViewModel.update(note);
         }
         if (requestCode == NEW_DIR_ACTIVITY_REQUEST_CODE && resultCode == RESULT_OK) {
             Note note = new Note(data.getStringExtra(NewDirectory.EXTRA_REPLY_DIRECTORY_NAME), "filler",
-                    DIRECTORY_NAME, true);
+                    DIRECTORY_NAME, true, false);
             mNoteViewModel.insert(note);
         }
         if (data.getStringExtra(NewNoteActivity.EXTRA_DELETE) != null && resultCode == RESULT_OK) {
