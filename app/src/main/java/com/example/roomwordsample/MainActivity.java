@@ -2,6 +2,7 @@ package com.example.roomwordsample;
 
 import androidx.annotation.NonNull;
 import androidx.appcompat.app.AppCompatActivity;
+import androidx.coordinatorlayout.widget.CoordinatorLayout;
 import androidx.lifecycle.LiveData;
 import androidx.lifecycle.ViewModelProvider;
 import androidx.recyclerview.widget.ItemTouchHelper;
@@ -10,9 +11,11 @@ import androidx.recyclerview.widget.RecyclerView;
 
 import android.content.Intent;
 import android.os.Bundle;
+import android.view.View;
 import android.widget.Toast;
 
 import com.google.android.material.floatingactionbutton.FloatingActionButton;
+import com.google.android.material.snackbar.Snackbar;
 
 import java.util.List;
 
@@ -53,22 +56,6 @@ public class MainActivity extends AppCompatActivity {
             adapter.submitList(words);
         });
 
-        new ItemTouchHelper(new ItemTouchHelper.SimpleCallback(0, ItemTouchHelper.
-                LEFT | ItemTouchHelper.RIGHT) {
-            @Override
-            public boolean onMove(@NonNull RecyclerView recyclerView, @NonNull RecyclerView.ViewHolder viewHolder, @NonNull RecyclerView.ViewHolder target) {
-                return false;
-            }
-
-            @Override
-            public void onSwiped(@NonNull RecyclerView.ViewHolder viewHolder, int direction) {
-
-                mNoteViewModel.deleteById(adapter.getNoteAt(viewHolder.getAdapterPosition()).getId());
-                Toast.makeText(MainActivity.this, "File Deleted", Toast.LENGTH_SHORT).show();
-            }
-        }).attachToRecyclerView(recyclerView);
-
-
         FloatingActionButton add_note = findViewById(R.id.fab);
         add_note.setOnClickListener(view -> {
             Intent intent = new Intent(MainActivity.this, NewNoteActivity.class);
@@ -81,6 +68,41 @@ public class MainActivity extends AppCompatActivity {
 //            intent.putExtra(MainActivity.DIRECTORY_NAME, "MYDIR2");
             startActivityForResult(intent, NEW_DIR_ACTIVITY_REQUEST_CODE);
         });
+
+        new ItemTouchHelper(new ItemTouchHelper.SimpleCallback(0, ItemTouchHelper.
+                LEFT | ItemTouchHelper.RIGHT) {
+            @Override
+            public boolean onMove(@NonNull RecyclerView recyclerView, @NonNull RecyclerView.ViewHolder viewHolder, @NonNull RecyclerView.ViewHolder target) {
+                return false;
+            }
+
+            @Override
+            public void onSwiped(@NonNull RecyclerView.ViewHolder viewHolder, int direction) {
+                Note noteToBeDeleted = adapter.getNoteAt(viewHolder.getAdapterPosition());
+
+                mNoteViewModel.deleteById(noteToBeDeleted.getId());
+                Snackbar snackbar = Snackbar
+                        .make(findViewById(android.R.id.content), "File is deleted", Snackbar.LENGTH_LONG)
+                        .setDuration(4000)
+                        .setAnchorView(add_dir)
+                        .setAction("UNDO", new View.OnClickListener() {
+                            @Override
+                            public void onClick(View view) {
+                                noteToBeDeleted.setSynced(Boolean.FALSE);
+                                mNoteViewModel.insert(noteToBeDeleted);
+                                Snackbar snackbar1 = Snackbar
+                                        .make(findViewById(android.R.id.content), "File is restored!", Snackbar.LENGTH_SHORT)
+                                        .setAnchorView(add_dir);
+                                snackbar1.show();
+                            }
+                        });
+
+                snackbar.show();
+            }
+        }).attachToRecyclerView(recyclerView);
+
+
+
 
         adapter.setOnItemClickListener(new NoteListAdapter.OnItemClickListener() {
             @Override

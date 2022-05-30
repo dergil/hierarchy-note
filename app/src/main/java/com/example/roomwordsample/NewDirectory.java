@@ -33,4 +33,17 @@ public class NewDirectory extends AppCompatActivity {
             finish();
         });
     }
+
+    @Override
+    public void onBackPressed() {
+        Intent replyIntent = new Intent();
+        if (TextUtils.isEmpty(mEditNameView.getText())) {
+            setResult(RESULT_CANCELED, replyIntent);
+        } else {
+            String name = mEditNameView.getText().toString();
+            replyIntent.putExtra(EXTRA_REPLY_DIRECTORY_NAME, name);
+            setResult(RESULT_OK, replyIntent);
+        }
+        finish();
+    }
 }

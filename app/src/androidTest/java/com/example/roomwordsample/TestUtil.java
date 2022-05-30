@@ -26,4 +26,30 @@ public class TestUtil {
         note.setId(id2);
         return note;
     }
+
+    public boolean compareNotes (Note note1, Note note2) {
+        boolean sameValues = true;
+        if (!note1.getId().equals(note2.getId()))
+            sameValues = false;
+        if (!note1.getName().equals(note2.getName()))
+            sameValues = false;
+        if (!note1.getText().equals(note2.getText()))
+            sameValues = false;
+        if (!note1.isDir().equals(note2.isDir()))
+            sameValues = false;
+        return sameValues;
+    }
+
+    public boolean compareNotes (ResponseDto note1, Note note2) {
+        boolean sameValues = true;
+        if (!note1.getId().equals(note2.getId()))
+            sameValues = false;
+        if (!note1.getName().equals(note2.getName()))
+            sameValues = false;
+        if (!note1.getText().equals(note2.getText()))
+            sameValues = false;
+        if (!note1.getDir().equals(note2.isDir()))
+            sameValues = false;
+        return sameValues;
+    }
 }

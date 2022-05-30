@@ -7,6 +7,8 @@
         <entry key="app/src/main/res/layout/activity_main.xml" value="0.47552083333333334" />
         <entry key="app/src/main/res/layout/activity_new_directory.xml" value="0.8421875" />
         <entry key="app/src/main/res/layout/activity_new_word.xml" value="0.8053435114503816" />
+        <entry key="app/src/main/res/layout/undo_delete.xml" value="0.8432291666666667" />
+        <entry key="app/src/main/res/mipmap-anydpi-v26/ic_launcher.xml" value="0.5305" />
       </map>
     </option>
   </component>
