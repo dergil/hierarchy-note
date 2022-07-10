@@ -27,7 +27,7 @@ public class TestUtil {
         return note;
     }
 
-    public boolean compareNotes (Note note1, Note note2) {
+    public static boolean compareNotes(Note note1, Note note2) {
         boolean sameValues = true;
         if (!note1.getId().equals(note2.getId()))
             sameValues = false;

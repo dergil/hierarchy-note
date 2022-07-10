@@ -17,7 +17,7 @@ import retrofit2.converter.gson.GsonConverterFactory;
 
 public class Networking implements NetworkingInterface{
     ServerDB serverDB;
-    static final String BASE_URL = "http://10.0.2.2:8080/";
+    String BASE_URL = "http://10.0.2.2:8080/";
 
 
     public Networking() {
@@ -108,7 +108,7 @@ public class Networking implements NetworkingInterface{
 //        });
     }
 
-    private void initNetworkingStack(){
+    public void initNetworkingStack(){
         Gson gson = new GsonBuilder()
                 .setLenient()
                 .create();

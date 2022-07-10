@@ -26,20 +26,21 @@ import retrofit2.converter.gson.GsonConverterFactory;
 class NoteRepository implements NoteRepositoryInterface{
 
     private static NoteRepository sInstance;
-    private final NoteRoomDatabase mDatabase;
+    private NoteRoomDatabase mDatabase;
     private NoteDao mNoteDao;
     private LiveData<List<Note>> mAllWords;
-    private Networking networking;
-    public static final String DIRECTORY_NAME = "MYDIR";
+    Networking networking;
+    public static String DIRECTORY_NAME = "MYDIR";
 
-    static final String BASE_URL = "http://10.0.2.2:8080/";
+    static String BASE_URL = "http://10.0.2.2:8080/";
     ServerDB serverDB;
 
-    NoteRepository(final NoteRoomDatabase database, Networking networking) {
+    NoteRepository(NoteRoomDatabase database, Networking networking) {
         mDatabase = database;
         mNoteDao = database.wordDao();
         mAllWords = mNoteDao.getAlphabetizedWords(DIRECTORY_NAME);
         this.networking = networking;
+        start();
 //        mObservableProducts = new MediatorLiveData<>();
 
 //        mObservableProducts.addSource(mDatabase.productDao().loadAllProducts(),
@@ -101,7 +102,6 @@ class NoteRepository implements NoteRepositoryInterface{
 
 
 
-//        TODO: this is productive code, just commented temporarily
         NoteRoomDatabase.databaseWriteExecutor.execute(() -> {
             List<Note> remoteNotes = networking.getNotes();
             if (remoteNotes != null) {
@@ -181,12 +181,11 @@ class NoteRepository implements NoteRepositoryInterface{
 //                    exception.printStackTrace();
 //                }
 
-//          TODO: this is productive
-//            ResponseDto response = networking.insert(note);
-//            if (response != null){
-//                note.setId(response.getId());
-//                note.setSynced(Boolean.TRUE);
-//            }
+            ResponseDto response = networking.insert(note);
+            if (response != null){
+                note.setId(response.getId());
+                note.setSynced(Boolean.TRUE);
+            }
             mNoteDao.insert(note);
 
 
@@ -211,7 +210,7 @@ class NoteRepository implements NoteRepositoryInterface{
         Long id = null;
         for (Note localFile : localFiles) {
             if (!localFile.getSynced()) {
-//                id = insertRemotely(localFile);
+                id = insertRemotely(localFile);
             }
             if (id != null){
                 Long oldFileId = localFile.getId();
@@ -222,13 +221,12 @@ class NoteRepository implements NoteRepositoryInterface{
             }
         }
     }
-    //          TODO: this is productive
-//    private Long insertRemotely(Note note) {
-//        ResponseDto response = networking.insert(note);
-//        if (response != null)
-//            return response.getId();
-//        else return null;
-//    }
+    private Long insertRemotely(Note note) {
+        ResponseDto response = networking.insert(note);
+        if (response != null)
+            return response.getId();
+        else return null;
+    }
 
     public void update(Note note){
 //        TODO: update requests idealerweise zusammenfassen, wegen synced status
@@ -236,13 +234,12 @@ class NoteRepository implements NoteRepositoryInterface{
             Long id = note.getId();
             Note oldNote = mNoteDao.find(id);
             boolean syncSuccessful = false;
-            //          TODO: this is productive
-//            if (!oldNote.getName().equals(note.getName())) {
-//                syncSuccessful = networking.update(id, new UpdateFileDto("replace", "/name", note.getName()));
-//            }
-//            if (!oldNote.getText().equals(note.getText())) {
-//                syncSuccessful = networking.update(id, new UpdateFileDto("replace", "/text", note.getText()));
-//            }
+            if (!oldNote.getName().equals(note.getName())) {
+                syncSuccessful = networking.update(id, new UpdateFileDto("replace", "/name", note.getName()));
+            }
+            if (!oldNote.getText().equals(note.getText())) {
+                syncSuccessful = networking.update(id, new UpdateFileDto("replace", "/text", note.getText()));
+            }
             if (syncSuccessful)
                 note.setSynced(Boolean.TRUE);
             mNoteDao.update(note);
@@ -266,13 +263,12 @@ class NoteRepository implements NoteRepositoryInterface{
     public void delete(Long id){
         NoteRoomDatabase.databaseWriteExecutor.execute(() -> {
             mNoteDao.deleteById(id);
-            //          TODO: this is productive
-//            networking.delete(id);
-//            Call<ResponseDto> questions = serverDB.deleteNote(id);
+            networking.delete(id);
 //            try {
+//                Call<ResponseDto> questions = serverDB.deleteNote(id);
 //                Response<ResponseDto> execute = questions.execute();
 //                System.out.println(execute.isSuccessful());
-//            } catch (IOException e) {
+//            } catch (Exception e) {
 //                e.printStackTrace();
 //            }
         });

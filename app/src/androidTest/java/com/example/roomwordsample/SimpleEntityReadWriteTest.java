@@ -39,7 +39,7 @@ public class SimpleEntityReadWriteTest {
     }
 
     @After
-    public void closeDb() throws IOException {
+    public void closeDb() {
         db.close();
     }
 
@@ -50,7 +50,7 @@ public class SimpleEntityReadWriteTest {
         createdNote.setId(id);
         noteDao.insert(createdNote);
         Note foundNote = noteDao.find(id);
-        assertTrue(compareNotes(createdNote, foundNote));
+        assertTrue(TestUtil.compareNotes(createdNote, foundNote));
     }
 
     @Test
@@ -68,7 +68,7 @@ public class SimpleEntityReadWriteTest {
         insertedNote.setText(newText);
         noteDao.update(insertedNote);
         Note updatedNote = noteDao.find(insertedNote.getId());
-        assertTrue(compareNotes(insertedNote, updatedNote));
+        assertTrue(TestUtil.compareNotes(insertedNote, updatedNote));
     }
 
     @Test
@@ -76,8 +76,8 @@ public class SimpleEntityReadWriteTest {
         Note insertedNote1 = insertNote1();
         Note insertedNote2 = insertNote2();
         List<Note> allNotes = noteDao.findAll();
-        assertTrue(compareNotes(insertedNote1, allNotes.get(0)));
-        assertTrue(compareNotes(insertedNote2, allNotes.get(1)));
+        assertTrue(TestUtil.compareNotes(insertedNote1, allNotes.get(0)));
+        assertTrue(TestUtil.compareNotes(insertedNote2, allNotes.get(1)));
     }
 
     @Test
@@ -100,17 +100,17 @@ public class SimpleEntityReadWriteTest {
         return note;
     }
 
-    private boolean compareNotes (Note note1, Note note2) {
-        boolean sameValues = true;
-        if (!note1.getId().equals(note2.getId()))
-            sameValues = false;
-        if (!note1.getName().equals(note2.getName()))
-            sameValues = false;
-        if (!note1.getText().equals(note2.getText()))
-            sameValues = false;
-        if (!note1.isDir().equals(note2.isDir()))
-            sameValues = false;
-        return sameValues;
-    }
+//    private boolean compareNotes (Note note1, Note note2) {
+//        boolean sameValues = true;
+//        if (!note1.getId().equals(note2.getId()))
+//            sameValues = false;
+//        if (!note1.getName().equals(note2.getName()))
+//            sameValues = false;
+//        if (!note1.getText().equals(note2.getText()))
+//            sameValues = false;
+//        if (!note1.isDir().equals(note2.isDir()))
+//            sameValues = false;
+//        return sameValues;
+//    }
 }
 
