@@ -8,6 +8,7 @@ import static androidx.test.espresso.assertion.ViewAssertions.matches;
 import static androidx.test.espresso.intent.Intents.intended;
 import static androidx.test.espresso.intent.matcher.IntentMatchers.hasComponent;
 import static androidx.test.espresso.matcher.ViewMatchers.hasDescendant;
+import static androidx.test.espresso.matcher.ViewMatchers.isDisplayed;
 import static androidx.test.espresso.matcher.ViewMatchers.withId;
 import static androidx.test.espresso.matcher.ViewMatchers.withText;
 
@@ -15,7 +16,6 @@ import static com.example.roomwordsample.ChangeTextBehaviorTest.atPosition;
 
 import androidx.lifecycle.ViewModelProvider;
 import androidx.test.core.app.ApplicationProvider;
-import androidx.test.espresso.PerformException;
 import androidx.test.espresso.contrib.RecyclerViewActions;
 import androidx.test.espresso.intent.Intents;
 import androidx.test.espresso.matcher.ViewMatchers;
@@ -26,8 +26,6 @@ import androidx.test.filters.LargeTest;
 import org.junit.Rule;
 import org.junit.Test;
 import org.junit.runner.RunWith;
-
-import javax.inject.Inject;
 
 
 @RunWith(AndroidJUnit4.class)
@@ -43,11 +41,17 @@ public class MainActivityTests {
             = new ActivityScenarioRule<>(MainActivity.class);
 
     @Test
+    public void displaysNewNoteButton() {
+        Intents.init();
+        onView(withId(R.id.fab)).check(matches(isDisplayed()));
+    }
+
+    @Test
     public void OpensNewNoteActivity() {
         Intents.init();
         onView(withId(R.id.fab)).perform(click());
 
-        intended(hasComponent(NewNoteActivity.class.getName()));
+        intended(hasComponent(NoteActivity.class.getName()));
     }
 
     @Test
@@ -66,7 +70,7 @@ public class MainActivityTests {
         onView(ViewMatchers.withId(R.id.recyclerview))
                 .perform(RecyclerViewActions.actionOnItemAtPosition(0, click()));
 
-        intended(hasComponent(NewNoteActivity.class.getName()));
+        intended(hasComponent(NoteActivity.class.getName()));
     }
 
     @Test
@@ -91,9 +95,9 @@ public class MainActivityTests {
                 .perform(typeText(STRING_TO_BE_TYPED), closeSoftKeyboard());
         onView(withId(R.id.button_save)).perform(click());
         onView(ViewMatchers.withId(R.id.recyclerview))
+        .check(matches(atPosition(0, hasDescendant(withText(STRING_TO_BE_TYPED)))));
 //                .perform(RecyclerViewActions.actionOnItemAtPosition(0, ));
 //        .check(matches(atPosition(0, withText(STRING_TO_BE_TYPED))));
-                .check(matches(atPosition(0, hasDescendant(withText(STRING_TO_BE_TYPED)))));
 
 //        intended(hasComponent(MainActivity.class.getName()));
 

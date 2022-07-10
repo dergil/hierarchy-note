@@ -43,8 +43,8 @@ public class ChangeTextBehaviorTest {
 //     * Use {@link ActivityScenarioRule} to create and launch the activity under test, and close it
 //     * after test completes. This is a replacement for {@link androidx.test.rule.ActivityTestRule}.
 //     */
-    @Rule public ActivityScenarioRule<NewNoteActivity> activityScenarioRule
-            = new ActivityScenarioRule<>(NewNoteActivity.class);
+    @Rule public ActivityScenarioRule<NoteActivity> activityScenarioRule
+            = new ActivityScenarioRule<>(NoteActivity.class);
 
     @Test
     public void changeText_sameActivity() {

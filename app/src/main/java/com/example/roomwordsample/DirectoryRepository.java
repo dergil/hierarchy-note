@@ -6,8 +6,8 @@ public class DirectoryRepository {
     private DirectoryDao directoryDao;
 
     public DirectoryRepository(Application application) {
-        NoteRoomDatabase db = NoteRoomDatabase.getDatabase(application);
-        directoryDao = db.directoryDao();
+//        NoteRoomDatabase db = NoteRoomDatabase.getDatabase(application);
+//        directoryDao = db.directoryDao();
     }
 
     public void insert(Directory directory) {

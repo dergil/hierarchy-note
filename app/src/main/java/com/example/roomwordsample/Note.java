@@ -17,12 +17,9 @@ public class Note {
     @Expose
     private Long id;
 
-//    @PrimaryKey
-//    @NonNull
     @ColumnInfo(name = "name")
     @SerializedName("name")
     @Expose
-
     private String name;
 
     @ColumnInfo(name = "text")

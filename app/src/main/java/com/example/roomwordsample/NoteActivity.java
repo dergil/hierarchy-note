@@ -8,7 +8,7 @@ import android.text.TextUtils;
 import android.widget.Button;
 import android.widget.EditText;
 
-public class NewNoteActivity extends AppCompatActivity {
+public class NoteActivity extends AppCompatActivity {
 
     public static final String EXTRA_ID = "com.example.android.wordlistsql.ID";
     public static final String EXTRA_REPLY_NAME = "com.example.android.wordlistsql.REPLY_NAME";

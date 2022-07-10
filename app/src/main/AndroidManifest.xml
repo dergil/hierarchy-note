@@ -5,6 +5,7 @@
     <uses-permission android:name="android.permission.INTERNET" />
 
     <application
+        android:name=".HierarchyApp"
         android:networkSecurityConfig="@xml/network_security_config"
 
         android:allowBackup="true"
@@ -18,7 +19,7 @@
             android:name=".NewDirectory"
             android:exported="false" />
         <activity
-            android:name=".NewNoteActivity"
+            android:name=".NoteActivity"
             android:exported="false"
             android:parentActivityName=".MainActivity" />
         <activity

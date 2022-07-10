@@ -3,6 +3,7 @@ package com.example.roomwordsample;
 import android.app.Application;
 
 import androidx.lifecycle.LiveData;
+import androidx.lifecycle.MediatorLiveData;
 
 import com.google.gson.Gson;
 import com.google.gson.GsonBuilder;
@@ -22,76 +23,124 @@ import retrofit2.Retrofit;
 import retrofit2.converter.gson.GsonConverterFactory;
 
 
-class NoteRepository {
+class NoteRepository implements NoteRepositoryInterface{
 
+    private static NoteRepository sInstance;
+    private final NoteRoomDatabase mDatabase;
     private NoteDao mNoteDao;
     private LiveData<List<Note>> mAllWords;
+    private Networking networking;
     public static final String DIRECTORY_NAME = "MYDIR";
 
     static final String BASE_URL = "http://10.0.2.2:8080/";
     ServerDB serverDB;
+
+    NoteRepository(final NoteRoomDatabase database, Networking networking) {
+        mDatabase = database;
+        mNoteDao = database.wordDao();
+        mAllWords = mNoteDao.getAlphabetizedWords(DIRECTORY_NAME);
+        this.networking = networking;
+//        mObservableProducts = new MediatorLiveData<>();
+
+//        mObservableProducts.addSource(mDatabase.productDao().loadAllProducts(),
+//                productEntities -> {
+//                    if (mDatabase.getDatabaseCreated().getValue() != null) {
+//                        mObservableProducts.postValue(productEntities);
+//                    }
+//                });
+    }
 
 
     // Note that in order to unit test the WordRepository, you have to remove the Application
     // dependency. This adds complexity and much more code, and this sample is not about testing.
     // See the BasicSample in the android-architecture-components repository at
     // https://github.com/googlesamples
-    NoteRepository(Application application) {
-        NoteRoomDatabase db = NoteRoomDatabase.getDatabase(application);
-        start();
-        mNoteDao = db.wordDao();
-        mAllWords = mNoteDao.getAlphabetizedWords(DIRECTORY_NAME);
+//    NoteRepository(Application application, Networking networking) {
+//        NoteRoomDatabase db = NoteRoomDatabase.getDatabase(application);
+//        this.networking = networking;
+////        networking = new Networking();
+//        start();
+//        mNoteDao = db.wordDao();
+//        mAllWords = mNoteDao.getAlphabetizedWords(DIRECTORY_NAME);
+//    }
+
+    public static NoteRepository getInstance(final NoteRoomDatabase database, Networking networking) {
+        if (sInstance == null) {
+            synchronized (NoteRepository.class) {
+                if (sInstance == null) {
+                    sInstance = new NoteRepository(database, networking);
+                }
+            }
+        }
+        return sInstance;
     }
 
     private void start() {
-        Gson gson = new GsonBuilder()
-                .setLenient()
-                .create();
-
-        HttpLoggingInterceptor logging = new HttpLoggingInterceptor();
-        logging.setLevel(HttpLoggingInterceptor.Level.BODY);
-
-//        OkHttpClient client = new OkHttpClient.Builder()
+//        Gson gson = new GsonBuilder()
+//                .setLenient()
+//                .create();
+//
+//        HttpLoggingInterceptor logging = new HttpLoggingInterceptor();
+//        logging.setLevel(HttpLoggingInterceptor.Level.BODY);
+//
+////        OkHttpClient client = new OkHttpClient.Builder()
+////                .build();
+////        client.addInterceptor(logging);
+//
+//        OkHttpClient.Builder httpClient = new OkHttpClient.Builder();
+//        httpClient.addInterceptor(logging);
+//
+//        Retrofit retrofit = new Retrofit.Builder()
+//                .baseUrl(BASE_URL)
+//                .client(httpClient.build())
+//                .addConverterFactory(GsonConverterFactory.create(gson))
 //                .build();
-//        client.addInterceptor(logging);
-
-        OkHttpClient.Builder httpClient = new OkHttpClient.Builder();
-        httpClient.addInterceptor(logging);
-
-        Retrofit retrofit = new Retrofit.Builder()
-                .baseUrl(BASE_URL)
-                .client(httpClient.build())
-                .addConverterFactory(GsonConverterFactory.create(gson))
-                .build();
-
-        serverDB = retrofit.create(ServerDB.class);
+//
+//        serverDB = retrofit.create(ServerDB.class);
 
 
-        Call<List<Note>> questions1 = serverDB.getNotes();
-        questions1.enqueue(new Callback<List<Note>>() {
-            @Override
-            public void onResponse(Call<List<Note>> call, Response<List<Note>> response) {
-                System.out.println(response.body());
-                System.out.println(response.isSuccessful());
-//                remoteNotes.addAll(response.body());
-                List<Note> remoteNotes = response.body();
-//                Note newNote = new Note("hro_name", "htoText", "MYDIR", false);
-                NoteRoomDatabase.databaseWriteExecutor.execute(() -> {
-                    for (Note remoteNote : remoteNotes) {
-                        remoteNote.setSynced(Boolean.TRUE);
-                        mNoteDao.insert(remoteNote);
-                    }
-                    sync();
-                });
+
+
+//        TODO: this is productive code, just commented temporarily
+        NoteRoomDatabase.databaseWriteExecutor.execute(() -> {
+            List<Note> remoteNotes = networking.getNotes();
+            if (remoteNotes != null) {
+                for (Note remoteNote : remoteNotes) {
+                    remoteNote.setSynced(Boolean.TRUE);
+                    mNoteDao.insert(remoteNote);
+                }
             }
-
-            @Override
-            public void onFailure(Call<List<Note>> call, Throwable t) {
-                //Handle failure
-                System.err.println("READ FAILED");
-                System.out.println(t.toString());
-            }
+            sync();
         });
+
+
+
+
+//        Call<List<Note>> questions1 = serverDB.getNotes();
+//        questions1.enqueue(new Callback<List<Note>>() {
+//            @Override
+//            public void onResponse(Call<List<Note>> call, Response<List<Note>> response) {
+//                System.out.println(response.body());
+//                System.out.println(response.isSuccessful());
+////                remoteNotes.addAll(response.body());
+//                List<Note> remoteNotes = response.body();
+////                Note newNote = new Note("hro_name", "htoText", "MYDIR", false);
+//                NoteRoomDatabase.databaseWriteExecutor.execute(() -> {
+//                    for (Note remoteNote : remoteNotes) {
+//                        remoteNote.setSynced(Boolean.TRUE);
+//                        mNoteDao.insert(remoteNote);
+//                    }
+//                    sync();
+//                });
+//            }
+//
+//            @Override
+//            public void onFailure(Call<List<Note>> call, Throwable t) {
+//                //Handle failure
+//                System.err.println("READ FAILED");
+//                System.out.println(t.toString());
+//            }
+//        });
     }
 
 //    Note getParentDir(String directory_name) {
@@ -103,14 +152,14 @@ class NoteRepository {
 
     // Room executes all queries on a separate thread.
     // Observed LiveData will notify the observer when the data has changed.
-    LiveData<List<Note>> getAllWords(String directory_name) {
+    public LiveData<List<Note>> getAllWords(String directory_name) {
         mAllWords = mNoteDao.getAlphabetizedWords(directory_name);
         return mAllWords;
     }
 
     // You must call this on a non-UI thread or your app will throw an exception. Room ensures
     // that you're not doing any long running operations on the main thread, blocking the UI.
-    void insert(Note note) {
+    public void insert(Note note) {
         NoteRoomDatabase.databaseWriteExecutor.execute(() -> {
 
 
@@ -132,21 +181,28 @@ class NoteRepository {
 //                    exception.printStackTrace();
 //                }
 
+//          TODO: this is productive
+//            ResponseDto response = networking.insert(note);
+//            if (response != null){
+//                note.setId(response.getId());
+//                note.setSynced(Boolean.TRUE);
+//            }
+            mNoteDao.insert(note);
 
 
-            Call<ResponseDto> questions = serverDB.saveNote(note);
-            try {
-                Response<ResponseDto> execute = questions.execute();
-                ResponseDto body = execute.body();
-                if (execute.isSuccessful()){
-                    note.setId(body.getId());
-                    note.setSynced(Boolean.TRUE);
-                }
-                mNoteDao.insert(note);
-            } catch (IOException e) {
-                e.printStackTrace();
-                mNoteDao.insert(note);
-            }
+//            Call<ResponseDto> questions = serverDB.saveNote(note);
+//            try {
+//                Response<ResponseDto> execute = questions.execute();
+//                ResponseDto body = execute.body();
+//                if (execute.isSuccessful()){
+//                    note.setId(body.getId());
+//                    note.setSynced(Boolean.TRUE);
+//                }
+//                mNoteDao.insert(note);
+//            } catch (IOException e) {
+//                e.printStackTrace();
+//                mNoteDao.insert(note);
+//            }
         });
     }
 
@@ -155,7 +211,7 @@ class NoteRepository {
         Long id = null;
         for (Note localFile : localFiles) {
             if (!localFile.getSynced()) {
-                id = insertRemotely(localFile);
+//                id = insertRemotely(localFile);
             }
             if (id != null){
                 Long oldFileId = localFile.getId();
@@ -166,63 +222,59 @@ class NoteRepository {
             }
         }
     }
+    //          TODO: this is productive
+//    private Long insertRemotely(Note note) {
+//        ResponseDto response = networking.insert(note);
+//        if (response != null)
+//            return response.getId();
+//        else return null;
+//    }
 
-    private Long insertRemotely(Note note) {
-        Call<ResponseDto> questions = serverDB.saveNote(note);
-        try {
-            Response<ResponseDto> execute = questions.execute();
-            if (execute.isSuccessful()){
-                return execute.body().getId();
-            }
-        } catch (IOException e) {
-            e.printStackTrace();
-        }
-        return null;
-    }
-
-    void update(Note note){
+    public void update(Note note){
 //        TODO: update requests idealerweise zusammenfassen, wegen synced status
         NoteRoomDatabase.databaseWriteExecutor.execute(() -> {
             Long id = note.getId();
             Note oldNote = mNoteDao.find(id);
             boolean syncSuccessful = false;
-            if (!oldNote.getName().equals(note.getName())) {
-                syncSuccessful = sendUpdate(id, new UpdateFileDto("replace", "/name", note.getName()));
-            }
-            if (!oldNote.getText().equals(note.getText())) {
-                syncSuccessful = sendUpdate(id, new UpdateFileDto("replace", "/text", note.getText()));
-            }
+            //          TODO: this is productive
+//            if (!oldNote.getName().equals(note.getName())) {
+//                syncSuccessful = networking.update(id, new UpdateFileDto("replace", "/name", note.getName()));
+//            }
+//            if (!oldNote.getText().equals(note.getText())) {
+//                syncSuccessful = networking.update(id, new UpdateFileDto("replace", "/text", note.getText()));
+//            }
             if (syncSuccessful)
                 note.setSynced(Boolean.TRUE);
             mNoteDao.update(note);
         });
     }
 
-    boolean sendUpdate(Long id, UpdateFileDto updateFileDto){
-        List<UpdateFileDto> updateBody = new ArrayList<>();
-        updateBody.add(updateFileDto);
-        Call<ResponseDto> questions = serverDB.editNote(id, updateBody);
-        try {
-            Response<ResponseDto> execute = questions.execute();
-            if (execute.isSuccessful())
-                return true;
-        } catch (IOException e) {
-            e.printStackTrace();
-        }
-        return false;
-    }
+//    boolean sendUpdate(Long id, UpdateFileDto updateFileDto){
+//        List<UpdateFileDto> updateBody = new ArrayList<>();
+//        updateBody.add(updateFileDto);
+//        Call<ResponseDto> questions = serverDB.editNote(id, updateBody);
+//        try {
+//            Response<ResponseDto> execute = questions.execute();
+//            if (execute.isSuccessful())
+//                return true;
+//        } catch (IOException e) {
+//            e.printStackTrace();
+//        }
+//        return false;
+//    }
 
-    void delete(Long id){
+    public void delete(Long id){
         NoteRoomDatabase.databaseWriteExecutor.execute(() -> {
             mNoteDao.deleteById(id);
-
-            Call<ResponseDto> questions = serverDB.deleteNote(id);
-            try {
-                Response<ResponseDto> execute = questions.execute();
-                System.out.println(execute.isSuccessful());
-            } catch (IOException e) {
-                e.printStackTrace();
-            }
+            //          TODO: this is productive
+//            networking.delete(id);
+//            Call<ResponseDto> questions = serverDB.deleteNote(id);
+//            try {
+//                Response<ResponseDto> execute = questions.execute();
+//                System.out.println(execute.isSuccessful());
+//            } catch (IOException e) {
+//                e.printStackTrace();
+//            }
         });
     }
 }

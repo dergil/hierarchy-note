@@ -2,8 +2,6 @@ package com.example.roomwordsample;
 
 import androidx.annotation.NonNull;
 import androidx.appcompat.app.AppCompatActivity;
-import androidx.coordinatorlayout.widget.CoordinatorLayout;
-import androidx.lifecycle.LiveData;
 import androidx.lifecycle.ViewModelProvider;
 import androidx.recyclerview.widget.ItemTouchHelper;
 import androidx.recyclerview.widget.LinearLayoutManager;
@@ -12,12 +10,9 @@ import androidx.recyclerview.widget.RecyclerView;
 import android.content.Intent;
 import android.os.Bundle;
 import android.view.View;
-import android.widget.Toast;
 
 import com.google.android.material.floatingactionbutton.FloatingActionButton;
 import com.google.android.material.snackbar.Snackbar;
-
-import java.util.List;
 
 public class MainActivity extends AppCompatActivity {
     public static final int NEW_NOTE_ACTIVITY_REQUEST_CODE = 1;
@@ -25,7 +20,7 @@ public class MainActivity extends AppCompatActivity {
     public static final int NEW_DIR_ACTIVITY_REQUEST_CODE = 3;
     public static final int NEW_MAIN_ACTIVITY_REQUEST_CODE = 4;
     public static String DIRECTORY_NAME = "MYDIR";
-    public static String PREVIOUS_DIRECTORY_NAME = "";
+//    public static String PREVIOUS_DIRECTORY_NAME = "";
 
 //    private NoteListAdapter adapter;
     private NoteViewModel mNoteViewModel;
@@ -49,7 +44,12 @@ public class MainActivity extends AppCompatActivity {
         recyclerView.setAdapter(adapter);
         recyclerView.setLayoutManager(new LinearLayoutManager(this));
 
-        mNoteViewModel = new ViewModelProvider(this).get(NoteViewModel.class);
+        NoteViewModel.Factory factory = new NoteViewModel.Factory(getApplication());
+
+        mNoteViewModel = new ViewModelProvider(this, factory)
+                .get(NoteViewModel.class);
+
+//        mNoteViewModel = new ViewModelProvider(this).get(NoteViewModel.class);
 
         mNoteViewModel.getAllWords(DIRECTORY_NAME).observe(this, words -> {
             // Update the cached copy of the words in the adapter.
@@ -58,7 +58,7 @@ public class MainActivity extends AppCompatActivity {
 
         FloatingActionButton add_note = findViewById(R.id.fab);
         add_note.setOnClickListener(view -> {
-            Intent intent = new Intent(MainActivity.this, NewNoteActivity.class);
+            Intent intent = new Intent(MainActivity.this, NoteActivity.class);
             startActivityForResult(intent, NEW_NOTE_ACTIVITY_REQUEST_CODE);
         });
 
@@ -115,10 +115,10 @@ public class MainActivity extends AppCompatActivity {
 //                    intent.putExtra(MainActivity.PREVIOUS_DIRECTORY_NAME, note.getDirectory_name());
                     startActivityForResult(intent, NEW_MAIN_ACTIVITY_REQUEST_CODE);
                 } else {
-                    Intent intent = new Intent(MainActivity.this, NewNoteActivity.class);
-                    intent.putExtra(NewNoteActivity.EXTRA_ID, note.getId());
-                    intent.putExtra(NewNoteActivity.EXTRA_REQUEST_NAME, note.getName());
-                    intent.putExtra(NewNoteActivity.EXTRA_REQUEST_TEXT, note.getText());
+                    Intent intent = new Intent(MainActivity.this, NoteActivity.class);
+                    intent.putExtra(NoteActivity.EXTRA_ID, note.getId());
+                    intent.putExtra(NoteActivity.EXTRA_REQUEST_NAME, note.getName());
+                    intent.putExtra(NoteActivity.EXTRA_REQUEST_TEXT, note.getText());
                     startActivityForResult(intent, EDIT_NOTE_ACTIVITY_REQUEST_CODE);
                 }
             }
@@ -141,7 +141,7 @@ public class MainActivity extends AppCompatActivity {
 //        }
 //        String parentDir = adapter.currentNote.getDirectory_name();
         intent.putExtra(MainActivity.DIRECTORY_NAME, "MYDIR");
-//        intent.putExtra(MainActivity.PREVIOUS_DIRECTORY_NAME, DIRECTORY_NAME);
+//        intent.putExtra(MainActivity.DIRECTORY_NAME, PREVIOUS_DIRECTORY_NAME);
         startActivityForResult(intent, NEW_MAIN_ACTIVITY_REQUEST_CODE);
     }
 
@@ -149,17 +149,17 @@ public class MainActivity extends AppCompatActivity {
         super.onActivityResult(requestCode, resultCode, data);
 
         if (requestCode == NEW_NOTE_ACTIVITY_REQUEST_CODE && resultCode == RESULT_OK) {
-            String name = data.getStringExtra(NewNoteActivity.EXTRA_REPLY_NAME);
-            String text = data.getStringExtra(NewNoteActivity.EXTRA_REPLY_TEXT);
+            String name = data.getStringExtra(NoteActivity.EXTRA_REPLY_NAME);
+            String text = data.getStringExtra(NoteActivity.EXTRA_REPLY_TEXT);
             Note note = new Note(name, text, DIRECTORY_NAME, false, false);
             mNoteViewModel.insert(note);
         }
         if (requestCode == EDIT_NOTE_ACTIVITY_REQUEST_CODE && resultCode == RESULT_OK) {
 //            Note note = mNoteViewModel.findByName(data.getStringExtra(NewNoteActivity.EXTRA_REPLY_NAME));
 //            note.setText(data.getStringExtra(NewNoteActivity.EXTRA_REPLY_TEXT));
-            long id = data.getLongExtra(NewNoteActivity.EXTRA_ID, -1);
-            String name = data.getStringExtra(NewNoteActivity.EXTRA_REPLY_NAME);
-            String text = data.getStringExtra(NewNoteActivity.EXTRA_REPLY_TEXT);
+            long id = data.getLongExtra(NoteActivity.EXTRA_ID, -1);
+            String name = data.getStringExtra(NoteActivity.EXTRA_REPLY_NAME);
+            String text = data.getStringExtra(NoteActivity.EXTRA_REPLY_TEXT);
             Note note = new Note(name, text, DIRECTORY_NAME, false, false);
             note.setId(id);
             mNoteViewModel.update(note);
@@ -169,11 +169,11 @@ public class MainActivity extends AppCompatActivity {
                     DIRECTORY_NAME, true, false);
             mNoteViewModel.insert(note);
         }
-        if (data.getStringExtra(NewNoteActivity.EXTRA_DELETE) != null && resultCode == RESULT_OK) {
+        if (data.getStringExtra(NoteActivity.EXTRA_DELETE) != null && resultCode == RESULT_OK) {
 //            Note note = new Note(data.getStringExtra(NewNoteActivity.EXTRA_REPLY_NAME), data.getStringExtra(NewNoteActivity.EXTRA_REPLY_TEXT));
 //            System.out.println("LOGGING HERE LOOK AT ME");
 //            System.out.println(data.getStringExtra(NewNoteActivity.EXTRA_REPLY_NAME));
-            long id = data.getLongExtra(NewNoteActivity.EXTRA_ID, -1);
+            long id = data.getLongExtra(NoteActivity.EXTRA_ID, -1);
             mNoteViewModel.deleteById(id);
         }
 

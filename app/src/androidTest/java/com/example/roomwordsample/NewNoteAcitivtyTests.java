@@ -5,13 +5,10 @@ import static androidx.test.espresso.action.ViewActions.click;
 import static androidx.test.espresso.action.ViewActions.closeSoftKeyboard;
 import static androidx.test.espresso.action.ViewActions.typeText;
 import static androidx.test.espresso.intent.Intents.intended;
-import static androidx.test.espresso.intent.VerificationModes.times;
 import static androidx.test.espresso.intent.matcher.IntentMatchers.hasComponent;
 import static androidx.test.espresso.matcher.ViewMatchers.withId;
 
-import androidx.test.espresso.contrib.RecyclerViewActions;
 import androidx.test.espresso.intent.Intents;
-import androidx.test.espresso.matcher.ViewMatchers;
 import androidx.test.ext.junit.rules.ActivityScenarioRule;
 import androidx.test.ext.junit.runners.AndroidJUnit4;
 import androidx.test.filters.LargeTest;
@@ -27,8 +24,8 @@ import org.junit.runner.RunWith;
 public class NewNoteAcitivtyTests {
     public static final String STRING_TO_BE_TYPED = "Espresso";
 
-    @Rule public ActivityScenarioRule<NewNoteActivity> activityScenarioRule
-            = new ActivityScenarioRule<>(NewNoteActivity.class);
+    @Rule public ActivityScenarioRule<NoteActivity> activityScenarioRule
+            = new ActivityScenarioRule<>(NoteActivity.class);
 
     @Test
     public void createNewNote() {
