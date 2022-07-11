@@ -13,6 +13,7 @@ import androidx.test.ext.junit.rules.ActivityScenarioRule;
 import androidx.test.ext.junit.runners.AndroidJUnit4;
 import androidx.test.filters.LargeTest;
 
+import com.github.dergil.hierarchynote.R;
 import com.github.dergil.hierarchynote.view.activities.MainActivity;
 import com.github.dergil.hierarchynote.view.activities.NoteActivity;
 

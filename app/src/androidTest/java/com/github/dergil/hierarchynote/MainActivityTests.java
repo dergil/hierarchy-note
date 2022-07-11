@@ -90,24 +90,7 @@ public class MainActivityTests {
         intended(hasComponent(MainActivity.class.getName()));
     }
 
-    @Test
-    public void savesNote() {
-        Intents.init();
-        onView(withId(R.id.fab)).perform(click());
 
-        onView(withId(R.id.edit_name))
-                .perform(typeText(STRING_TO_BE_TYPED), closeSoftKeyboard());
-        onView(withId(R.id.edit_text))
-                .perform(typeText(STRING_TO_BE_TYPED), closeSoftKeyboard());
-        onView(withId(R.id.button_save)).perform(click());
-        onView(ViewMatchers.withId(R.id.recyclerview))
-        .check(matches(atPosition(0, hasDescendant(withText(STRING_TO_BE_TYPED)))));
-//                .perform(RecyclerViewActions.actionOnItemAtPosition(0, ));
-//        .check(matches(atPosition(0, withText(STRING_TO_BE_TYPED))));
-
-//        intended(hasComponent(MainActivity.class.getName()));
-
-    }
 
 //    @Test(expected = PerformException.class)
     @Test

@@ -2,7 +2,7 @@ package com.github.dergil.hierarchynote.model.repository;
 
 import androidx.lifecycle.LiveData;
 
-import com.github.dergil.hierarchynote.model.network.Networking;
+import com.github.dergil.hierarchynote.model.network.NoteAPI;
 import com.github.dergil.hierarchynote.model.db.NoteRoomDatabase;
 import com.github.dergil.hierarchynote.model.network.ServerDB;
 import com.github.dergil.hierarchynote.model.dao.NoteDao;
@@ -19,13 +19,13 @@ public class NoteRepository implements NoteRepositoryInterface{
     private NoteRoomDatabase mDatabase;
     private NoteDao mNoteDao;
     private LiveData<List<NoteEntity>> mAllWords;
-    Networking networking;
+    NoteAPI networking;
     public static String DIRECTORY_NAME = "MYDIR";
 
     static String BASE_URL = "http://10.0.2.2:8080/";
     ServerDB serverDB;
 
-    public NoteRepository(NoteRoomDatabase database, Networking networking) {
+    public NoteRepository(NoteRoomDatabase database, NoteAPI networking) {
         mDatabase = database;
         mNoteDao = database.wordDao();
         mAllWords = mNoteDao.getAlphabetizedWords(DIRECTORY_NAME);
@@ -55,7 +55,7 @@ public class NoteRepository implements NoteRepositoryInterface{
 //        mAllWords = mNoteDao.getAlphabetizedWords(DIRECTORY_NAME);
 //    }
 
-    public static NoteRepository getInstance(final NoteRoomDatabase database, Networking networking) {
+    public static NoteRepository getInstance(final NoteRoomDatabase database, NoteAPI networking) {
         if (sInstance == null) {
             synchronized (NoteRepository.class) {
                 if (sInstance == null) {

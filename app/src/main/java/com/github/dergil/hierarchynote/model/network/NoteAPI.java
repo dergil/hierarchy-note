@@ -17,12 +17,12 @@ import retrofit2.Response;
 import retrofit2.Retrofit;
 import retrofit2.converter.gson.GsonConverterFactory;
 
-public class Networking implements NetworkingInterface{
+public class NoteAPI implements NetworkingInterface{
     ServerDB serverDB;
     String BASE_URL = "http://10.0.2.2:8080/";
 
 
-    public Networking() {
+    public NoteAPI() {
         initNetworkingStack();
     }
 

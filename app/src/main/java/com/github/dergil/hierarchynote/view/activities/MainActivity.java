@@ -11,8 +11,8 @@ import android.content.Intent;
 import android.os.Bundle;
 import android.view.View;
 
-import com.github.dergil.hierarchynote.view.NoteListAdapter;
 import com.github.dergil.hierarchynote.R;
+import com.github.dergil.hierarchynote.view.recycler_view.NoteListAdapter;
 import com.github.dergil.hierarchynote.model.entity.NoteEntity;
 import com.github.dergil.hierarchynote.viewmodel.NoteViewModel;
 import com.google.android.material.floatingactionbutton.FloatingActionButton;

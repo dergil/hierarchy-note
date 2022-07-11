@@ -16,7 +16,7 @@ import org.junit.runner.RunWith;
 import static org.junit.Assert.assertNull;
 import static org.junit.Assert.assertTrue;
 
-import com.github.dergil.hierarchynote.model.network.Networking;
+import com.github.dergil.hierarchynote.model.network.NoteAPI;
 import com.github.dergil.hierarchynote.model.entity.NoteEntity;
 import com.github.dergil.hierarchynote.model.dao.NoteDao;
 import com.github.dergil.hierarchynote.model.repository.NoteRepository;
@@ -31,7 +31,7 @@ public class NoteRepository_DAO_IntegrationTests {
     @Inject
     private TestUtil testUtil = new TestUtil();
 
-    private Networking networking = new Networking();
+    private NoteAPI networking = new NoteAPI();
     private NoteRoomDatabase db;
     private NoteDao noteDao;
     private NoteEntity note = testUtil.createNote1();

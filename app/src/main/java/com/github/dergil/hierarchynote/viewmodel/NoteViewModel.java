@@ -9,7 +9,7 @@ import androidx.lifecycle.ViewModel;
 import androidx.lifecycle.ViewModelProvider;
 
 import com.github.dergil.hierarchynote.HierarchyApp;
-import com.github.dergil.hierarchynote.model.network.Networking;
+import com.github.dergil.hierarchynote.model.network.NoteAPI;
 import com.github.dergil.hierarchynote.model.entity.NoteEntity;
 import com.github.dergil.hierarchynote.model.repository.NoteRepository;
 
@@ -22,7 +22,7 @@ public class NoteViewModel extends AndroidViewModel implements NoteViewModelInte
 
     private LiveData<List<NoteEntity>> mAllWords;
 
-    private Networking networking;
+    private NoteAPI networking;
 
     public NoteViewModel(@NonNull Application application, NoteRepository noteRepository) {
         super(application);

@@ -26,6 +26,7 @@ import static androidx.test.espresso.assertion.ViewAssertions.matches;
 import static androidx.test.espresso.matcher.ViewMatchers.withId;
 import static androidx.test.espresso.matcher.ViewMatchers.withText;
 
+import com.github.dergil.hierarchynote.R;
 import com.github.dergil.hierarchynote.view.activities.NoteActivity;
 
 

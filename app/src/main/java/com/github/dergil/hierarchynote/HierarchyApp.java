@@ -3,7 +3,7 @@ package com.github.dergil.hierarchynote;
 import android.app.Application;
 
 import com.github.dergil.hierarchynote.model.db.NoteRoomDatabase;
-import com.github.dergil.hierarchynote.model.network.Networking;
+import com.github.dergil.hierarchynote.model.network.NoteAPI;
 import com.github.dergil.hierarchynote.model.repository.NoteRepository;
 
 public class HierarchyApp extends Application {
@@ -22,6 +22,6 @@ public class HierarchyApp extends Application {
     }
 
     public NoteRepository getRepository() {
-        return NoteRepository.getInstance(getDatabase(), new Networking());
+        return NoteRepository.getInstance(getDatabase(), new NoteAPI());
     }
 }

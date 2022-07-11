@@ -11,7 +11,7 @@ import androidx.arch.core.executor.testing.InstantTaskExecutorRule;
 import androidx.room.Room;
 import androidx.test.core.app.ApplicationProvider;
 
-import com.github.dergil.hierarchynote.model.network.Networking;
+import com.github.dergil.hierarchynote.model.network.NoteAPI;
 import com.github.dergil.hierarchynote.model.entity.NoteEntity;
 import com.github.dergil.hierarchynote.model.repository.NoteRepository;
 import com.github.dergil.hierarchynote.model.db.NoteRoomDatabase;
@@ -37,7 +37,7 @@ public class NoteRepository_NetworkingUnitTests {
     private Long id = 4242L;
 
     @Mock
-    private Networking networking;
+    private NoteAPI networking;
 
     @Rule
     public InstantTaskExecutorRule instantTaskExecutorRule = new InstantTaskExecutorRule();

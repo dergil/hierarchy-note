@@ -1,4 +1,4 @@
-package com.github.dergil.hierarchynote.view;
+package com.github.dergil.hierarchynote.view.recycler_view;
 
 import android.content.Context;
 import android.view.LayoutInflater;
