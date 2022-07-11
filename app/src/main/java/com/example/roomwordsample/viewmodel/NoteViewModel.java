@@ -1,4 +1,4 @@
-package com.example.roomwordsample;
+package com.example.roomwordsample.viewmodel;
 
 import android.app.Application;
 
@@ -8,16 +8,19 @@ import androidx.lifecycle.LiveData;
 import androidx.lifecycle.ViewModel;
 import androidx.lifecycle.ViewModelProvider;
 
-import java.util.HashSet;
+import com.example.roomwordsample.HierarchyApp;
+import com.example.roomwordsample.model.network.Networking;
+import com.example.roomwordsample.model.entity.NoteEntity;
+import com.example.roomwordsample.model.repository.NoteRepository;
+
 import java.util.List;
-import java.util.SimpleTimeZone;
 
 public class NoteViewModel extends AndroidViewModel implements NoteViewModelInterface {
     public static final String DIRECTORY_NAME = "MYDIR";
 
     private NoteRepository mRepository;
 
-    private LiveData<List<Note>> mAllWords;
+    private LiveData<List<NoteEntity>> mAllWords;
 
     private Networking networking;
 
@@ -31,13 +34,13 @@ public class NoteViewModel extends AndroidViewModel implements NoteViewModelInte
 //        this.networking = networking;
     }
 
-    public LiveData<List<Note>> getAllWords(String directory_name) {
+    public LiveData<List<NoteEntity>> getAllWords(String directory_name) {
         return mRepository.getAllWords(directory_name);
     }
 
-    public void insert(Note note) { mRepository.insert(note); }
+    public void insert(NoteEntity note) { mRepository.insert(note); }
 
-    public void update(Note note) { mRepository.update(note);}
+    public void update(NoteEntity note) { mRepository.update(note);}
 
     public void deleteById(Long id) { mRepository.delete(id);}
 

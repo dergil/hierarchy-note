@@ -1,4 +1,4 @@
-package com.example.roomwordsample;
+package com.example.roomwordsample.view;
 
 import android.content.Context;
 import android.graphics.Color;
@@ -7,19 +7,21 @@ import android.view.View;
 import android.view.ViewGroup;
 import android.widget.TextView;
 
-import androidx.annotation.ColorInt;
 import androidx.annotation.NonNull;
 import androidx.recyclerview.widget.DiffUtil;
 import androidx.recyclerview.widget.ListAdapter;
 import androidx.recyclerview.widget.RecyclerView;
 
-public class NoteListAdapter extends ListAdapter<Note, NoteListAdapter.NoteViewHolder>
+import com.example.roomwordsample.R;
+import com.example.roomwordsample.model.entity.NoteEntity;
+
+public class NoteListAdapter extends ListAdapter<NoteEntity, NoteListAdapter.NoteViewHolder>
 {
     private OnItemClickListener listener;
-    public Note currentNote;
+    public NoteEntity currentNote;
 
 //    Context context;
-    public NoteListAdapter(@NonNull DiffUtil.ItemCallback<Note> diffCallback) {
+    public NoteListAdapter(@NonNull DiffUtil.ItemCallback<NoteEntity> diffCallback) {
         super(diffCallback);
 //        context = (Context)this;
     }
@@ -37,7 +39,7 @@ public class NoteListAdapter extends ListAdapter<Note, NoteListAdapter.NoteViewH
 
     @Override
     public void onBindViewHolder(NoteViewHolder holder, int position) {
-        Note current = getItem(position);
+        NoteEntity current = getItem(position);
         currentNote = current;
         holder.bind(current.getName(), position);
     }
@@ -47,15 +49,15 @@ public class NoteListAdapter extends ListAdapter<Note, NoteListAdapter.NoteViewH
 //
 //    }
 
-    static class WordDiff extends DiffUtil.ItemCallback<Note> {
+    public static class WordDiff extends DiffUtil.ItemCallback<NoteEntity> {
 
         @Override
-        public boolean areItemsTheSame(@NonNull Note oldItem, @NonNull Note newItem) {
+        public boolean areItemsTheSame(@NonNull NoteEntity oldItem, @NonNull NoteEntity newItem) {
             return oldItem == newItem;
         }
 
         @Override
-        public boolean areContentsTheSame(@NonNull Note oldItem, @NonNull Note newItem) {
+        public boolean areContentsTheSame(@NonNull NoteEntity oldItem, @NonNull NoteEntity newItem) {
             return oldItem.getName().equals(newItem.getName());
         }
     }
@@ -102,10 +104,10 @@ public class NoteListAdapter extends ListAdapter<Note, NoteListAdapter.NoteViewH
     }
 
     public interface OnItemClickListener {
-        void onItemClick(Note note);
+        void onItemClick(NoteEntity note);
     }
 
-    public Note getNoteAt(int pos) {
+    public NoteEntity getNoteAt(int pos) {
         return getItem(pos);
     }
 

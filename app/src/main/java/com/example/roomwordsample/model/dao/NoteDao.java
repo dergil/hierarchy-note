@@ -1,12 +1,13 @@
-package com.example.roomwordsample;
+package com.example.roomwordsample.model.dao;
 
 import androidx.lifecycle.LiveData;
 import androidx.room.Dao;
-import androidx.room.Delete;
 import androidx.room.Insert;
 import androidx.room.OnConflictStrategy;
 import androidx.room.Query;
 import androidx.room.Update;
+
+import com.example.roomwordsample.model.entity.NoteEntity;
 
 import java.util.List;
 
@@ -14,16 +15,16 @@ import java.util.List;
 public interface NoteDao {
 
 @Insert(onConflict = OnConflictStrategy.IGNORE)
-Long insert(Note note);
+Long insert(NoteEntity note);
 
 @Query("SELECT * FROM note_table WHERE id = :id")
-Note find(Long id);
+NoteEntity find(Long id);
 
 @Query("SELECT * FROM note_table")
-List<Note> findAll();
+List<NoteEntity> findAll();
 
 @Update
-void update(Note note);
+void update(NoteEntity note);
 
 @Query("DELETE FROM note_table WHERE id = :id")
 void deleteById(Long id);
@@ -32,7 +33,7 @@ void deleteById(Long id);
 void deleteAll();
 
 @Query("SELECT * FROM note_table WHERE directory_name = :directory_name ORDER BY name ASC")
-LiveData<List<Note>> getAlphabetizedWords(String directory_name);
+LiveData<List<NoteEntity>> getAlphabetizedWords(String directory_name);
 
 //@Query("SELECT * FROM note_table WHERE name = :directory_name")
 //Note getParentDir(String directory_name);

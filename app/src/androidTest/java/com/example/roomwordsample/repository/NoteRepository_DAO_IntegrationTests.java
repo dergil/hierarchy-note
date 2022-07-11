@@ -1,6 +1,6 @@
-package com.example.roomwordsample;
+package com.example.roomwordsample.repository;
 
-import static com.example.roomwordsample.TestUtil.compareNotes;
+import static com.example.roomwordsample.util.TestUtil.compareNotes;
 
 import android.content.Context;
 
@@ -12,10 +12,16 @@ import org.junit.After;
 import org.junit.Before;
 import org.junit.Test;
 import org.junit.runner.RunWith;
-import org.mockito.Mock;
 
 import static org.junit.Assert.assertNull;
 import static org.junit.Assert.assertTrue;
+
+import com.example.roomwordsample.model.network.Networking;
+import com.example.roomwordsample.model.entity.NoteEntity;
+import com.example.roomwordsample.model.dao.NoteDao;
+import com.example.roomwordsample.model.repository.NoteRepository;
+import com.example.roomwordsample.model.db.NoteRoomDatabase;
+import com.example.roomwordsample.util.TestUtil;
 
 import javax.inject.Inject;
 
@@ -28,7 +34,7 @@ public class NoteRepository_DAO_IntegrationTests {
     private Networking networking = new Networking();
     private NoteRoomDatabase db;
     private NoteDao noteDao;
-    private Note note = testUtil.createNote1();
+    private NoteEntity note = testUtil.createNote1();
     private NoteRepository repository;
 
     @Before
@@ -48,7 +54,7 @@ public class NoteRepository_DAO_IntegrationTests {
     public void insertAndReadNote() throws InterruptedException {
         repository.insert(note);
         Thread.sleep(50);
-        Note readNote = noteDao.find(note.getId());
+        NoteEntity readNote = noteDao.find(note.getId());
         assertTrue(compareNotes(note, readNote));
     }
 
@@ -59,7 +65,7 @@ public class NoteRepository_DAO_IntegrationTests {
         note.setText("new Text");
         repository.update(note);
         Thread.sleep(50);
-        Note readNote = noteDao.find(note.getId());
+        NoteEntity readNote = noteDao.find(note.getId());
         assertTrue(compareNotes(note, readNote));
     }
 

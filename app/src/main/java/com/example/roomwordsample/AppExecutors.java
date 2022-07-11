@@ -31,6 +31,7 @@ import java.util.concurrent.Executors;
  * webservice requests).
  */
 public class AppExecutors {
+//    todo maybe remove
 
     private final Executor mDiskIO;
 

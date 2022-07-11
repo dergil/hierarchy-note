@@ -1,4 +1,4 @@
-package com.example.roomwordsample;
+package com.example.roomwordsample.model.db;
 
 import android.content.Context;
 
@@ -9,11 +9,14 @@ import androidx.room.Room;
 import androidx.room.RoomDatabase;
 import androidx.sqlite.db.SupportSQLiteDatabase;
 
-import java.util.List;
+import com.example.roomwordsample.AppExecutors;
+import com.example.roomwordsample.model.entity.NoteEntity;
+import com.example.roomwordsample.model.dao.NoteDao;
+
 import java.util.concurrent.ExecutorService;
 import java.util.concurrent.Executors;
 
-@Database(entities = Note.class, version = 38, exportSchema = false)
+@Database(entities = NoteEntity.class, version = 38, exportSchema = false)
 public abstract class NoteRoomDatabase extends RoomDatabase {
 
     public abstract NoteDao wordDao();
@@ -24,7 +27,7 @@ public abstract class NoteRoomDatabase extends RoomDatabase {
 
     private static volatile NoteRoomDatabase INSTANCE;
     private static final int NUMBER_OF_THREADS = 4;
-    static final ExecutorService databaseWriteExecutor =
+    public static final ExecutorService databaseWriteExecutor =
             Executors.newFixedThreadPool(NUMBER_OF_THREADS);
 
 //    public static NoteRoomDatabase getDatabase(final Context context) {

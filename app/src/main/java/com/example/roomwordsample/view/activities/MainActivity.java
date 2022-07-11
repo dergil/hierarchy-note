@@ -1,4 +1,4 @@
-package com.example.roomwordsample;
+package com.example.roomwordsample.view.activities;
 
 import androidx.annotation.NonNull;
 import androidx.appcompat.app.AppCompatActivity;
@@ -11,6 +11,10 @@ import android.content.Intent;
 import android.os.Bundle;
 import android.view.View;
 
+import com.example.roomwordsample.view.NoteListAdapter;
+import com.example.roomwordsample.R;
+import com.example.roomwordsample.model.entity.NoteEntity;
+import com.example.roomwordsample.viewmodel.NoteViewModel;
 import com.google.android.material.floatingactionbutton.FloatingActionButton;
 import com.google.android.material.snackbar.Snackbar;
 
@@ -78,7 +82,7 @@ public class MainActivity extends AppCompatActivity {
 
             @Override
             public void onSwiped(@NonNull RecyclerView.ViewHolder viewHolder, int direction) {
-                Note noteToBeDeleted = adapter.getNoteAt(viewHolder.getAdapterPosition());
+                NoteEntity noteToBeDeleted = adapter.getNoteAt(viewHolder.getAdapterPosition());
 
                 mNoteViewModel.deleteById(noteToBeDeleted.getId());
                 Snackbar snackbar = Snackbar
@@ -106,7 +110,7 @@ public class MainActivity extends AppCompatActivity {
 
         adapter.setOnItemClickListener(new NoteListAdapter.OnItemClickListener() {
             @Override
-            public void onItemClick(Note note) {
+            public void onItemClick(NoteEntity note) {
                 if (note.isDir()) {
                     Intent intent = new Intent(MainActivity.this, MainActivity.class);
                     String noteName = note.getName();
@@ -151,7 +155,7 @@ public class MainActivity extends AppCompatActivity {
         if (requestCode == NEW_NOTE_ACTIVITY_REQUEST_CODE && resultCode == RESULT_OK) {
             String name = data.getStringExtra(NoteActivity.EXTRA_REPLY_NAME);
             String text = data.getStringExtra(NoteActivity.EXTRA_REPLY_TEXT);
-            Note note = new Note(name, text, DIRECTORY_NAME, false, false);
+            NoteEntity note = new NoteEntity(name, text, DIRECTORY_NAME, false, false);
             mNoteViewModel.insert(note);
         }
         if (requestCode == EDIT_NOTE_ACTIVITY_REQUEST_CODE && resultCode == RESULT_OK) {
@@ -160,12 +164,12 @@ public class MainActivity extends AppCompatActivity {
             long id = data.getLongExtra(NoteActivity.EXTRA_ID, -1);
             String name = data.getStringExtra(NoteActivity.EXTRA_REPLY_NAME);
             String text = data.getStringExtra(NoteActivity.EXTRA_REPLY_TEXT);
-            Note note = new Note(name, text, DIRECTORY_NAME, false, false);
+            NoteEntity note = new NoteEntity(name, text, DIRECTORY_NAME, false, false);
             note.setId(id);
             mNoteViewModel.update(note);
         }
         if (requestCode == NEW_DIR_ACTIVITY_REQUEST_CODE && resultCode == RESULT_OK) {
-            Note note = new Note(data.getStringExtra(NewDirectory.EXTRA_REPLY_DIRECTORY_NAME), "filler",
+            NoteEntity note = new NoteEntity(data.getStringExtra(NewDirectory.EXTRA_REPLY_DIRECTORY_NAME), "filler",
                     DIRECTORY_NAME, true, false);
             mNoteViewModel.insert(note);
         }

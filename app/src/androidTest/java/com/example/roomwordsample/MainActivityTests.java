@@ -23,6 +23,12 @@ import androidx.test.ext.junit.rules.ActivityScenarioRule;
 import androidx.test.ext.junit.runners.AndroidJUnit4;
 import androidx.test.filters.LargeTest;
 
+import com.example.roomwordsample.model.entity.NoteEntity;
+import com.example.roomwordsample.view.activities.MainActivity;
+import com.example.roomwordsample.view.activities.NewDirectory;
+import com.example.roomwordsample.view.activities.NoteActivity;
+import com.example.roomwordsample.viewmodel.NoteViewModel;
+
 import org.junit.Rule;
 import org.junit.Test;
 import org.junit.runner.RunWith;
@@ -107,7 +113,7 @@ public class MainActivityTests {
     @Test
     public void itemWithText_doesNotExist() {
         NoteViewModel mNoteViewModel = new ViewModelProvider(ApplicationProvider.getApplicationContext()).get(NoteViewModel.class);
-        mNoteViewModel.insert(new Note("name", "text", "MYDIR", false, false));
+        mNoteViewModel.insert(new NoteEntity("name", "text", "MYDIR", false, false));
 
 //        final String STRING_TO_BE_TYPED = "Delete";
 //

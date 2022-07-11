@@ -1,4 +1,4 @@
-package com.example.roomwordsample;
+package com.example.roomwordsample.view.activities;
 
 import androidx.appcompat.app.AppCompatActivity;
 
@@ -7,6 +7,8 @@ import android.os.Bundle;
 import android.text.TextUtils;
 import android.widget.Button;
 import android.widget.EditText;
+
+import com.example.roomwordsample.R;
 
 public class NewDirectory extends AppCompatActivity {
     public static final String EXTRA_REPLY_DIRECTORY_NAME =

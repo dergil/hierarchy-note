@@ -26,6 +26,8 @@ import static androidx.test.espresso.assertion.ViewAssertions.matches;
 import static androidx.test.espresso.matcher.ViewMatchers.withId;
 import static androidx.test.espresso.matcher.ViewMatchers.withText;
 
+import com.example.roomwordsample.view.activities.NoteActivity;
+
 
 /**
  * Basic tests showcasing simple view matchers and actions like {@link ViewMatchers#withId},

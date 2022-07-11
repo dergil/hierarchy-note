@@ -1,4 +1,7 @@
-package com.example.roomwordsample;
+package com.example.roomwordsample.util;
+
+import com.example.roomwordsample.model.entity.NoteEntity;
+import com.example.roomwordsample.model.dto.ResponseDto;
 
 public class TestUtil {
     private Long id1 = 424242L;
@@ -15,19 +18,19 @@ public class TestUtil {
     private Boolean isDir2 = Boolean.FALSE;
     private Boolean isSynced2 = Boolean.FALSE;
 
-    public Note createNote1(){
-        Note note = new Note(name1, text1, directory_name1, isDir1, isSynced1);
+    public NoteEntity createNote1(){
+        NoteEntity note = new NoteEntity(name1, text1, directory_name1, isDir1, isSynced1);
         note.setId(id1);
         return note;
     }
 
-    public Note createNote2(){
-        Note note = new Note(name2, text2, directory_name2, isDir2, isSynced2);
+    public NoteEntity createNote2(){
+        NoteEntity note = new NoteEntity(name2, text2, directory_name2, isDir2, isSynced2);
         note.setId(id2);
         return note;
     }
 
-    public static boolean compareNotes(Note note1, Note note2) {
+    public static boolean compareNotes(NoteEntity note1, NoteEntity note2) {
         boolean sameValues = true;
         if (!note1.getId().equals(note2.getId()))
             sameValues = false;
@@ -40,7 +43,7 @@ public class TestUtil {
         return sameValues;
     }
 
-    public boolean compareNotes (ResponseDto note1, Note note2) {
+    public boolean compareNotes (ResponseDto note1, NoteEntity note2) {
         boolean sameValues = true;
         if (!note1.getId().equals(note2.getId()))
             sameValues = false;

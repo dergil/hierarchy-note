@@ -1,9 +1,9 @@
-package com.example.roomwordsample;
+package com.example.roomwordsample.model.network;
 
-import androidx.lifecycle.LiveData;
+import com.example.roomwordsample.model.entity.NoteEntity;
+import com.example.roomwordsample.model.dto.ResponseDto;
+import com.example.roomwordsample.model.dto.UpdateFileDto;
 
-import java.io.File;
-import java.util.HashSet;
 import java.util.List;
 
 import retrofit2.Call;
@@ -17,10 +17,10 @@ import retrofit2.http.Query;
 public interface ServerDB {
 
     @POST("/api/core/file/create")
-    Call<ResponseDto> saveNote(@Body Note file);
+    Call<ResponseDto> saveNote(@Body NoteEntity file);
 
     @GET("/api/core/file/find-all")
-    Call<List<Note>> getNotes();
+    Call<List<NoteEntity>> getNotes();
 
     @PUT("/api/core/file/update")
     Call<ResponseDto> editNote(@Query("id") Long id, @Body List<UpdateFileDto> updateFileDto);

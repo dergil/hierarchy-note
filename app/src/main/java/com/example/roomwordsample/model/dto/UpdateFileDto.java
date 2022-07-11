@@ -1,4 +1,4 @@
-package com.example.roomwordsample;
+package com.example.roomwordsample.model.dto;
 
 public class UpdateFileDto {
     String op;

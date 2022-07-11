@@ -1,7 +1,11 @@
-package com.example.roomwordsample;
+package com.example.roomwordsample.network;
 
 import static org.junit.Assert.assertTrue;
 
+import com.example.roomwordsample.model.entity.NoteEntity;
+import com.example.roomwordsample.model.dto.ResponseDto;
+import com.example.roomwordsample.model.network.ServerDB;
+import com.example.roomwordsample.util.TestUtil;
 import com.google.gson.Gson;
 import com.google.gson.GsonBuilder;
 
@@ -42,7 +46,7 @@ public class NetworkTests {
 
     @Test
     public void insertNoteSuccess() {
-        Note note = testUtil.createNote1();
+        NoteEntity note = testUtil.createNote1();
 
         Call<ResponseDto> questions = serverDB.saveNote(note);
         try {

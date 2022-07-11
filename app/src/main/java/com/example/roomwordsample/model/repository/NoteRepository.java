@@ -1,41 +1,31 @@
-package com.example.roomwordsample;
-
-import android.app.Application;
+package com.example.roomwordsample.model.repository;
 
 import androidx.lifecycle.LiveData;
-import androidx.lifecycle.MediatorLiveData;
 
-import com.google.gson.Gson;
-import com.google.gson.GsonBuilder;
+import com.example.roomwordsample.model.network.Networking;
+import com.example.roomwordsample.model.db.NoteRoomDatabase;
+import com.example.roomwordsample.model.network.ServerDB;
+import com.example.roomwordsample.model.dao.NoteDao;
+import com.example.roomwordsample.model.dto.ResponseDto;
+import com.example.roomwordsample.model.dto.UpdateFileDto;
+import com.example.roomwordsample.model.entity.NoteEntity;
 
-import java.io.IOException;
-import java.util.ArrayList;
-import java.util.HashSet;
 import java.util.List;
-import java.util.concurrent.atomic.AtomicReference;
-
-import okhttp3.OkHttpClient;
-import okhttp3.logging.HttpLoggingInterceptor;
-import retrofit2.Call;
-import retrofit2.Callback;
-import retrofit2.Response;
-import retrofit2.Retrofit;
-import retrofit2.converter.gson.GsonConverterFactory;
 
 
-class NoteRepository implements NoteRepositoryInterface{
+public class NoteRepository implements NoteRepositoryInterface{
 
     private static NoteRepository sInstance;
     private NoteRoomDatabase mDatabase;
     private NoteDao mNoteDao;
-    private LiveData<List<Note>> mAllWords;
+    private LiveData<List<NoteEntity>> mAllWords;
     Networking networking;
     public static String DIRECTORY_NAME = "MYDIR";
 
     static String BASE_URL = "http://10.0.2.2:8080/";
     ServerDB serverDB;
 
-    NoteRepository(NoteRoomDatabase database, Networking networking) {
+    public NoteRepository(NoteRoomDatabase database, Networking networking) {
         mDatabase = database;
         mNoteDao = database.wordDao();
         mAllWords = mNoteDao.getAlphabetizedWords(DIRECTORY_NAME);
@@ -103,9 +93,9 @@ class NoteRepository implements NoteRepositoryInterface{
 
 
         NoteRoomDatabase.databaseWriteExecutor.execute(() -> {
-            List<Note> remoteNotes = networking.getNotes();
+            List<NoteEntity> remoteNotes = networking.getNotes();
             if (remoteNotes != null) {
-                for (Note remoteNote : remoteNotes) {
+                for (NoteEntity remoteNote : remoteNotes) {
                     remoteNote.setSynced(Boolean.TRUE);
                     mNoteDao.insert(remoteNote);
                 }
@@ -152,14 +142,14 @@ class NoteRepository implements NoteRepositoryInterface{
 
     // Room executes all queries on a separate thread.
     // Observed LiveData will notify the observer when the data has changed.
-    public LiveData<List<Note>> getAllWords(String directory_name) {
+    public LiveData<List<NoteEntity>> getAllWords(String directory_name) {
         mAllWords = mNoteDao.getAlphabetizedWords(directory_name);
         return mAllWords;
     }
 
     // You must call this on a non-UI thread or your app will throw an exception. Room ensures
     // that you're not doing any long running operations on the main thread, blocking the UI.
-    public void insert(Note note) {
+    public void insert(NoteEntity note) {
         NoteRoomDatabase.databaseWriteExecutor.execute(() -> {
 
 
@@ -206,9 +196,9 @@ class NoteRepository implements NoteRepositoryInterface{
     }
 
     private void sync() {
-        List<Note> localFiles = mNoteDao.findAll();
+        List<NoteEntity> localFiles = mNoteDao.findAll();
         Long id = null;
-        for (Note localFile : localFiles) {
+        for (NoteEntity localFile : localFiles) {
             if (!localFile.getSynced()) {
                 id = insertRemotely(localFile);
             }
@@ -221,18 +211,18 @@ class NoteRepository implements NoteRepositoryInterface{
             }
         }
     }
-    private Long insertRemotely(Note note) {
+    private Long insertRemotely(NoteEntity note) {
         ResponseDto response = networking.insert(note);
         if (response != null)
             return response.getId();
         else return null;
     }
 
-    public void update(Note note){
+    public void update(NoteEntity note){
 //        TODO: update requests idealerweise zusammenfassen, wegen synced status
         NoteRoomDatabase.databaseWriteExecutor.execute(() -> {
             Long id = note.getId();
-            Note oldNote = mNoteDao.find(id);
+            NoteEntity oldNote = mNoteDao.find(id);
             boolean syncSuccessful = false;
             if (!oldNote.getName().equals(note.getName())) {
                 syncSuccessful = networking.update(id, new UpdateFileDto("replace", "/name", note.getName()));

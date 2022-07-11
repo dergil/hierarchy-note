@@ -1,4 +1,4 @@
-package com.example.roomwordsample;
+package com.example.roomwordsample.model.entity;
 
 import androidx.annotation.NonNull;
 import androidx.room.ColumnInfo;
@@ -10,7 +10,7 @@ import com.google.gson.annotations.Expose;
 import com.google.gson.annotations.SerializedName;
 
 @Entity(tableName = "note_table", indices = {@Index(value = "name", unique = true)})
-public class Note {
+public class NoteEntity {
 
     @PrimaryKey(autoGenerate = true)
     @SerializedName("id")
@@ -42,7 +42,7 @@ public class Note {
     @Expose
     private transient Boolean synced = false;
 
-    public Note(String name, String text, String directory_name, Boolean isDir, Boolean synced) {
+    public NoteEntity(String name, String text, String directory_name, Boolean isDir, Boolean synced) {
         this.name = name;
         this.text = text;
         this.directory_name = directory_name;

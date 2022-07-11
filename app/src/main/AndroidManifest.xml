@@ -16,14 +16,14 @@
         android:theme="@style/Theme.RoomWordSample">
 
         <activity
-            android:name=".NewDirectory"
+            android:name=".view.activities.NewDirectory"
             android:exported="false" />
         <activity
-            android:name=".NoteActivity"
+            android:name=".view.activities.NoteActivity"
             android:exported="false"
-            android:parentActivityName=".MainActivity" />
+            android:parentActivityName=".view.activities.MainActivity" />
         <activity
-            android:name=".MainActivity"
+            android:name=".view.activities.MainActivity"
             android:exported="true">
             <intent-filter>
                 <action android:name="android.intent.action.MAIN" />

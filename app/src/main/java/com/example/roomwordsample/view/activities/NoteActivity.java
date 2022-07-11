@@ -1,12 +1,13 @@
-package com.example.roomwordsample;
+package com.example.roomwordsample.view.activities;
 
 import androidx.appcompat.app.AppCompatActivity;
 
 import android.content.Intent;
 import android.os.Bundle;
 import android.text.TextUtils;
-import android.widget.Button;
 import android.widget.EditText;
+
+import com.example.roomwordsample.R;
 
 public class NoteActivity extends AppCompatActivity {
 

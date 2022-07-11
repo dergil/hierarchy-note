@@ -1,4 +1,4 @@
-package com.example.roomwordsample;
+package com.example.roomwordsample.repository;
 
 import static org.junit.Assert.assertEquals;
 import static org.junit.Assert.assertThat;
@@ -9,11 +9,13 @@ import android.content.Context;
 
 import androidx.arch.core.executor.testing.InstantTaskExecutorRule;
 import androidx.room.Room;
-import androidx.test.annotation.UiThreadTest;
 import androidx.test.core.app.ApplicationProvider;
-import androidx.test.ext.junit.runners.AndroidJUnit4;
-import androidx.test.internal.runner.junit4.statement.UiThreadStatement;
-import androidx.test.rule.UiThreadTestRule;
+
+import com.example.roomwordsample.model.network.Networking;
+import com.example.roomwordsample.model.entity.NoteEntity;
+import com.example.roomwordsample.model.repository.NoteRepository;
+import com.example.roomwordsample.model.db.NoteRoomDatabase;
+import com.example.roomwordsample.model.dto.UpdateFileDto;
 
 import org.junit.After;
 import org.junit.Before;
@@ -27,13 +29,11 @@ import org.mockito.junit.MockitoJUnitRunner;
 
 import java.io.IOException;
 
-import javax.inject.Inject;
-
 @RunWith(MockitoJUnitRunner.class)
 public class NoteRepository_NetworkingUnitTests {
     private NoteRoomDatabase db;
     private NoteRepository repository;
-    private Note note = new Note("name", "text", "MYDIR", false, false);
+    private NoteEntity note = new NoteEntity("name", "text", "MYDIR", false, false);
     private Long id = 4242L;
 
     @Mock
@@ -81,9 +81,9 @@ public class NoteRepository_NetworkingUnitTests {
         ArgumentCaptor<Long> longCaptor = ArgumentCaptor.forClass(Long.class);
         Mockito.verify(networking).update(longCaptor.capture(), dtoCaptor.capture());
         UpdateFileDto capturedArgument = dtoCaptor.getValue();
-        assertEquals(capturedArgument.op, "replace");
-        assertEquals(capturedArgument.path, "/name");
-        assertEquals(capturedArgument.value, newName);
+        assertEquals(capturedArgument.getOp(), "replace");
+        assertEquals(capturedArgument.getPath(), "/name");
+        assertEquals(capturedArgument.getValue(), newName);
     }
 
     @Test
@@ -99,9 +99,9 @@ public class NoteRepository_NetworkingUnitTests {
         ArgumentCaptor<Long> longCaptor = ArgumentCaptor.forClass(Long.class);
         Mockito.verify(networking).update(longCaptor.capture(), dtoCaptor.capture());
         UpdateFileDto capturedArgument = dtoCaptor.getValue();
-        assertEquals(capturedArgument.op, "replace");
-        assertEquals(capturedArgument.path, "/text");
-        assertEquals(capturedArgument.value, newText);
+        assertEquals(capturedArgument.getOp(), "replace");
+        assertEquals(capturedArgument.getPath(), "/text");
+        assertEquals(capturedArgument.getValue(), newText);
     }
 
     @Test
