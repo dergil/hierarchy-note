@@ -74,6 +74,7 @@ public class NavigationTests {
                 .perform(RecyclerViewActions.actionOnItem(
                         hasDescendant(withText(NEW_NOTE_NAME)),
                         click()));
+//                        click()));
 //        onView(ViewMatchers.withId(R.id.recyclerview))
 //                // scrollTo will fail the test if no item matches.
 //                .perform(RecyclerViewActions.scrollTo(
