@@ -58,7 +58,7 @@ public class FileRepository_NetworkingUnitTests {
 
     @Test
     public void attemptSyncAtStartup() throws InterruptedException {
-        Thread.sleep(5);
+        Thread.sleep(50);
         Mockito.verify(networking).getNotes();
     }
 

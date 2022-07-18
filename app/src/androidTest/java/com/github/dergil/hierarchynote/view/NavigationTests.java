@@ -28,6 +28,7 @@ import com.github.dergil.hierarchynote.view.activities.NoteActivity;
 
 import org.junit.After;
 import org.junit.Before;
+import org.junit.BeforeClass;
 import org.junit.Rule;
 import org.junit.Test;
 import org.junit.runner.RunWith;
@@ -42,81 +43,68 @@ public class NavigationTests {
     public ActivityScenarioRule<MainActivity> activityScenarioRule
             = new ActivityScenarioRule<>(MainActivity.class);
 
-    @Before
-    public void setUp() throws Exception {
+    @BeforeClass
+    public static void beforeClass() throws Exception {
+        Intents.release();
+        Thread.sleep(250);
         Intents.init();
+
     }
 
-    @After
-    public void tearDown() throws Exception {
-        Intents.release();
-        Thread.sleep(200);
-    }
+//    @Before
+//    public void setUp() {
+////        Intents.release();
+//        Intents.init();
+//    }
+//
+//    @After
+//    public void tearDown() throws Exception {
+//        Intents.release();
+//        Thread.sleep(200);
+//    }
 
     @Test
-    public void opensNewNoteActivity() {
+    public void opensNewNoteActivity() throws InterruptedException {
         onView(withId(R.id.fab)).perform(click());
 //        intended(hasComponent(NoteActivity.class.getName()));
+        Thread.sleep(250);
         onView(withId(R.id.edit_text)).check(matches(isDisplayed()));
 
     }
 
     @Test
-    public void opensNewDirectoryActivity() {
+    public void opensNewDirectoryActivity() throws InterruptedException {
         onView(withId(R.id.add_dir)).perform(click());
+        Thread.sleep(250);
         onView(withId(R.id.button_save)).check(matches(isDisplayed()));
     }
 
     @Test
     public void opensNewNoteActivityOnRecyclerViewClick() throws InterruptedException {
         insertNote();
+        Thread.sleep(250);
         onView(withId(R.id.recyclerview))
                 .perform(RecyclerViewActions.actionOnItem(
                         hasDescendant(withText(NEW_NOTE_NAME)),
                         click()));
-//                        click()));
-//        onView(ViewMatchers.withId(R.id.recyclerview))
-//                // scrollTo will fail the test if no item matches.
-//                .perform(RecyclerViewActions.scrollTo(
-//                        hasDescendant(withText(NEW_NOTE_NAME))
-//                )).perform(click());
-//        activityScenarioRule.getScenario().onActivity(activity -> {
-//            System.out.println(NoteActivity.class.getName());
-//            System.out.println(activity.getClass().getSimpleName());
-////            assertTrue(NoteActivity.class.getName().contains(activity.getClass().getSimpleName()));
-//        });
-//        intended(hasComponent(NoteActivity.class.getName()));
         onView(withId(R.id.edit_text)).check(matches(isDisplayed()));
 
     }
 
     @Test
-    public void opensMainActivityOnRecyclerViewClick() {
+    public void opensMainActivityOnRecyclerViewClick() throws InterruptedException {
         insertDirectory();
+        Thread.sleep(250);
         onView(withId(R.id.recyclerview))
                 .perform(RecyclerViewActions.actionOnItem(
                         hasDescendant(withText(NEW_DIRECTORY_NAME)),
                         click()));
         intended(hasComponent(MainActivity.class.getName()));
-
-//        onView(ViewMatchers.withId(R.id.recyclerview))
-//                .perform(RecyclerViewActions.actionOnItemAtPosition(1, click()));
-
-//        onView(ViewMatchers.withId(R.id.recyclerview))
-//                // scrollTo will fail the test if no item matches.
-//                .perform(RecyclerViewActions.scrollTo(
-//                        hasDescendant(withText(NEW_DIRECTORY_NAME))
-//                )).perform(click());
-//        activityScenarioRule.getScenario().onActivity(activity -> {
-//            assertTrue(MainActivity.class.getName().contains(activity.getClass().getSimpleName()));
-//        });
-//        onView(withId(R.id.recyclerview))
-//                .perform(scrollToPosition(0));
-
     }
 
-    private void insertNote() {
+    private void insertNote() throws InterruptedException {
         onView(withId(R.id.fab)).perform(click());
+        Thread.sleep(250);
         onView(withId(R.id.edit_name))
                 .perform(typeText(NEW_NOTE_NAME));
         onView(withId(R.id.edit_text))
@@ -124,8 +112,9 @@ public class NavigationTests {
         Espresso.pressBack();
     }
 
-    private void insertDirectory() {
+    private void insertDirectory() throws InterruptedException {
         onView(withId(R.id.add_dir)).perform(click());
+        Thread.sleep(250);
         onView(withId(R.id.edit_name))
                 .perform(typeText(NEW_DIRECTORY_NAME), closeSoftKeyboard());
         onView(withId(R.id.button_save)).perform(click());

@@ -25,7 +25,7 @@ public class TestUtil {
     }
 
     public FileEntity createNote2(){
-        FileEntity note = new FileEntity(name2, text2, directory_name2, isDir2, isSynced2);
+        FileEntity note = new FileEntity(name2, text2, directory_name1, isDir2, isSynced2);
         note.setId(id2);
         return note;
     }

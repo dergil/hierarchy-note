@@ -22,7 +22,6 @@ import org.junit.runner.RunWith;
 @RunWith(AndroidJUnit4.class)
 @LargeTest
 public class NoteActivityTests {
-    public static final String STRING_TO_BE_TYPED = "new_note";
 
     @Rule
     public ActivityScenarioRule<NoteActivity> activityScenarioRule
@@ -30,6 +29,7 @@ public class NoteActivityTests {
 
     @Test
     public void displaysUiElements() {
+        Intents.release();
         Intents.init();
         onView(ViewMatchers.withId(R.id.edit_name)).check(matches(isDisplayed()));
         onView(withId(R.id.edit_text)).check(matches(isDisplayed()));

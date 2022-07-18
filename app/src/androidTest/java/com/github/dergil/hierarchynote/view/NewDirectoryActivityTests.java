@@ -20,33 +20,32 @@ import com.github.dergil.hierarchynote.R;
 import com.github.dergil.hierarchynote.view.activities.MainActivity;
 import com.github.dergil.hierarchynote.view.activities.NewDirectoryActivity;
 
+import org.junit.Before;
+import org.junit.BeforeClass;
 import org.junit.Rule;
 import org.junit.Test;
 import org.junit.runner.RunWith;
+import org.junit.runners.model.InitializationError;
 
 @RunWith(AndroidJUnit4.class)
 @LargeTest
 public class NewDirectoryActivityTests {
-    public static final String STRING_TO_BE_TYPED = "new_dir";
 
     @Rule
     public ActivityScenarioRule<NewDirectoryActivity> activityScenarioRule
             = new ActivityScenarioRule<>(NewDirectoryActivity.class);
 
-    @Test
-    public void displaysUiElements() {
+    @BeforeClass
+    public static void beforeClass() throws Exception {
+        Intents.release();
+        Thread.sleep(50);
         Intents.init();
-        onView(ViewMatchers.withId(R.id.edit_name)).check(matches(isDisplayed()));
-        onView(withId(R.id.button_save)).check(matches(isDisplayed()));
     }
 
     @Test
-    public void opensMainActivityAfterSave() {
-        Intents.init();
-        onView(withId(R.id.edit_name))
-                .perform(typeText(STRING_TO_BE_TYPED), closeSoftKeyboard());
-        onView(withId(R.id.button_save)).perform(click());
-        intended(hasComponent(MainActivity.class.getName()));
-
+    public void displaysUiElements() {
+//        Intents.init();
+        onView(ViewMatchers.withId(R.id.edit_name)).check(matches(isDisplayed()));
+        onView(withId(R.id.button_save)).check(matches(isDisplayed()));
     }
 }

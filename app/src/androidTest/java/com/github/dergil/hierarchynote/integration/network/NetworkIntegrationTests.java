@@ -15,6 +15,7 @@ import org.junit.Test;
 
 import java.io.IOException;
 import java.util.ArrayList;
+import java.util.Collection;
 import java.util.List;
 import java.util.regex.Matcher;
 import java.util.regex.Pattern;
@@ -25,10 +26,12 @@ import retrofit2.Response;
 import retrofit2.Retrofit;
 import retrofit2.converter.gson.GsonConverterFactory;
 
+// backend needs to be running
 public class NetworkIntegrationTests {
 
     ServerDB serverDB;
     static final String BASE_URL = "http://10.0.2.2:8080/";
+//    static final String BASE_URL = "http://127.0.0.1:8080/";
     TestUtil testUtil = new TestUtil();
     FileEntity note = new FileEntity("name", "text", "MYDIR", false, false);
 
@@ -63,7 +66,7 @@ public class NetworkIntegrationTests {
     }
 
     @Test
-    public void updateFile() throws IOException {
+    public void updateFile() throws IOException, InterruptedException {
         Long id = insertNoteHelper();
         String newText = "hro";
         UpdateFileDto updateFileDto = new UpdateFileDto("replace", "/text", newText);
@@ -78,7 +81,7 @@ public class NetworkIntegrationTests {
     }
 
     @Test
-    public void deleteFile() throws IOException {
+    public void deleteFile() throws IOException, InterruptedException {
         Long id = insertNoteHelper();
         Call<ResponseDto> questions = serverDB.deleteFile(id);
         Response<ResponseDto> response = questions.execute();
@@ -86,18 +89,24 @@ public class NetworkIntegrationTests {
     }
 
     @Test
-    public void readFiles() throws IOException {
-        insertNoteHelper();
+    public void readFiles() throws IOException, InterruptedException {
+        Long id = insertNoteHelper();
         Call<List<FileEntity>> questions = serverDB.getFiles();
         Response<List<FileEntity>> response = questions.execute();
         List<FileEntity> body = response.body();
+        FileEntity file = findById(body, id);
         assertTrue(response.isSuccessful());
-        assertTrue(testUtil.compareNotesWithoutId(body.get(0), note));
+        assertTrue(testUtil.compareNotesWithoutId(file, note));
     }
 
-    private Long insertNoteHelper() throws IOException {
+    public FileEntity findById(Collection<FileEntity> list, Long id) {
+        return list.stream().filter(carnet -> id.equals(carnet.getId())).findFirst().orElse(null);
+        }
+
+    private Long insertNoteHelper() throws IOException, InterruptedException {
         Call<ResponseDto> questions = serverDB.saveFile(note);
         Response<ResponseDto> response = questions.execute();
+        Thread.sleep(100);
 
 //        find key id with a number as value
         Pattern p = Pattern.compile("id=\\d+");

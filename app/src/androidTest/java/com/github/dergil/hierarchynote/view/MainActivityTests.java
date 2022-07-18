@@ -25,6 +25,7 @@ import com.github.dergil.hierarchynote.model.entity.FileEntity;
 import com.github.dergil.hierarchynote.view.activities.MainActivity;
 import com.github.dergil.hierarchynote.viewmodel.FileViewModel;
 
+import org.junit.BeforeClass;
 import org.junit.Rule;
 import org.junit.Test;
 import org.junit.runner.RunWith;
@@ -33,45 +34,22 @@ import org.junit.runner.RunWith;
 @RunWith(AndroidJUnit4.class)
 @LargeTest
 public class MainActivityTests {
-    public static final String NEW_NOTE_NAME = "2Espresso";
-    public static final String NEW_DIRECTORY_NAME = "DIR_Espresso";
 
     @Rule public ActivityScenarioRule<MainActivity> activityScenarioRule
             = new ActivityScenarioRule<>(MainActivity.class);
 
+    @BeforeClass
+    public static void beforeClass() throws Exception {
+        Intents.release();
+        Thread.sleep(50);
+        Intents.init();
+
+    }
+
     @Test
     public void displaysUiElements() {
-        Intents.init();
         onView(ViewMatchers.withId(R.id.fab)).check(matches(isDisplayed()));
         onView(withId(R.id.add_dir)).check(matches(isDisplayed()));
         onView(withId(R.id.recyclerview)).check(matches(isDisplayed()));
     }
-
-
-
-//    @Test(expected = PerformException.class)
-    @Test
-    public void itemWithText_doesNotExist() {
-        FileViewModel mFileViewModel = new ViewModelProvider(ApplicationProvider.getApplicationContext()).get(FileViewModel.class);
-        mFileViewModel.insert(new FileEntity("name", "text", "MYDIR", false, false));
-
-//        final String STRING_TO_BE_TYPED = "Delete";
-//
-//        onView(withId(R.id.fab)).perform(click());
-//
-//        onView(withId(R.id.edit_name))
-//                .perform(typeText(STRING_TO_BE_TYPED), closeSoftKeyboard());
-//        onView(withId(R.id.edit_text))
-//                .perform(typeText(STRING_TO_BE_TYPED), closeSoftKeyboard());
-//        onView(withId(R.id.button_save)).perform(click());
-//
-//        // Attempt to scroll to an item that contains the special text.
-//        onView(ViewMatchers.withId(R.id.recyclerview))
-//                // scrollTo will fail the test if no item matches.
-//                .perform(RecyclerViewActions.scrollTo(
-//                        hasDescendant(withText(STRING_TO_BE_TYPED))
-//                ));
-    }
-
-
 }
