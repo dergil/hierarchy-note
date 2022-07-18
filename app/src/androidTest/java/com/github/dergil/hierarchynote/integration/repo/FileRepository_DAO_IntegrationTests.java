@@ -19,30 +19,28 @@ import org.junit.runner.RunWith;
 import static org.junit.Assert.assertNull;
 import static org.junit.Assert.assertTrue;
 
-import com.github.dergil.hierarchynote.model.network.NoteAPI;
-import com.github.dergil.hierarchynote.model.entity.NoteEntity;
-import com.github.dergil.hierarchynote.model.dao.NoteDao;
-import com.github.dergil.hierarchynote.model.repository.NoteRepository;
-import com.github.dergil.hierarchynote.model.db.NoteRoomDatabase;
+import com.github.dergil.hierarchynote.model.dao.FileDao;
+import com.github.dergil.hierarchynote.model.entity.FileEntity;
+import com.github.dergil.hierarchynote.model.network.FileAPI;
+import com.github.dergil.hierarchynote.model.repository.FileRepository;
+import com.github.dergil.hierarchynote.model.db.FileRoomDatabase;
 import com.github.dergil.hierarchynote.util.LiveDataTestUtil;
 import com.github.dergil.hierarchynote.util.TestUtil;
 
 import java.util.List;
 
-import javax.inject.Inject;
-
 @RunWith(AndroidJUnit4.class)
-public class NoteRepository_DAO_IntegrationTests {
+public class FileRepository_DAO_IntegrationTests {
 
 //    @Inject
     private TestUtil testUtil = new TestUtil();
 
-    private NoteAPI networking = new NoteAPI();
-    private NoteRoomDatabase db;
-    private NoteDao noteDao;
-    private NoteEntity note = testUtil.createNote1();
-    private NoteEntity note2 = testUtil.createNote2();
-    private NoteRepository repository;
+    private FileAPI networking = new FileAPI();
+    private FileRoomDatabase db;
+    private FileDao fileDao;
+    private FileEntity note = testUtil.createNote1();
+    private FileEntity note2 = testUtil.createNote2();
+    private FileRepository repository;
 
     @Rule
     public InstantTaskExecutorRule instantTaskExecutorRule = new InstantTaskExecutorRule();
@@ -50,9 +48,9 @@ public class NoteRepository_DAO_IntegrationTests {
     @Before
     public void setup() {
         Context context = ApplicationProvider.getApplicationContext();
-        db = Room.inMemoryDatabaseBuilder(context, NoteRoomDatabase.class).build();
-        noteDao = db.wordDao();
-        repository = new NoteRepository(db, networking);
+        db = Room.inMemoryDatabaseBuilder(context, FileRoomDatabase.class).build();
+        fileDao = db.fileDao();
+        repository = new FileRepository(db, networking);
     }
 
     @After
@@ -64,7 +62,7 @@ public class NoteRepository_DAO_IntegrationTests {
     public void insertAndReadNote() throws InterruptedException {
         repository.insert(note);
         Thread.sleep(250);
-        NoteEntity readNote = noteDao.find(note.getId());
+        FileEntity readNote = fileDao.find(note.getId());
         assertTrue(compareNotes(note, readNote));
     }
 
@@ -73,8 +71,8 @@ public class NoteRepository_DAO_IntegrationTests {
         repository.insert(note);
         repository.insert(note2);
         Thread.sleep(250);
-        LiveData<List<NoteEntity>> liveNotes = repository.getAllWords(note.getDirectory_name());
-        List<NoteEntity> readNotes = LiveDataTestUtil.getValue(liveNotes);
+        LiveData<List<FileEntity>> liveNotes = repository.getAllFiles(note.getDirectory_name());
+        List<FileEntity> readNotes = LiveDataTestUtil.getValue(liveNotes);
         assertTrue(compareNotes(note, readNotes.get(0)));
         assertTrue(compareNotes(note2, readNotes.get(1)));
 
@@ -87,7 +85,7 @@ public class NoteRepository_DAO_IntegrationTests {
         note.setText("new Text");
         repository.update(note);
         Thread.sleep(250);
-        NoteEntity readNote = noteDao.find(note.getId());
+        FileEntity readNote = fileDao.find(note.getId());
         assertTrue(compareNotes(note, readNote));
     }
 
@@ -97,6 +95,6 @@ public class NoteRepository_DAO_IntegrationTests {
         Thread.sleep(250);
         repository.delete(note.getId());
         Thread.sleep(250);
-        assertNull(noteDao.find(note.getId()));
+        assertNull(fileDao.find(note.getId()));
     }
 }

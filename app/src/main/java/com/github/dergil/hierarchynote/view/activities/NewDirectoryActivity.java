@@ -13,7 +13,7 @@ import com.github.dergil.hierarchynote.R;
 
 public class NewDirectoryActivity extends AppCompatActivity {
     public static final String EXTRA_REPLY_DIRECTORY_NAME =
-            "com.example.android.wordlistsql.REPLY_DIRECTORY_NAME";
+            "com.github.dergil.hierarchynote.REPLY_DIRECTORY_NAME";
 
     private EditText mEditNameView;
 

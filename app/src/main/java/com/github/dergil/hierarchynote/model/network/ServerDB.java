@@ -1,6 +1,6 @@
 package com.github.dergil.hierarchynote.model.network;
 
-import com.github.dergil.hierarchynote.model.entity.NoteEntity;
+import com.github.dergil.hierarchynote.model.entity.FileEntity;
 import com.github.dergil.hierarchynote.model.dto.ResponseDto;
 import com.github.dergil.hierarchynote.model.dto.UpdateFileDto;
 
@@ -17,16 +17,16 @@ import retrofit2.http.Query;
 public interface ServerDB {
 
     @POST("/api/core/file/create")
-    Call<ResponseDto> saveNote(@Body NoteEntity file);
+    Call<ResponseDto> saveFile(@Body FileEntity file);
 
     @GET("/api/core/file/find-all")
-    Call<List<NoteEntity>> getNotes();
+    Call<List<FileEntity>> getFiles();
 
     @PUT("/api/core/file/update")
-    Call<ResponseDto> editNote(@Query("id") Long id, @Body List<UpdateFileDto> updateFileDto);
+    Call<ResponseDto> editFile(@Query("id") Long id, @Body List<UpdateFileDto> updateFileDto);
 
     @DELETE("/api/core/file/delete")
-    Call<ResponseDto> deleteNote(@Query("id") Long id);
+    Call<ResponseDto> deleteFile(@Query("id") Long id);
 
 
 

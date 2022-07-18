@@ -31,7 +31,6 @@ import java.util.concurrent.Executors;
  * webservice requests).
  */
 public class AppExecutors {
-//    todo maybe remove
 
     private final Executor mDiskIO;
 
@@ -52,14 +51,6 @@ public class AppExecutors {
 
     public Executor diskIO() {
         return mDiskIO;
-    }
-
-    public Executor networkIO() {
-        return mNetworkIO;
-    }
-
-    public Executor mainThread() {
-        return mMainThread;
     }
 
     private static class MainThreadExecutor implements Executor {

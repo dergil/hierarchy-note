@@ -1,6 +1,6 @@
 package com.github.dergil.hierarchynote.util;
 
-import com.github.dergil.hierarchynote.model.entity.NoteEntity;
+import com.github.dergil.hierarchynote.model.entity.FileEntity;
 import com.github.dergil.hierarchynote.model.dto.ResponseDto;
 
 public class TestUtil {
@@ -18,19 +18,19 @@ public class TestUtil {
     private Boolean isDir2 = Boolean.FALSE;
     private Boolean isSynced2 = Boolean.FALSE;
 
-    public NoteEntity createNote1(){
-        NoteEntity note = new NoteEntity(name1, text1, directory_name1, isDir1, isSynced1);
+    public FileEntity createNote1(){
+        FileEntity note = new FileEntity(name1, text1, directory_name1, isDir1, isSynced1);
         note.setId(id1);
         return note;
     }
 
-    public NoteEntity createNote2(){
-        NoteEntity note = new NoteEntity(name2, text2, directory_name2, isDir2, isSynced2);
+    public FileEntity createNote2(){
+        FileEntity note = new FileEntity(name2, text2, directory_name2, isDir2, isSynced2);
         note.setId(id2);
         return note;
     }
 
-    public static boolean compareNotes(NoteEntity note1, NoteEntity note2) {
+    public static boolean compareNotes(FileEntity note1, FileEntity note2) {
         boolean sameValues = true;
         if (!note1.getId().equals(note2.getId()))
             sameValues = false;
@@ -43,7 +43,7 @@ public class TestUtil {
         return sameValues;
     }
 
-    public boolean compareNotes (ResponseDto note1, NoteEntity note2) {
+    public boolean compareNotes (ResponseDto note1, FileEntity note2) {
         boolean sameValues = true;
         if (!note1.getId().equals(note2.getId()))
             sameValues = false;
@@ -56,7 +56,7 @@ public class TestUtil {
         return sameValues;
     }
 
-    public boolean compareNotesWithoutId (ResponseDto note1, NoteEntity note2) {
+    public boolean compareNotesWithoutId (ResponseDto note1, FileEntity note2) {
         boolean sameValues = true;
         if (!note1.getName().equals(note2.getName()))
             sameValues = false;
@@ -69,7 +69,7 @@ public class TestUtil {
         return sameValues;
     }
 
-    public boolean compareNotesWithoutId (NoteEntity note1, NoteEntity note2) {
+    public boolean compareNotesWithoutId (FileEntity note1, FileEntity note2) {
         boolean sameValues = true;
         if (!note1.getName().equals(note2.getName()))
             sameValues = false;

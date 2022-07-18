@@ -12,9 +12,9 @@ import android.os.Bundle;
 import android.view.View;
 
 import com.github.dergil.hierarchynote.R;
-import com.github.dergil.hierarchynote.view.recycler_view.NoteListAdapter;
-import com.github.dergil.hierarchynote.model.entity.NoteEntity;
-import com.github.dergil.hierarchynote.viewmodel.NoteViewModel;
+import com.github.dergil.hierarchynote.model.entity.FileEntity;
+import com.github.dergil.hierarchynote.view.recycler_view.FileListAdapter;
+import com.github.dergil.hierarchynote.viewmodel.FileViewModel;
 import com.google.android.material.floatingactionbutton.FloatingActionButton;
 import com.google.android.material.snackbar.Snackbar;
 
@@ -24,10 +24,7 @@ public class MainActivity extends AppCompatActivity {
     public static final int NEW_DIR_ACTIVITY_REQUEST_CODE = 3;
     public static final int NEW_MAIN_ACTIVITY_REQUEST_CODE = 4;
     public static String DIRECTORY_NAME = "MYDIR";
-//    public static String PREVIOUS_DIRECTORY_NAME = "";
-
-//    private NoteListAdapter adapter;
-    private NoteViewModel mNoteViewModel;
+    private FileViewModel mFileViewModel;
 
 
     @Override
@@ -40,22 +37,18 @@ public class MainActivity extends AppCompatActivity {
         Intent creationIntent = getIntent();
         if (creationIntent.hasExtra(DIRECTORY_NAME))
             DIRECTORY_NAME = creationIntent.getStringExtra(DIRECTORY_NAME);
-//        if (creationIntent.hasExtra(PREVIOUS_DIRECTORY_NAME))
-//            PREVIOUS_DIRECTORY_NAME = creationIntent.getStringExtra(PREVIOUS_DIRECTORY_NAME);
 
         RecyclerView recyclerView = findViewById(R.id.recyclerview);
-        NoteListAdapter adapter = new NoteListAdapter(new NoteListAdapter.WordDiff());
+        FileListAdapter adapter = new FileListAdapter(new FileListAdapter.WordDiff());
         recyclerView.setAdapter(adapter);
         recyclerView.setLayoutManager(new LinearLayoutManager(this));
 
-        NoteViewModel.Factory factory = new NoteViewModel.Factory(getApplication());
+        FileViewModel.Factory factory = new FileViewModel.Factory(getApplication());
 
-        mNoteViewModel = new ViewModelProvider(this, factory)
-                .get(NoteViewModel.class);
+        mFileViewModel = new ViewModelProvider(this, factory)
+                .get(FileViewModel.class);
 
-//        mNoteViewModel = new ViewModelProvider(this).get(NoteViewModel.class);
-
-        mNoteViewModel.getAllWords(DIRECTORY_NAME).observe(this, words -> {
+        mFileViewModel.getAllFiles(DIRECTORY_NAME).observe(this, words -> {
             // Update the cached copy of the words in the adapter.
             adapter.submitList(words);
         });
@@ -69,7 +62,6 @@ public class MainActivity extends AppCompatActivity {
         FloatingActionButton add_dir = findViewById(R.id.add_dir);
         add_dir.setOnClickListener(view -> {
             Intent intent = new Intent(MainActivity.this, NewDirectoryActivity.class);
-//            intent.putExtra(MainActivity.DIRECTORY_NAME, "MYDIR2");
             startActivityForResult(intent, NEW_DIR_ACTIVITY_REQUEST_CODE);
         });
 
@@ -82,9 +74,9 @@ public class MainActivity extends AppCompatActivity {
 
             @Override
             public void onSwiped(@NonNull RecyclerView.ViewHolder viewHolder, int direction) {
-                NoteEntity noteToBeDeleted = adapter.getNoteAt(viewHolder.getAdapterPosition());
+                FileEntity fileToBeDeleted = adapter.getFileAt(viewHolder.getAdapterPosition());
 
-                mNoteViewModel.deleteById(noteToBeDeleted.getId());
+                mFileViewModel.deleteById(fileToBeDeleted.getId());
                 Snackbar snackbar = Snackbar
                         .make(findViewById(android.R.id.content), "File is deleted", Snackbar.LENGTH_LONG)
                         .setDuration(4000)
@@ -92,8 +84,8 @@ public class MainActivity extends AppCompatActivity {
                         .setAction("UNDO", new View.OnClickListener() {
                             @Override
                             public void onClick(View view) {
-                                noteToBeDeleted.setSynced(Boolean.FALSE);
-                                mNoteViewModel.insert(noteToBeDeleted);
+                                fileToBeDeleted.setSynced(Boolean.FALSE);
+                                mFileViewModel.insert(fileToBeDeleted);
                                 Snackbar snackbar1 = Snackbar
                                         .make(findViewById(android.R.id.content), "File is restored!", Snackbar.LENGTH_SHORT)
                                         .setAnchorView(add_dir);
@@ -108,21 +100,19 @@ public class MainActivity extends AppCompatActivity {
 
 
 
-        adapter.setOnItemClickListener(new NoteListAdapter.OnItemClickListener() {
+        adapter.setOnItemClickListener(new FileListAdapter.OnItemClickListener() {
             @Override
-            public void onItemClick(NoteEntity note) {
-                if (note.isDir()) {
+            public void onItemClick(FileEntity file) {
+                if (file.isDir()) {
                     Intent intent = new Intent(MainActivity.this, MainActivity.class);
-                    String noteName = note.getName();
-                    intent.putExtra(MainActivity.DIRECTORY_NAME, noteName);
-//                    String dirName = adapter.currentNote.getDirectory_name();
-//                    intent.putExtra(MainActivity.PREVIOUS_DIRECTORY_NAME, note.getDirectory_name());
+                    String fileName = file.getName();
+                    intent.putExtra(MainActivity.DIRECTORY_NAME, fileName);
                     startActivityForResult(intent, NEW_MAIN_ACTIVITY_REQUEST_CODE);
                 } else {
                     Intent intent = new Intent(MainActivity.this, NoteActivity.class);
-                    intent.putExtra(NoteActivity.EXTRA_ID, note.getId());
-                    intent.putExtra(NoteActivity.EXTRA_REQUEST_NAME, note.getName());
-                    intent.putExtra(NoteActivity.EXTRA_REQUEST_TEXT, note.getText());
+                    intent.putExtra(NoteActivity.EXTRA_ID, file.getId());
+                    intent.putExtra(NoteActivity.EXTRA_REQUEST_NAME, file.getName());
+                    intent.putExtra(NoteActivity.EXTRA_REQUEST_TEXT, file.getText());
                     startActivityForResult(intent, EDIT_NOTE_ACTIVITY_REQUEST_CODE);
                 }
             }
@@ -134,18 +124,7 @@ public class MainActivity extends AppCompatActivity {
     @Override
     public void onBackPressed() {
         Intent intent = new Intent(MainActivity.this, MainActivity.class);
-//        LiveData<List<Note>> allWords = mNoteViewModel.getAllWords(DIRECTORY_NAME);
-//        System.out.println("MAINACTIVITY");
-//        System.out.println(allWords.getValue().get(0));
-//        try {
-//            Note parentDirNote = mNoteViewModel.getParentDir(DIRECTORY_NAME);
-//            String parentDir = parentDirNote.getDirectory_name();
-//        } catch (Exception e){
-//            e.printStackTrace();
-//        }
-//        String parentDir = adapter.currentNote.getDirectory_name();
         intent.putExtra(MainActivity.DIRECTORY_NAME, "MYDIR");
-//        intent.putExtra(MainActivity.DIRECTORY_NAME, PREVIOUS_DIRECTORY_NAME);
         startActivityForResult(intent, NEW_MAIN_ACTIVITY_REQUEST_CODE);
     }
 
@@ -155,37 +134,25 @@ public class MainActivity extends AppCompatActivity {
         if (requestCode == NEW_NOTE_ACTIVITY_REQUEST_CODE && resultCode == RESULT_OK) {
             String name = data.getStringExtra(NoteActivity.EXTRA_REPLY_NAME);
             String text = data.getStringExtra(NoteActivity.EXTRA_REPLY_TEXT);
-            NoteEntity note = new NoteEntity(name, text, DIRECTORY_NAME, false, false);
-            mNoteViewModel.insert(note);
+            FileEntity file = new FileEntity(name, text, DIRECTORY_NAME, false, false);
+            mFileViewModel.insert(file);
         }
         if (requestCode == EDIT_NOTE_ACTIVITY_REQUEST_CODE && resultCode == RESULT_OK) {
-//            Note note = mNoteViewModel.findByName(data.getStringExtra(NewNoteActivity.EXTRA_REPLY_NAME));
-//            note.setText(data.getStringExtra(NewNoteActivity.EXTRA_REPLY_TEXT));
             long id = data.getLongExtra(NoteActivity.EXTRA_ID, -1);
             String name = data.getStringExtra(NoteActivity.EXTRA_REPLY_NAME);
             String text = data.getStringExtra(NoteActivity.EXTRA_REPLY_TEXT);
-            NoteEntity note = new NoteEntity(name, text, DIRECTORY_NAME, false, false);
-            note.setId(id);
-            mNoteViewModel.update(note);
+            FileEntity file = new FileEntity(name, text, DIRECTORY_NAME, false, false);
+            file.setId(id);
+            mFileViewModel.update(file);
         }
         if (requestCode == NEW_DIR_ACTIVITY_REQUEST_CODE && resultCode == RESULT_OK) {
-            NoteEntity note = new NoteEntity(data.getStringExtra(NewDirectoryActivity.EXTRA_REPLY_DIRECTORY_NAME), "filler",
+            FileEntity file = new FileEntity(data.getStringExtra(NewDirectoryActivity.EXTRA_REPLY_DIRECTORY_NAME), "filler",
                     DIRECTORY_NAME, true, false);
-            mNoteViewModel.insert(note);
+            mFileViewModel.insert(file);
         }
         if (data.getStringExtra(NoteActivity.EXTRA_DELETE) != null && resultCode == RESULT_OK) {
-//            Note note = new Note(data.getStringExtra(NewNoteActivity.EXTRA_REPLY_NAME), data.getStringExtra(NewNoteActivity.EXTRA_REPLY_TEXT));
-//            System.out.println("LOGGING HERE LOOK AT ME");
-//            System.out.println(data.getStringExtra(NewNoteActivity.EXTRA_REPLY_NAME));
             long id = data.getLongExtra(NoteActivity.EXTRA_ID, -1);
-            mNoteViewModel.deleteById(id);
+            mFileViewModel.deleteById(id);
         }
-
-//        else {
-//            Toast.makeText(
-//                    getApplicationContext(),
-//                    R.string.empty_not_saved,
-//                    Toast.LENGTH_LONG).show();
-//        }
     }
 }

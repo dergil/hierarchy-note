@@ -2,12 +2,9 @@ package com.github.dergil.hierarchynote.view;
 
 import static androidx.test.espresso.Espresso.onView;
 import static androidx.test.espresso.action.ViewActions.click;
-import static androidx.test.espresso.action.ViewActions.closeSoftKeyboard;
-import static androidx.test.espresso.action.ViewActions.typeText;
 import static androidx.test.espresso.assertion.ViewAssertions.matches;
 import static androidx.test.espresso.intent.Intents.intended;
 import static androidx.test.espresso.intent.matcher.IntentMatchers.hasComponent;
-import static androidx.test.espresso.matcher.ViewMatchers.hasDescendant;
 import static androidx.test.espresso.matcher.ViewMatchers.isDisplayed;
 import static androidx.test.espresso.matcher.ViewMatchers.withId;
 import static androidx.test.espresso.matcher.ViewMatchers.withText;
@@ -17,8 +14,6 @@ import static org.junit.Assert.assertTrue;
 
 import androidx.lifecycle.ViewModelProvider;
 import androidx.test.core.app.ApplicationProvider;
-import androidx.test.espresso.Espresso;
-import androidx.test.espresso.contrib.RecyclerViewActions;
 import androidx.test.espresso.intent.Intents;
 import androidx.test.espresso.matcher.ViewMatchers;
 import androidx.test.ext.junit.rules.ActivityScenarioRule;
@@ -26,11 +21,9 @@ import androidx.test.ext.junit.runners.AndroidJUnit4;
 import androidx.test.filters.LargeTest;
 
 import com.github.dergil.hierarchynote.R;
-import com.github.dergil.hierarchynote.model.entity.NoteEntity;
+import com.github.dergil.hierarchynote.model.entity.FileEntity;
 import com.github.dergil.hierarchynote.view.activities.MainActivity;
-import com.github.dergil.hierarchynote.view.activities.NewDirectoryActivity;
-import com.github.dergil.hierarchynote.view.activities.NoteActivity;
-import com.github.dergil.hierarchynote.viewmodel.NoteViewModel;
+import com.github.dergil.hierarchynote.viewmodel.FileViewModel;
 
 import org.junit.Rule;
 import org.junit.Test;
@@ -59,8 +52,8 @@ public class MainActivityTests {
 //    @Test(expected = PerformException.class)
     @Test
     public void itemWithText_doesNotExist() {
-        NoteViewModel mNoteViewModel = new ViewModelProvider(ApplicationProvider.getApplicationContext()).get(NoteViewModel.class);
-        mNoteViewModel.insert(new NoteEntity("name", "text", "MYDIR", false, false));
+        FileViewModel mFileViewModel = new ViewModelProvider(ApplicationProvider.getApplicationContext()).get(FileViewModel.class);
+        mFileViewModel.insert(new FileEntity("name", "text", "MYDIR", false, false));
 
 //        final String STRING_TO_BE_TYPED = "Delete";
 //

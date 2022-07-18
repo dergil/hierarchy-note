@@ -6,7 +6,7 @@ import static org.junit.Assert.assertTrue;
 import androidx.test.ext.junit.runners.AndroidJUnit4;
 
 import com.github.dergil.hierarchynote.model.dto.UpdateFileDto;
-import com.github.dergil.hierarchynote.model.entity.NoteEntity;
+import com.github.dergil.hierarchynote.model.entity.FileEntity;
 import com.github.dergil.hierarchynote.model.dto.ResponseDto;
 import com.github.dergil.hierarchynote.model.network.ServerDB;
 import com.google.gson.Gson;
@@ -63,8 +63,8 @@ public class NetworkUnitTests {
         String body = "{id=5, name='name', text='text', directory='MYDIR', isDir=false, synced=false}";
         mockWebServer.enqueue(new MockResponse().setResponseCode(200).setBody(body));
 
-        NoteEntity note = new NoteEntity("name", "text", "MYDIR", false, false);
-        Call<ResponseDto> questions = serverDB.saveNote(note);
+        FileEntity note = new FileEntity("name", "text", "MYDIR", false, false);
+        Call<ResponseDto> questions = serverDB.saveFile(note);
         questions.execute();
         RecordedRequest request1 = mockWebServer.takeRequest();
         System.out.println(request1.toString());
@@ -82,7 +82,7 @@ public class NetworkUnitTests {
         UpdateFileDto updateFileDto = new UpdateFileDto("replace", "/text", "hro");
         List<UpdateFileDto> updateBody = new ArrayList<>();
         updateBody.add(updateFileDto);
-        Call<ResponseDto> questions = serverDB.editNote(id, updateBody);
+        Call<ResponseDto> questions = serverDB.editFile(id, updateBody);
         questions.execute();
         RecordedRequest request1 = mockWebServer.takeRequest();
         assertEquals("PUT", request1.getMethod());
@@ -96,7 +96,7 @@ public class NetworkUnitTests {
         String body = "{id=5, name='name', text='text', directory='MYDIR', isDir=false, synced=false}";
         mockWebServer.enqueue(new MockResponse().setResponseCode(200).setBody(body));
 
-        Call<ResponseDto> questions = serverDB.deleteNote(id);
+        Call<ResponseDto> questions = serverDB.deleteFile(id);
         questions.execute();
         RecordedRequest request1 = mockWebServer.takeRequest();
         assertEquals("DELETE", request1.getMethod());
@@ -109,7 +109,7 @@ public class NetworkUnitTests {
         String note = "[{id=5, name='name', text='text', directory='MYDIR', isDir=false, synced=false}]";
         mockWebServer.enqueue(new MockResponse().setResponseCode(200).setBody(note));
 
-        Call<List<NoteEntity>> questions = serverDB.getNotes();
+        Call<List<FileEntity>> questions = serverDB.getFiles();
         questions.execute();
         RecordedRequest request1 = mockWebServer.takeRequest();
         assertEquals("GET", request1.getMethod());
@@ -124,7 +124,7 @@ public class NetworkUnitTests {
 
     }
 
-    private void containsFileAsJson(NoteEntity file, String requestBody){
+    private void containsFileAsJson(FileEntity file, String requestBody){
         assertTrue(requestBody.contains("\"name\":\"" + file.getName() + "\""));
         assertTrue(requestBody.contains("\"text\":\"" + file.getText() + "\""));
         assertTrue(requestBody.contains("\"directory_name\":\"" + file.getDirectory_name() + "\""));

@@ -11,12 +11,12 @@ import com.github.dergil.hierarchynote.R;
 
 public class NoteActivity extends AppCompatActivity {
 
-    public static final String EXTRA_ID = "com.example.android.wordlistsql.ID";
-    public static final String EXTRA_REPLY_NAME = "com.example.android.wordlistsql.REPLY_NAME";
-    public static final String EXTRA_REPLY_TEXT= "com.example.android.wordlistsql.REPLY_TEXT";
-    public static final String EXTRA_REQUEST_NAME= "com.example.android.wordlistsql.REQUEST_NAME";
-    public static final String EXTRA_REQUEST_TEXT= "com.example.android.wordlistsql.REQUEST_TEXT";
-    public static final String EXTRA_DELETE= "com.example.android.wordlistsql.DELETE";
+    public static final String EXTRA_ID = "com.github.dergil.hierarchynote.filelistsql.ID";
+    public static final String EXTRA_REPLY_NAME = "com.github.dergil.hierarchynote.filelistsql.REPLY_NAME";
+    public static final String EXTRA_REPLY_TEXT= "com.github.dergil.hierarchynote.filelistsql.REPLY_TEXT";
+    public static final String EXTRA_REQUEST_NAME= "com.github.dergil.hierarchynote.filelistsql.REQUEST_NAME";
+    public static final String EXTRA_REQUEST_TEXT= "com.github.dergil.hierarchynote.filelistsql.REQUEST_TEXT";
+    public static final String EXTRA_DELETE= "com.github.dergil.hierarchynote.filelistsql.DELETE";
 
     private EditText mEditNameView;
     private EditText mEditTextView;

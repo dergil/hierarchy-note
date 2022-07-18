@@ -8,8 +8,8 @@ import androidx.room.PrimaryKey;
 import com.google.gson.annotations.Expose;
 import com.google.gson.annotations.SerializedName;
 
-@Entity(tableName = "note_table", indices = {@Index(value = "name", unique = true)})
-public class NoteEntity {
+@Entity(tableName = "file_table", indices = {@Index(value = "name", unique = true)})
+public class FileEntity {
 
     @PrimaryKey(autoGenerate = true)
     @SerializedName("id")
@@ -41,7 +41,7 @@ public class NoteEntity {
     @Expose
     private transient Boolean synced = false;
 
-    public NoteEntity(String name, String text, String directory_name, Boolean isDir, Boolean synced) {
+    public FileEntity(String name, String text, String directory_name, Boolean isDir, Boolean synced) {
         this.name = name;
         this.text = text;
         this.directory_name = directory_name;
@@ -99,7 +99,7 @@ public class NoteEntity {
 
     @Override
     public String toString() {
-        return "NoteEntity{" +
+        return "FileEntity{" +
                 "id=" + id +
                 ", name='" + name + '\'' +
                 ", text='" + text + '\'' +

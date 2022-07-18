@@ -2,9 +2,9 @@ package com.github.dergil.hierarchynote;
 
 import android.app.Application;
 
-import com.github.dergil.hierarchynote.model.db.NoteRoomDatabase;
-import com.github.dergil.hierarchynote.model.network.NoteAPI;
-import com.github.dergil.hierarchynote.model.repository.NoteRepository;
+import com.github.dergil.hierarchynote.model.db.FileRoomDatabase;
+import com.github.dergil.hierarchynote.model.network.FileAPI;
+import com.github.dergil.hierarchynote.model.repository.FileRepository;
 
 public class HierarchyApp extends Application {
 
@@ -17,11 +17,11 @@ public class HierarchyApp extends Application {
         mAppExecutors = new AppExecutors();
     }
 
-    public NoteRoomDatabase getDatabase() {
-        return NoteRoomDatabase.getInstance(this, mAppExecutors);
+    public FileRoomDatabase getDatabase() {
+        return FileRoomDatabase.getInstance(this, mAppExecutors);
     }
 
-    public NoteRepository getRepository() {
-        return NoteRepository.getInstance(getDatabase(), new NoteAPI());
+    public FileRepository getRepository() {
+        return FileRepository.getInstance(getDatabase(), new FileAPI());
     }
 }

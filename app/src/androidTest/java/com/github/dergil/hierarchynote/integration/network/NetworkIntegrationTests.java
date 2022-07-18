@@ -4,7 +4,7 @@ import static org.junit.Assert.assertTrue;
 
 import com.github.dergil.hierarchynote.model.dto.ResponseDto;
 import com.github.dergil.hierarchynote.model.dto.UpdateFileDto;
-import com.github.dergil.hierarchynote.model.entity.NoteEntity;
+import com.github.dergil.hierarchynote.model.entity.FileEntity;
 import com.github.dergil.hierarchynote.model.network.ServerDB;
 import com.github.dergil.hierarchynote.util.TestUtil;
 import com.google.gson.Gson;
@@ -30,7 +30,7 @@ public class NetworkIntegrationTests {
     ServerDB serverDB;
     static final String BASE_URL = "http://10.0.2.2:8080/";
     TestUtil testUtil = new TestUtil();
-    NoteEntity note = new NoteEntity("name", "text", "MYDIR", false, false);
+    FileEntity note = new FileEntity("name", "text", "MYDIR", false, false);
 
 
     @Before
@@ -54,8 +54,8 @@ public class NetworkIntegrationTests {
 
     @Test
     public void insertFile() throws IOException {
-        NoteEntity note = new NoteEntity("name", "text", "MYDIR", false, false);
-        Call<ResponseDto> questions = serverDB.saveNote(note);
+        FileEntity note = new FileEntity("name", "text", "MYDIR", false, false);
+        Call<ResponseDto> questions = serverDB.saveFile(note);
         Response<ResponseDto> response = questions.execute();
         System.out.println(response.body());
         assertTrue(response.isSuccessful());
@@ -69,7 +69,7 @@ public class NetworkIntegrationTests {
         UpdateFileDto updateFileDto = new UpdateFileDto("replace", "/text", newText);
         List<UpdateFileDto> updateBody = new ArrayList<>();
         updateBody.add(updateFileDto);
-        Call<ResponseDto> questions = serverDB.editNote(id, updateBody);
+        Call<ResponseDto> questions = serverDB.editFile(id, updateBody);
         Response<ResponseDto> response = questions.execute();
 
         note.setText(newText);
@@ -80,7 +80,7 @@ public class NetworkIntegrationTests {
     @Test
     public void deleteFile() throws IOException {
         Long id = insertNoteHelper();
-        Call<ResponseDto> questions = serverDB.deleteNote(id);
+        Call<ResponseDto> questions = serverDB.deleteFile(id);
         Response<ResponseDto> response = questions.execute();
         assertTrue(response.isSuccessful());
     }
@@ -88,15 +88,15 @@ public class NetworkIntegrationTests {
     @Test
     public void readFiles() throws IOException {
         insertNoteHelper();
-        Call<List<NoteEntity>> questions = serverDB.getNotes();
-        Response<List<NoteEntity>> response = questions.execute();
-        List<NoteEntity> body = response.body();
+        Call<List<FileEntity>> questions = serverDB.getFiles();
+        Response<List<FileEntity>> response = questions.execute();
+        List<FileEntity> body = response.body();
         assertTrue(response.isSuccessful());
         assertTrue(testUtil.compareNotesWithoutId(body.get(0), note));
     }
 
     private Long insertNoteHelper() throws IOException {
-        Call<ResponseDto> questions = serverDB.saveNote(note);
+        Call<ResponseDto> questions = serverDB.saveFile(note);
         Response<ResponseDto> response = questions.execute();
 
 //        find key id with a number as value

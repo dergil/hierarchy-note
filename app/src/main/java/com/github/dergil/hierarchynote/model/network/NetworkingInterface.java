@@ -1,14 +1,14 @@
 package com.github.dergil.hierarchynote.model.network;
 
-import com.github.dergil.hierarchynote.model.entity.NoteEntity;
+import com.github.dergil.hierarchynote.model.entity.FileEntity;
 import com.github.dergil.hierarchynote.model.dto.ResponseDto;
 import com.github.dergil.hierarchynote.model.dto.UpdateFileDto;
 
 import java.util.List;
 
 public interface NetworkingInterface {
-    ResponseDto insert(NoteEntity note);
+    ResponseDto insert(FileEntity note);
     boolean update(Long id, UpdateFileDto updateFileDto);
     void delete(Long id);
-    List<NoteEntity> getNotes();
+    List<FileEntity> getNotes();
 }
