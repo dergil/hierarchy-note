@@ -14,7 +14,7 @@ public class TestUtil {
     private Long id2 = 434343L;
     private String name2 = "other name";
     private String text2 = "other text";
-    private String directory_name2 = "MYDIR2";
+    private String directory_name2 = "MYDIR";
     private Boolean isDir2 = Boolean.FALSE;
     private Boolean isSynced2 = Boolean.FALSE;
 
@@ -52,6 +52,32 @@ public class TestUtil {
         if (!note1.getText().equals(note2.getText()))
             sameValues = false;
         if (!note1.getDir().equals(note2.isDir()))
+            sameValues = false;
+        return sameValues;
+    }
+
+    public boolean compareNotesWithoutId (ResponseDto note1, NoteEntity note2) {
+        boolean sameValues = true;
+        if (!note1.getName().equals(note2.getName()))
+            sameValues = false;
+        if (!note1.getText().equals(note2.getText()))
+            sameValues = false;
+        if (!note1.getDir().equals(note2.isDir()))
+            sameValues = false;
+        if (!note1.getDirectory().equals(note2.getDirectory_name()))
+            sameValues = false;
+        return sameValues;
+    }
+
+    public boolean compareNotesWithoutId (NoteEntity note1, NoteEntity note2) {
+        boolean sameValues = true;
+        if (!note1.getName().equals(note2.getName()))
+            sameValues = false;
+        if (!note1.getText().equals(note2.getText()))
+            sameValues = false;
+        if (!note1.isDir().equals(note2.isDir()))
+            sameValues = false;
+        if (!note1.getDirectory_name().equals(note2.getDirectory_name()))
             sameValues = false;
         return sameValues;
     }

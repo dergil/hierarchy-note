@@ -94,10 +94,13 @@ public class NoteRepository implements NoteRepositoryInterface{
 
         NoteRoomDatabase.databaseWriteExecutor.execute(() -> {
             List<NoteEntity> remoteNotes = networking.getNotes();
+            List<NoteEntity> localFiles = mNoteDao.findAll();
             if (remoteNotes != null) {
                 for (NoteEntity remoteNote : remoteNotes) {
-                    remoteNote.setSynced(Boolean.TRUE);
-                    mNoteDao.insert(remoteNote);
+                    if (!localFiles.contains(remoteNote)){
+                        remoteNote.setSynced(Boolean.TRUE);
+                        mNoteDao.insert(remoteNote);
+                    }
                 }
             }
             sync();
@@ -203,11 +206,12 @@ public class NoteRepository implements NoteRepositoryInterface{
                 id = insertRemotely(localFile);
             }
             if (id != null){
-                Long oldFileId = localFile.getId();
-                mNoteDao.deleteById(oldFileId);
+//                Long oldFileId = localFile.getId();
+//                mNoteDao.deleteById(oldFileId);
                 localFile.setId(id);
                 localFile.setSynced(Boolean.TRUE);
-                mNoteDao.insert(localFile);
+//                mNoteDao.insert(localFile);
+                mNoteDao.update(localFile);
             }
         }
     }
@@ -223,15 +227,19 @@ public class NoteRepository implements NoteRepositoryInterface{
         NoteRoomDatabase.databaseWriteExecutor.execute(() -> {
             Long id = note.getId();
             NoteEntity oldNote = mNoteDao.find(id);
-            boolean syncSuccessful = false;
+//            boolean successfulRemoteNameChange = false;
             if (!oldNote.getName().equals(note.getName())) {
-                syncSuccessful = networking.update(id, new UpdateFileDto("replace", "/name", note.getName()));
+                networking.update(id, new UpdateFileDto("replace", "/name", note.getName()));
             }
+//            if (!successfulRemoteNameChange)
+//                note.setSynced(Boolean.FALSE);
+
+//            boolean successfulRemoteTextChange = false;
             if (!oldNote.getText().equals(note.getText())) {
-                syncSuccessful = networking.update(id, new UpdateFileDto("replace", "/text", note.getText()));
+                networking.update(id, new UpdateFileDto("replace", "/text", note.getText()));
             }
-            if (syncSuccessful)
-                note.setSynced(Boolean.TRUE);
+//            if (!successfulRemoteNameChange)
+//                note.setSynced(Boolean.FALSE);
             mNoteDao.update(note);
         });
     }

@@ -67,7 +67,7 @@ public class EndToEndTests {
     }
 
     @Test
-    public void createDirectory() throws InterruptedException {
+    public void createDirectory() {
         Intents.init();
         onView(withId(R.id.add_dir)).perform(click());
         onView(withId(R.id.edit_name))

@@ -16,7 +16,7 @@ import com.github.dergil.hierarchynote.model.dao.NoteDao;
 import java.util.concurrent.ExecutorService;
 import java.util.concurrent.Executors;
 
-@Database(entities = NoteEntity.class, version = 38, exportSchema = false)
+@Database(entities = NoteEntity.class, version = 40, exportSchema = false)
 public abstract class NoteRoomDatabase extends RoomDatabase {
 
     public abstract NoteDao wordDao();

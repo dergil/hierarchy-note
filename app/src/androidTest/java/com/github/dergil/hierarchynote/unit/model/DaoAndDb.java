@@ -1,4 +1,4 @@
-package com.github.dergil.hierarchynote.integration;
+package com.github.dergil.hierarchynote.unit.model;
 
 import static androidx.test.espresso.matcher.ViewMatchers.assertThat;
 
@@ -47,7 +47,7 @@ public class DaoAndDb {
     }
 
     @Test
-    public void insertNoteAndRead() throws Exception {
+    public void readFile() throws Exception {
         NoteEntity createdNote = new NoteEntity("name", "text", "MYDIR", false, false);
         Long id = 4242L;
         createdNote.setId(id);
@@ -57,7 +57,7 @@ public class DaoAndDb {
     }
 
     @Test
-    public void insertNoteAndDelete() {
+    public void deleteFile() {
         NoteEntity insertedNote = insertNote1();
         noteDao.deleteById(insertedNote.getId());
         NoteEntity foundNote = noteDao.find(insertedNote.getId());
@@ -65,7 +65,7 @@ public class DaoAndDb {
     }
 
     @Test
-    public void updateNote() {
+    public void updateFile() {
         String newText = "changed Text";
         NoteEntity insertedNote = insertNote1();
         insertedNote.setText(newText);

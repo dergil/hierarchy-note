@@ -96,6 +96,18 @@ public class NoteEntity {
     public void setSynced(Boolean synced) {
         this.synced = synced;
     }
+
+    @Override
+    public String toString() {
+        return "NoteEntity{" +
+                "id=" + id +
+                ", name='" + name + '\'' +
+                ", text='" + text + '\'' +
+                ", directory_name='" + directory_name + '\'' +
+                ", isDir=" + isDir +
+                ", synced=" + synced +
+                '}';
+    }
 }
 
 

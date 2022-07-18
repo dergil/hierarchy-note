@@ -64,19 +64,19 @@ public class NoteAPI implements NetworkingInterface{
     }
 
 
-        public List<NoteEntity> getNotes(){
-        Call<List<NoteEntity>> questions = serverDB.getNotes();
-        try {
-            Response<List<NoteEntity>> execute = questions.execute();
-            List<NoteEntity> body = execute.body();
-            if (execute.isSuccessful()){
-                return body;
-            }
-            return null;
-        } catch (IOException e) {
-            e.printStackTrace();
-            return null;
+    public List<NoteEntity> getNotes(){
+    Call<List<NoteEntity>> questions = serverDB.getNotes();
+    try {
+        Response<List<NoteEntity>> execute = questions.execute();
+        List<NoteEntity> body = execute.body();
+        if (execute.isSuccessful()){
+            return body;
         }
+        return null;
+    } catch (IOException e) {
+        e.printStackTrace();
+        return null;
+    }
 
 
 

@@ -1,4 +1,4 @@
-package com.github.dergil.hierarchynote.repository;
+package com.github.dergil.hierarchynote.unit.repository;
 
 import static org.junit.Assert.assertEquals;
 import static org.junit.Assert.assertThat;
@@ -30,7 +30,7 @@ import org.mockito.junit.MockitoJUnitRunner;
 import java.io.IOException;
 
 @RunWith(MockitoJUnitRunner.class)
-public class NoteRepository_NetworkingUnitTests {
+public class FileRepository_NetworkingUnitTests {
     private NoteRoomDatabase db;
     private NoteRepository repository;
     private NoteEntity note = new NoteEntity("name", "text", "MYDIR", false, false);
@@ -76,6 +76,7 @@ public class NoteRepository_NetworkingUnitTests {
 
         repository.update(note);
         Thread.sleep(5);
+
 
         ArgumentCaptor<UpdateFileDto> dtoCaptor = ArgumentCaptor.forClass(UpdateFileDto.class);
         ArgumentCaptor<Long> longCaptor = ArgumentCaptor.forClass(Long.class);

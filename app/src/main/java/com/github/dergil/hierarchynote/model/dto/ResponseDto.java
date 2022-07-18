@@ -4,8 +4,9 @@ public class ResponseDto {
     private Long id;
     private String name;
     private String text;
-    private String directory;
+    private String directory_name;
     private Boolean isDir;
+    private Boolean synced;
 
     public String getName() {
         return name;
@@ -24,11 +25,11 @@ public class ResponseDto {
     }
 
     public String getDirectory() {
-        return directory;
+        return directory_name;
     }
 
     public void setDirectory(String directory) {
-        this.directory = directory;
+        this.directory_name = directory;
     }
 
     public Boolean getDir() {
@@ -47,14 +48,23 @@ public class ResponseDto {
         this.id = id;
     }
 
+    public Boolean getSynced() {
+        return synced;
+    }
+
+    public void setSynced(Boolean synced) {
+        this.synced = synced;
+    }
+
     @Override
     public String toString() {
         return "ResponseDto{" +
                 "id=" + id +
                 ", name='" + name + '\'' +
                 ", text='" + text + '\'' +
-                ", directory='" + directory + '\'' +
+                ", directory='" + directory_name + '\'' +
                 ", isDir=" + isDir +
+                ", synced=" + synced +
                 '}';
     }
 }
