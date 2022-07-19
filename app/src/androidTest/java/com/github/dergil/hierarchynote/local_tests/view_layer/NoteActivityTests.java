@@ -1,4 +1,4 @@
-package com.github.dergil.hierarchynote.view;
+package com.github.dergil.hierarchynote.local_tests.view_layer;
 
 import static androidx.test.espresso.Espresso.onView;
 import static androidx.test.espresso.assertion.ViewAssertions.matches;
@@ -12,7 +12,6 @@ import androidx.test.ext.junit.runners.AndroidJUnit4;
 import androidx.test.filters.LargeTest;
 
 import com.github.dergil.hierarchynote.R;
-import com.github.dergil.hierarchynote.view.activities.NewDirectoryActivity;
 import com.github.dergil.hierarchynote.view.activities.NoteActivity;
 
 import org.junit.Rule;

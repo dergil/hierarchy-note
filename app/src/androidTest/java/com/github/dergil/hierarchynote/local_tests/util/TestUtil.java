@@ -1,4 +1,4 @@
-package com.github.dergil.hierarchynote.util;
+package com.github.dergil.hierarchynote.local_tests.util;
 
 import com.github.dergil.hierarchynote.model.entity.FileEntity;
 import com.github.dergil.hierarchynote.model.dto.ResponseDto;

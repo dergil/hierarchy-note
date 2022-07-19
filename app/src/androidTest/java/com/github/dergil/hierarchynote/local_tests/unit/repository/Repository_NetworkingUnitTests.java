@@ -1,4 +1,4 @@
-package com.github.dergil.hierarchynote.unit.repository;
+package com.github.dergil.hierarchynote.local_tests.unit.repository;
 
 import static org.junit.Assert.assertEquals;
 import static org.junit.Assert.assertThat;
@@ -30,7 +30,7 @@ import org.mockito.junit.MockitoJUnitRunner;
 import java.io.IOException;
 
 @RunWith(MockitoJUnitRunner.class)
-public class FileRepository_NetworkingUnitTests {
+public class Repository_NetworkingUnitTests {
     private FileRoomDatabase db;
     private FileRepository repository;
     private FileEntity note = new FileEntity("name", "text", "MYDIR", false, false);

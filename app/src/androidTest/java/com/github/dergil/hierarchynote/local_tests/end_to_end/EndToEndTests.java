@@ -1,4 +1,4 @@
-package com.github.dergil.hierarchynote.end_to_end;
+package com.github.dergil.hierarchynote.local_tests.end_to_end;
 
 import static androidx.test.espresso.Espresso.onView;
 import static androidx.test.espresso.action.ViewActions.click;
@@ -33,16 +33,10 @@ import com.github.dergil.hierarchynote.view.activities.MainActivity;
 
 import org.hamcrest.Description;
 import org.hamcrest.Matcher;
-import org.junit.After;
 import org.junit.Before;
 import org.junit.Rule;
 import org.junit.Test;
 import org.junit.runner.RunWith;
-
-import okhttp3.HttpUrl;
-import okhttp3.mockwebserver.MockResponse;
-import okhttp3.mockwebserver.MockWebServer;
-import okhttp3.mockwebserver.RecordedRequest;
 
 @RunWith(AndroidJUnit4.class)
 @LargeTest
@@ -79,7 +73,7 @@ public class EndToEndTests {
     }
 
     @Test
-    public void updateFile() {
+    public void updateNote() {
         String new_name = "hro";
         String new_text = "hro_text";
         insertNote(STRING_TO_BE_TYPED);
@@ -99,11 +93,12 @@ public class EndToEndTests {
                 .check(matches(atPosition(0, hasDescendant(withText(STRING_TO_BE_TYPED)))));
     }
 
-    @Test
+    @Test(expected = PerformException.class)
     public void deleteFile() {
         insertNote(STRING_TO_BE_TYPED);
         deleteFileAtPositionZero();
-        assertFalse(fileAtPositionZero(STRING_TO_BE_TYPED));
+        deleteFileAtPositionZero();
+//        assertFalse(fileAtPositionZero(STRING_TO_BE_TYPED));
     }
 
 

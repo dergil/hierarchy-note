@@ -33,33 +33,6 @@ public class NoteActivity extends AppCompatActivity {
             mEditNameView.setText(intent.getStringExtra(EXTRA_REQUEST_NAME));
         if (intent.hasExtra(EXTRA_REQUEST_TEXT))
             mEditTextView.setText(intent.getStringExtra(EXTRA_REQUEST_TEXT));
-
-//        final Button button_save = findViewById(R.id.button_save);
-//        button_save.setOnClickListener(view -> {
-//            Intent replyIntent = new Intent(getApplicationContext(), MainActivity.class);
-//            if (TextUtils.isEmpty(mEditNameView.getText()) ) {
-//                setResult(RESULT_CANCELED, replyIntent);
-//            } else {
-//                String name = mEditNameView.getText().toString();
-//                String text = mEditTextView.getText().toString();
-//                replyIntent.putExtra(EXTRA_ID, intent.getLongExtra(EXTRA_ID, -1));
-//                replyIntent.putExtra(EXTRA_REPLY_NAME, name);
-//                replyIntent.putExtra(EXTRA_REPLY_TEXT, text);
-//                setResult(RESULT_OK, replyIntent);
-//            }
-//            finish();
-//        });
-//
-//        final Button button_delete = findViewById(R.id.button_delete);
-//        button_delete.setOnClickListener(view -> {
-//            Intent replyIntent = new Intent();
-//            replyIntent.putExtra(EXTRA_ID, intent.getLongExtra(EXTRA_ID, -1));
-//            replyIntent.putExtra(EXTRA_DELETE, "DELETE");
-////            String name = mEditNameView.getText().toString();
-////            replyIntent.putExtra(EXTRA_REPLY_NAME, name);
-//            setResult(RESULT_OK, replyIntent);
-//            finish();
-//        });
     }
 
     @Override

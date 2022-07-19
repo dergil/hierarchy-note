@@ -10,16 +10,16 @@ import androidx.lifecycle.ViewModelProvider;
 
 import com.github.dergil.hierarchynote.HierarchyApp;
 import com.github.dergil.hierarchynote.model.entity.FileEntity;
-import com.github.dergil.hierarchynote.model.network.FileAPI;
 import com.github.dergil.hierarchynote.model.repository.FileRepository;
+import com.github.dergil.hierarchynote.model.repository.FileRepositoryInterface;
 
 import java.util.List;
 
 public class FileViewModel extends AndroidViewModel implements FileViewModelInterface {
 
-    private FileRepository mRepository;
+    private FileRepositoryInterface mRepository;
 
-    public FileViewModel(@NonNull Application application, FileRepository fileRepository) {
+    public FileViewModel(@NonNull Application application, FileRepositoryInterface fileRepository) {
         super(application);
         mRepository = fileRepository;
     }

@@ -1,11 +1,8 @@
-package com.github.dergil.hierarchynote.integration.repo;
-
-import static com.github.dergil.hierarchynote.util.TestUtil.compareNotes;
+package com.github.dergil.hierarchynote.local_tests.integration.repo;
 
 import android.content.Context;
 
 import androidx.arch.core.executor.testing.InstantTaskExecutorRule;
-import androidx.lifecycle.LiveData;
 import androidx.room.Room;
 import androidx.test.core.app.ApplicationProvider;
 import androidx.test.ext.junit.runners.AndroidJUnit4;
@@ -15,7 +12,6 @@ import org.junit.Before;
 import org.junit.Rule;
 import org.junit.Test;
 import org.junit.runner.RunWith;
-import org.mockito.Mock;
 
 import static org.junit.Assert.assertNull;
 import static org.junit.Assert.assertTrue;
@@ -25,8 +21,7 @@ import com.github.dergil.hierarchynote.model.entity.FileEntity;
 import com.github.dergil.hierarchynote.model.network.FileAPI;
 import com.github.dergil.hierarchynote.model.repository.FileRepository;
 import com.github.dergil.hierarchynote.model.db.FileRoomDatabase;
-import com.github.dergil.hierarchynote.util.LiveDataTestUtil;
-import com.github.dergil.hierarchynote.util.TestUtil;
+import com.github.dergil.hierarchynote.local_tests.util.TestUtil;
 
 import java.util.Collection;
 import java.util.List;

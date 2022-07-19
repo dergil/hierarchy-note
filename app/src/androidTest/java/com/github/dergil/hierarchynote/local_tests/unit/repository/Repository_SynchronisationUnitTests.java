@@ -1,6 +1,5 @@
-package com.github.dergil.hierarchynote.unit.repository;
+package com.github.dergil.hierarchynote.local_tests.unit.repository;
 
-import static org.junit.Assert.assertEquals;
 import static org.mockito.ArgumentMatchers.any;
 import static org.mockito.Mockito.verify;
 import static org.mockito.Mockito.when;
@@ -30,57 +29,12 @@ public class Repository_SynchronisationUnitTests {
     @Mock
     FileRoomDatabase database;
 
-    FileEntity note = new FileEntity("name", "text", "MYDIR", false, false);
-
-
     @Before
     public void setUp() throws Exception {
         when(database.fileDao()).thenReturn(fileDao);
-        when(fileDao.getAlphabetizedWords("MYDIR")).thenReturn(null);
+        when(fileDao.getAlphabetizedFiles("MYDIR")).thenReturn(null);
         when(fileDao.findAll()).thenReturn(new ArrayList<FileEntity>());
     }
-
-//    @Test
-//    public void attemptSyncAtStartup() throws InterruptedException {
-//        NoteRepository repository = new NoteRepository(database, networking);
-//        Thread.sleep(5);
-//        Mockito.verify(networking).getNotes();
-//    }
-//
-//    @Test
-//    public void createNoteInNetwork() throws Throwable {
-//        NoteRepository repository = new NoteRepository(database, networking);
-//        repository.insert(note);
-//        Thread.sleep(50);
-//        Mockito.verify(networking).insert(note);
-//    }
-//
-//    private void insertNote(NoteRepository repository) throws InterruptedException {
-//        repository.insert(note);
-//        Thread.sleep(250);
-//    }
-
-//    @Test
-//    public void updateNoteInNetwork_changeName() throws Throwable {
-//        String newName = "new name";
-//        NoteRepository repository = new NoteRepository(database, networking);
-//        Thread.sleep(200);
-//        insertNote(repository);
-//        note.setName(newName);
-//
-//        repository.update(note);
-//        Thread.sleep(200);
-//
-//        ArgumentCaptor<UpdateFileDto> dtoCaptor = ArgumentCaptor.forClass(UpdateFileDto.class);
-//        ArgumentCaptor<Long> longCaptor = ArgumentCaptor.forClass(Long.class);
-//        Mockito.verify(networking).update(longCaptor.capture(), dtoCaptor.capture());
-//        UpdateFileDto capturedArgument = dtoCaptor.getValue();
-//        assertEquals(capturedArgument.getOp(), "replace");
-//        assertEquals(capturedArgument.getPath(), "/name");
-//        assertEquals(capturedArgument.getValue(), newName);
-//    }
-
-
 
 //    The server has files that are not saved locally
     @Test
@@ -113,11 +67,6 @@ public class Repository_SynchronisationUnitTests {
         localFiles.add(note1);
         localFiles.add(note2);
         when(fileDao.findAll()).thenReturn(localFiles);
-//        when(networking.getNotes()).thenReturn(null);
-//        ResponseDto responseDto = new ResponseDto();
-//        responseDto.setId(42L);
-//        when(networking.insert(any())).thenReturn(responseDto);
-
         FileRepository repository = new FileRepository(database, networking);
         Thread.sleep(50);
 
@@ -144,10 +93,4 @@ public class Repository_SynchronisationUnitTests {
         note1.setSynced(Boolean.TRUE);
         verify(fileDao).update(note1);
     }
-
-//    private void insertNote() throws InterruptedException {
-//        note.setId(id);
-//        repository.insert(note);
-//        Thread.sleep(50);
-//    }
 }

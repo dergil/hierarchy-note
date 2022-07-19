@@ -54,8 +54,6 @@ public class FileListAdapter extends ListAdapter<FileEntity, FileListAdapter.Fil
     class FileViewHolder extends RecyclerView.ViewHolder {
         private final TextView wordItemView;
         private final Context context;
-        public static final int NEW_FILE_ACTIVITY_REQUEST_CODE = 1;
-
 
         private FileViewHolder(View itemView) {
             super(itemView);

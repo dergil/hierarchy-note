@@ -15,6 +15,7 @@ import com.github.dergil.hierarchynote.R;
 import com.github.dergil.hierarchynote.model.entity.FileEntity;
 import com.github.dergil.hierarchynote.view.recycler_view.FileListAdapter;
 import com.github.dergil.hierarchynote.viewmodel.FileViewModel;
+import com.github.dergil.hierarchynote.viewmodel.FileViewModelInterface;
 import com.google.android.material.floatingactionbutton.FloatingActionButton;
 import com.google.android.material.snackbar.Snackbar;
 
@@ -24,7 +25,7 @@ public class MainActivity extends AppCompatActivity {
     public static final int NEW_DIR_ACTIVITY_REQUEST_CODE = 3;
     public static final int NEW_MAIN_ACTIVITY_REQUEST_CODE = 4;
     public static String DIRECTORY_NAME = "MYDIR";
-    private FileViewModel mFileViewModel;
+    private FileViewModelInterface mFileViewModel;
 
 
     @Override

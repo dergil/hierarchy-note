@@ -1,4 +1,4 @@
-package com.github.dergil.hierarchynote.unit.network;
+package com.github.dergil.hierarchynote.local_tests.unit.network;
 
 import static org.junit.Assert.assertEquals;
 import static org.junit.Assert.assertTrue;

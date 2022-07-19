@@ -14,7 +14,7 @@
  * limitations under the License.
  */
 
-package com.github.dergil.hierarchynote.util;
+package com.github.dergil.hierarchynote.local_tests.util;
 
 import androidx.annotation.Nullable;
 import androidx.lifecycle.LiveData;

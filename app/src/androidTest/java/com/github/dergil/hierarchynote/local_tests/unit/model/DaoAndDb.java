@@ -1,4 +1,4 @@
-package com.github.dergil.hierarchynote.unit.model;
+package com.github.dergil.hierarchynote.local_tests.unit.model;
 
 import static androidx.test.espresso.matcher.ViewMatchers.assertThat;
 
@@ -15,7 +15,7 @@ import androidx.test.ext.junit.runners.AndroidJUnit4;
 import com.github.dergil.hierarchynote.model.db.FileRoomDatabase;
 import com.github.dergil.hierarchynote.model.entity.FileEntity;
 import com.github.dergil.hierarchynote.model.dao.FileDao;
-import com.github.dergil.hierarchynote.util.TestUtil;
+import com.github.dergil.hierarchynote.local_tests.util.TestUtil;
 
 import org.junit.After;
 import org.junit.Before;

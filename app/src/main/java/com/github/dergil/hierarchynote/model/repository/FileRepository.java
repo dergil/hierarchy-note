@@ -6,7 +6,7 @@ import com.github.dergil.hierarchynote.model.dao.FileDao;
 import com.github.dergil.hierarchynote.model.db.FileRoomDatabase;
 import com.github.dergil.hierarchynote.model.entity.FileEntity;
 import com.github.dergil.hierarchynote.model.network.FileAPI;
-import com.github.dergil.hierarchynote.model.network.ServerDB;
+import com.github.dergil.hierarchynote.model.network.NetworkingInterface;
 import com.github.dergil.hierarchynote.model.dto.ResponseDto;
 import com.github.dergil.hierarchynote.model.dto.UpdateFileDto;
 
@@ -19,15 +19,13 @@ public class FileRepository implements FileRepositoryInterface {
     private FileRoomDatabase mDatabase;
     private FileDao mFileDao;
     private LiveData<List<FileEntity>> mAllFiles;
-    FileAPI networking;
+    private NetworkingInterface networking;
     public static String DIRECTORY_NAME = "MYDIR";
-
-    static String BASE_URL = "http://10.0.2.2:8080/";
 
     public FileRepository(FileRoomDatabase database, FileAPI networking) {
         mDatabase = database;
         mFileDao = database.fileDao();
-        mAllFiles = mFileDao.getAlphabetizedWords(DIRECTORY_NAME);
+        mAllFiles = mFileDao.getAlphabetizedFiles(DIRECTORY_NAME);
         this.networking = networking;
         start();
     }
@@ -62,7 +60,7 @@ public class FileRepository implements FileRepositoryInterface {
     // Room executes all queries on a separate thread.
     // Observed LiveData will notify the observer when the data has changed.
     public LiveData<List<FileEntity>> getAllFiles(String directory_name) {
-        mAllFiles = mFileDao.getAlphabetizedWords(directory_name);
+        mAllFiles = mFileDao.getAlphabetizedFiles(directory_name);
         return mAllFiles;
     }
 

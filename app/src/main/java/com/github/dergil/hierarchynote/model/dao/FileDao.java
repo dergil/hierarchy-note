@@ -33,6 +33,6 @@ void deleteById(Long id);
 void deleteAll();
 
 @Query("SELECT * FROM file_table WHERE directory_name = :directory_name ORDER BY name ASC")
-LiveData<List<FileEntity>> getAlphabetizedWords(String directory_name);
+LiveData<List<FileEntity>> getAlphabetizedFiles(String directory_name);
 }
 

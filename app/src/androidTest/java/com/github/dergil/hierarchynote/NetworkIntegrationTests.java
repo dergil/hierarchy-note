@@ -1,4 +1,4 @@
-package com.github.dergil.hierarchynote.integration.network;
+package com.github.dergil.hierarchynote;
 
 import static org.junit.Assert.assertTrue;
 
@@ -6,7 +6,7 @@ import com.github.dergil.hierarchynote.model.dto.ResponseDto;
 import com.github.dergil.hierarchynote.model.dto.UpdateFileDto;
 import com.github.dergil.hierarchynote.model.entity.FileEntity;
 import com.github.dergil.hierarchynote.model.network.ServerDB;
-import com.github.dergil.hierarchynote.util.TestUtil;
+import com.github.dergil.hierarchynote.local_tests.util.TestUtil;
 import com.google.gson.Gson;
 import com.google.gson.GsonBuilder;
 
