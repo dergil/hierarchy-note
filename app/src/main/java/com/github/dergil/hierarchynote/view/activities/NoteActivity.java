@@ -7,6 +7,7 @@ import android.os.Bundle;
 import android.text.TextUtils;
 import android.widget.EditText;
 
+import com.github.dergil.hierarchynote.MainActivity;
 import com.github.dergil.hierarchynote.R;
 
 public class NoteActivity extends AppCompatActivity {

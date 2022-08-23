@@ -8,7 +8,7 @@ import androidx.test.ext.junit.runners.AndroidJUnit4;
 import com.github.dergil.hierarchynote.model.dto.UpdateFileDto;
 import com.github.dergil.hierarchynote.model.entity.FileEntity;
 import com.github.dergil.hierarchynote.model.dto.ResponseDto;
-import com.github.dergil.hierarchynote.model.network.ServerDB;
+import com.github.dergil.hierarchynote.model.network.FileServerDB;
 import com.google.gson.Gson;
 import com.google.gson.GsonBuilder;
 
@@ -33,7 +33,7 @@ import retrofit2.converter.gson.GsonConverterFactory;
 public class NetworkUnitTests {
 //    static final String BASE_URL = "http://10.0.2.2:8080/";
 //    static final String BASE_URL = "http://127.0.0.1:8080/";
-    ServerDB serverDB;
+    FileServerDB serverDB;
 
     MockWebServer mockWebServer;
 
@@ -55,7 +55,7 @@ public class NetworkUnitTests {
                 .addConverterFactory(GsonConverterFactory.create(gson))
                 .build();
 
-        serverDB = retrofit.create(ServerDB.class);
+        serverDB = retrofit.create(FileServerDB.class);
     }
 
     @Test

@@ -1,4 +1,4 @@
-package com.github.dergil.hierarchynote.view.activities;
+package com.github.dergil.hierarchynote;
 
 import androidx.annotation.NonNull;
 import androidx.appcompat.app.AppCompatActivity;
@@ -11,8 +11,10 @@ import android.content.Intent;
 import android.os.Bundle;
 import android.view.View;
 
-import com.github.dergil.hierarchynote.R;
 import com.github.dergil.hierarchynote.model.entity.FileEntity;
+import com.github.dergil.hierarchynote.view.activities.NewDirectoryActivity;
+import com.github.dergil.hierarchynote.view.activities.NoteActivity;
+import com.github.dergil.hierarchynote.view.activities.ui.login.LoginActivity;
 import com.github.dergil.hierarchynote.view.recycler_view.FileListAdapter;
 import com.github.dergil.hierarchynote.viewmodel.FileViewModel;
 import com.github.dergil.hierarchynote.viewmodel.FileViewModelInterface;
@@ -81,15 +83,15 @@ public class MainActivity extends AppCompatActivity {
                 Snackbar snackbar = Snackbar
                         .make(findViewById(android.R.id.content), "File is deleted", Snackbar.LENGTH_LONG)
                         .setDuration(4000)
-                        .setAnchorView(add_dir)
+//                        .setAnchorView(add_dir)
                         .setAction("UNDO", new View.OnClickListener() {
                             @Override
                             public void onClick(View view) {
                                 fileToBeDeleted.setSynced(Boolean.FALSE);
                                 mFileViewModel.insert(fileToBeDeleted);
                                 Snackbar snackbar1 = Snackbar
-                                        .make(findViewById(android.R.id.content), "File is restored!", Snackbar.LENGTH_SHORT)
-                                        .setAnchorView(add_dir);
+                                        .make(findViewById(android.R.id.content), "File is restored!", Snackbar.LENGTH_SHORT);
+//                                        .setAnchorView(add_dir);
                                 snackbar1.show();
                             }
                         });
@@ -118,6 +120,9 @@ public class MainActivity extends AppCompatActivity {
                 }
             }
         });
+
+        Intent intent = new Intent(MainActivity.this, LoginActivity.class);
+        startActivityForResult(intent, EDIT_NOTE_ACTIVITY_REQUEST_CODE);
 
 
     }

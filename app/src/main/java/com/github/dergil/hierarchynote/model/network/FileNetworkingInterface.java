@@ -6,7 +6,7 @@ import com.github.dergil.hierarchynote.model.dto.UpdateFileDto;
 
 import java.util.List;
 
-public interface NetworkingInterface {
+public interface FileNetworkingInterface {
     ResponseDto insert(FileEntity note);
     boolean update(Long id, UpdateFileDto updateFileDto);
     void delete(Long id);

@@ -29,7 +29,7 @@ import androidx.test.filters.LargeTest;
 
 import com.github.dergil.hierarchynote.R;
 
-import com.github.dergil.hierarchynote.view.activities.MainActivity;
+import com.github.dergil.hierarchynote.MainActivity;
 
 import org.hamcrest.Description;
 import org.hamcrest.Matcher;

@@ -6,25 +6,30 @@
 
     <application
         android:name="com.github.dergil.hierarchynote.HierarchyApp"
-        android:networkSecurityConfig="@xml/network_security_config"
-        android:usesCleartextTraffic="true"
-
         android:allowBackup="true"
         android:icon="@mipmap/ic_launcher"
         android:label="@string/app_name"
+        android:networkSecurityConfig="@xml/network_security_config"
         android:roundIcon="@mipmap/ic_launcher_round"
         android:supportsRtl="true"
-        android:theme="@style/Theme.HierarchyNote">
-
+        android:theme="@style/Theme.HierarchyNote"
+        android:usesCleartextTraffic="true">
         <activity
-            android:name="com.github.dergil.hierarchynote.view.activities.NewDirectoryActivity"
+            android:name="com.github.dergil.hierarchynote.view.activities.ui.login.LoginActivity"
+            android:exported="false"
+            android:label="@string/title_activity_login" />
+        <activity
+            android:name=".AuthActivity"
             android:exported="false" />
         <activity
-            android:name="com.github.dergil.hierarchynote.view.activities.NoteActivity"
-            android:exported="false"
-            android:parentActivityName="com.github.dergil.hierarchynote.view.activities.MainActivity" />
+            android:name=".NewDirectoryActivity"
+            android:exported="false" />
         <activity
-            android:name="com.github.dergil.hierarchynote.view.activities.MainActivity"
+            android:name=".NoteActivity"
+            android:exported="false"
+            android:parentActivityName=".MainActivity" />
+        <activity
+            android:name=".MainActivity"
             android:exported="true">
             <intent-filter>
                 <action android:name="android.intent.action.MAIN" />

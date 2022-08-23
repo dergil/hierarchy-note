@@ -6,7 +6,7 @@ import com.github.dergil.hierarchynote.model.dao.FileDao;
 import com.github.dergil.hierarchynote.model.db.FileRoomDatabase;
 import com.github.dergil.hierarchynote.model.entity.FileEntity;
 import com.github.dergil.hierarchynote.model.network.FileAPI;
-import com.github.dergil.hierarchynote.model.network.NetworkingInterface;
+import com.github.dergil.hierarchynote.model.network.FileNetworkingInterface;
 import com.github.dergil.hierarchynote.model.dto.ResponseDto;
 import com.github.dergil.hierarchynote.model.dto.UpdateFileDto;
 
@@ -19,7 +19,7 @@ public class FileRepository implements FileRepositoryInterface {
     private FileRoomDatabase mDatabase;
     private FileDao mFileDao;
     private LiveData<List<FileEntity>> mAllFiles;
-    private NetworkingInterface networking;
+    private FileNetworkingInterface networking;
     public static String DIRECTORY_NAME = "MYDIR";
 
     public FileRepository(FileRoomDatabase database, FileAPI networking) {

@@ -5,7 +5,7 @@ import static org.junit.Assert.assertTrue;
 import com.github.dergil.hierarchynote.model.dto.ResponseDto;
 import com.github.dergil.hierarchynote.model.dto.UpdateFileDto;
 import com.github.dergil.hierarchynote.model.entity.FileEntity;
-import com.github.dergil.hierarchynote.model.network.ServerDB;
+import com.github.dergil.hierarchynote.model.network.FileServerDB;
 import com.github.dergil.hierarchynote.local_tests.util.TestUtil;
 import com.google.gson.Gson;
 import com.google.gson.GsonBuilder;
@@ -29,7 +29,7 @@ import retrofit2.converter.gson.GsonConverterFactory;
 // backend needs to be running
 public class NetworkIntegrationTests {
 
-    ServerDB serverDB;
+    FileServerDB serverDB;
     static final String BASE_URL = "http://10.0.2.2:8080/";
 //    static final String BASE_URL = "http://127.0.0.1:8080/";
     TestUtil testUtil = new TestUtil();
@@ -50,7 +50,7 @@ public class NetworkIntegrationTests {
                 .addConverterFactory(GsonConverterFactory.create(gson))
                 .build();
 
-        serverDB = retrofit.create(ServerDB.class);
+        serverDB = retrofit.create(FileServerDB.class);
     }
 
 

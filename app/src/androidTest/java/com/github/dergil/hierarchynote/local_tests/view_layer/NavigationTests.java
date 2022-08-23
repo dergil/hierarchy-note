@@ -20,7 +20,7 @@ import androidx.test.ext.junit.runners.AndroidJUnit4;
 import androidx.test.filters.LargeTest;
 
 import com.github.dergil.hierarchynote.R;
-import com.github.dergil.hierarchynote.view.activities.MainActivity;
+import com.github.dergil.hierarchynote.MainActivity;
 
 import org.junit.BeforeClass;
 import org.junit.Rule;
@@ -45,22 +45,9 @@ public class NavigationTests {
 
     }
 
-//    @Before
-//    public void setUp() {
-////        Intents.release();
-//        Intents.init();
-//    }
-//
-//    @After
-//    public void tearDown() throws Exception {
-//        Intents.release();
-//        Thread.sleep(200);
-//    }
-
     @Test
     public void opensNewNoteActivity() throws InterruptedException {
         onView(withId(R.id.fab)).perform(click());
-//        intended(hasComponent(NoteActivity.class.getName()));
         Thread.sleep(250);
         onView(withId(R.id.edit_text)).check(matches(isDisplayed()));
 

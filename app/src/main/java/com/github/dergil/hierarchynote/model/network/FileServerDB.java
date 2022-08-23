@@ -14,7 +14,7 @@ import retrofit2.http.POST;
 import retrofit2.http.PUT;
 import retrofit2.http.Query;
 
-public interface ServerDB {
+public interface FileServerDB {
 
     @POST("/api/core/file/create")
     Call<ResponseDto> saveFile(@Body FileEntity file);
@@ -29,16 +29,4 @@ public interface ServerDB {
     Call<ResponseDto> deleteFile(@Query("id") Long id);
 
 
-
-
-
-
-
-//    public List<Note> getAllWords(String directory_name);
-//
-//    public void insert(Note note);
-//
-//    public void update(Note note);
-//
-//    public void deleteById(long id);
 }

@@ -53,6 +53,10 @@ public class AppExecutors {
         return mDiskIO;
     }
 
+    public Executor networkIO() {
+        return mNetworkIO;
+    }
+
     private static class MainThreadExecutor implements Executor {
         private Handler mainThreadHandler = new Handler(Looper.getMainLooper());
 

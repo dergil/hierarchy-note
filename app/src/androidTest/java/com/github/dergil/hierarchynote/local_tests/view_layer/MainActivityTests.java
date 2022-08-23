@@ -19,7 +19,7 @@ import androidx.test.ext.junit.runners.AndroidJUnit4;
 import androidx.test.filters.LargeTest;
 
 import com.github.dergil.hierarchynote.R;
-import com.github.dergil.hierarchynote.view.activities.MainActivity;
+import com.github.dergil.hierarchynote.MainActivity;
 
 import org.junit.BeforeClass;
 import org.junit.Rule;
