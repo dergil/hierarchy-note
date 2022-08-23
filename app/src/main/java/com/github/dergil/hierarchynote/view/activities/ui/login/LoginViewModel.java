@@ -4,12 +4,17 @@ import androidx.lifecycle.LiveData;
 import androidx.lifecycle.MutableLiveData;
 import androidx.lifecycle.ViewModel;
 
+import android.os.Handler;
+import android.os.Looper;
 import android.util.Patterns;
 
 import com.github.dergil.hierarchynote.R;
 import com.github.dergil.hierarchynote.view.activities.data.LoginRepository;
 import com.github.dergil.hierarchynote.view.activities.data.Result;
 import com.github.dergil.hierarchynote.view.activities.data.model.LoggedInUser;
+
+import java.util.concurrent.ExecutorService;
+import java.util.concurrent.Executors;
 
 public class LoginViewModel extends ViewModel {
 
@@ -30,15 +35,25 @@ public class LoginViewModel extends ViewModel {
     }
 
     public void login(String username, String password) {
-        // can be launched in a separate asynchronous job
-        Result<LoggedInUser> result = loginRepository.login(username, password);
 
-        if (result instanceof Result.Success) {
-            LoggedInUser data = ((Result.Success<LoggedInUser>) result).getData();
-            loginResult.setValue(new LoginResult(new LoggedInUserView(data.getDisplayName())));
-        } else {
-            loginResult.setValue(new LoginResult(R.string.login_failed));
-        }
+        ExecutorService executor = Executors.newSingleThreadExecutor();
+        Handler handler = new Handler(Looper.getMainLooper());
+
+        executor.execute(() -> {
+            //Background work here
+            // can be launched in a separate asynchronous job
+            Result<LoggedInUser> result = loginRepository.login(username, password);
+            handler.post(() -> {
+                //UI Thread work here
+                if (result instanceof Result.Success) {
+                    LoggedInUser data = ((Result.Success<LoggedInUser>) result).getData();
+                    loginResult.setValue(new LoginResult(new LoggedInUserView(data.getEmail())));
+                } else {
+                    loginResult.setValue(new LoginResult(R.string.login_failed));
+                }
+            });
+        });
+
     }
 
     public void loginDataChanged(String username, String password) {

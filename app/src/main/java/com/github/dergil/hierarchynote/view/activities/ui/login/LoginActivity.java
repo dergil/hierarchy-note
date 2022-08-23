@@ -5,6 +5,7 @@ import android.app.Activity;
 import androidx.lifecycle.Observer;
 import androidx.lifecycle.ViewModelProvider;
 
+import android.content.Intent;
 import android.os.Bundle;
 
 import androidx.annotation.Nullable;
@@ -23,6 +24,7 @@ import android.widget.TextView;
 import android.widget.Toast;
 
 import com.github.dergil.hierarchynote.AppExecutors;
+import com.github.dergil.hierarchynote.MainActivity;
 import com.github.dergil.hierarchynote.R;
 import com.github.dergil.hierarchynote.databinding.ActivityLoginBinding;
 import com.github.dergil.hierarchynote.view.activities.ui.login.LoginViewModel;
@@ -33,6 +35,8 @@ public class LoginActivity extends AppCompatActivity {
     private LoginViewModel loginViewModel;
     private ActivityLoginBinding binding;
 //    private AppExecutors appExecutors;
+    public static final int NEW_MAIN_ACTIVITY_REQUEST_CODE = 4;
+
 
     @Override
     public void onCreate(Bundle savedInstanceState) {
@@ -124,8 +128,14 @@ public class LoginActivity extends AppCompatActivity {
                 loadingProgressBar.setVisibility(View.VISIBLE);
                 loginViewModel.login(usernameEditText.getText().toString(),
                         passwordEditText.getText().toString());
+
+                Intent intent = new Intent(LoginActivity.this, MainActivity.class);
+                intent.putExtra(MainActivity.DIRECTORY_NAME, "MYDIR");
+                startActivityForResult(intent, NEW_MAIN_ACTIVITY_REQUEST_CODE);
             }
         });
+
+
     }
 
     private void updateUiWithUser(LoggedInUserView model) {

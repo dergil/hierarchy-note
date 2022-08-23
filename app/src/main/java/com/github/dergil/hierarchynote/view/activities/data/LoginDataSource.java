@@ -1,6 +1,7 @@
 package com.github.dergil.hierarchynote.view.activities.data;
 
 import com.github.dergil.hierarchynote.model.dto.SignupDto;
+import com.github.dergil.hierarchynote.model.dto.SignupResponseDto;
 import com.github.dergil.hierarchynote.model.network.JwtAPI;
 import com.github.dergil.hierarchynote.view.activities.data.model.LoggedInUser;
 
@@ -16,20 +17,23 @@ public class LoginDataSource {
     public Result<LoggedInUser> login(String username, String password) {
 
         try {
-            jwtAPI.signup(username, password);
-            SignupDto signupDto = new SignupDto();
-            signupDto.setEmail(username);
-            signupDto.setPassword(password);
-            String jwt = jwtAPI.login(signupDto);
-
-
-
-            // TODO: handle loggedInUser authentication
-            LoggedInUser fakeUser =
+            SignupDto signupDto = new SignupDto(username, password);
+            SignupResponseDto signupResponseDto = jwtAPI.signup(signupDto);
+            String jwt = jwtAPI.login(username, password);
+            LoggedInUser user =
                     new LoggedInUser(
-                            java.util.UUID.randomUUID().toString(),
-                            "Jane Doe");
-            return new Result.Success<>(fakeUser);
+                            signupResponseDto.getId(),
+                            signupResponseDto.getEmail(),
+                            jwt);
+
+
+
+//            // TODO: handle loggedInUser authentication
+//            LoggedInUser fakeUser =
+//                    new LoggedInUser(
+//                            java.util.UUID.randomUUID().toString(),
+//                            "Jane Doe");
+            return new Result.Success<>(user);
         } catch (Exception e) {
             return new Result.Error(new IOException("Error logging in", e));
         }

@@ -16,6 +16,11 @@ public class JwtEntity {
     @Expose
     private Long id;
 
+    @ColumnInfo(name = "email")
+    @SerializedName("email")
+    @Expose
+    private String email;
+
     @ColumnInfo(name = "jwt")
     @SerializedName("jwt")
     @Expose
@@ -35,5 +40,13 @@ public class JwtEntity {
 
     public void setJwt(String jwt) {
         this.jwt = jwt;
+    }
+
+    public String getEmail() {
+        return email;
+    }
+
+    public void setEmail(String email) {
+        this.email = email;
     }
 }

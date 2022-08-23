@@ -1,11 +1,11 @@
 package com.github.dergil.hierarchynote.model.network;
 
 import com.github.dergil.hierarchynote.model.dto.SignupDto;
+import com.github.dergil.hierarchynote.model.dto.SignupResponseDto;
 import com.google.gson.Gson;
 import com.google.gson.GsonBuilder;
 
 import java.io.IOException;
-import java.util.List;
 
 import okhttp3.Headers;
 import okhttp3.OkHttpClient;
@@ -14,7 +14,6 @@ import retrofit2.Call;
 import retrofit2.Response;
 import retrofit2.Retrofit;
 import retrofit2.converter.gson.GsonConverterFactory;
-import retrofit2.http.Header;
 
 public class JwtAPI implements JwtNetworkingInterface{
     RetrofitUser retrofitUser;
@@ -23,19 +22,21 @@ public class JwtAPI implements JwtNetworkingInterface{
     public JwtAPI() {initNetworkingStack();}
 
     @Override
-    public void signup(String email, String password) {
-        Call<Void> questions = retrofitUser.signup(email, password);
+    public SignupResponseDto signup(SignupDto signupDto) {
+        Call<SignupResponseDto> questions = retrofitUser.signup(signupDto);
         try {
-            Response<Void> execute = questions.execute();
+            Response<SignupResponseDto> execute = questions.execute();
             System.out.println(execute.isSuccessful());
+            return execute.body();
         } catch (IOException e) {
             e.printStackTrace();
         }
+        return null;
     }
 
     @Override
-    public String login(SignupDto signupDto) {
-        Call<Void> questions = retrofitUser.login(signupDto);
+    public String login(String email, String password) {
+        Call<Void> questions = retrofitUser.login(email, password);
         try {
             Response<Void> execute = questions.execute();
             System.out.println(execute.isSuccessful());

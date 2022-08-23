@@ -6,18 +6,36 @@ package com.github.dergil.hierarchynote.view.activities.data.model;
 public class LoggedInUser {
 
     private String userId;
-    private String displayName;
+    private String email;
+    private String jwt;
 
-    public LoggedInUser(String userId, String displayName) {
+    public LoggedInUser(String userId, String email, String jwt) {
         this.userId = userId;
-        this.displayName = displayName;
+        this.email = email;
+        this.jwt = jwt;
     }
 
     public String getUserId() {
         return userId;
     }
 
-    public String getDisplayName() {
-        return displayName;
+    public void setUserId(String userId) {
+        this.userId = userId;
+    }
+
+    public String getEmail() {
+        return email;
+    }
+
+    public void setEmail(String email) {
+        this.email = email;
+    }
+
+    public String getJwt() {
+        return jwt;
+    }
+
+    public void setJwt(String jwt) {
+        this.jwt = jwt;
     }
 }
