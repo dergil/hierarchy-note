@@ -15,21 +15,21 @@
         android:theme="@style/Theme.HierarchyNote"
         android:usesCleartextTraffic="true">
         <activity
-            android:name="com.github.dergil.hierarchynote.view.activities.ui.login.LoginActivity"
+            android:name=".MainActivity"
             android:exported="false"
             android:label="@string/title_activity_login" />
         <activity
-            android:name=".AuthActivity"
+            android:name="com.github.dergil.hierarchynote.view.activities.AuthActivity"
             android:exported="false" />
         <activity
-            android:name=".NewDirectoryActivity"
+            android:name="com.github.dergil.hierarchynote.view.activities.NewDirectoryActivity"
             android:exported="false" />
         <activity
-            android:name=".NoteActivity"
+            android:name="com.github.dergil.hierarchynote.view.activities.NoteActivity"
             android:exported="false"
             android:parentActivityName=".MainActivity" />
         <activity
-            android:name=".MainActivity"
+            android:name="com.github.dergil.hierarchynote.view.activities.ui.login.LoginActivity"
             android:exported="true">
             <intent-filter>
                 <action android:name="android.intent.action.MAIN" />

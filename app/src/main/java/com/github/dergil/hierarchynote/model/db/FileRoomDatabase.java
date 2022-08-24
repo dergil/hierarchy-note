@@ -18,7 +18,7 @@ import com.github.dergil.hierarchynote.model.entity.JwtEntity;
 import java.util.concurrent.ExecutorService;
 import java.util.concurrent.Executors;
 
-@Database(entities = {FileEntity.class, JwtEntity.class}, version = 43, exportSchema = false)
+@Database(entities = {FileEntity.class, JwtEntity.class}, version = 45, exportSchema = false)
 public abstract class FileRoomDatabase extends RoomDatabase {
 
     public abstract FileDao fileDao();

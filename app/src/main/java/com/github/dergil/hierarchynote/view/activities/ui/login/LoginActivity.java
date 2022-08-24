@@ -87,7 +87,10 @@ public class LoginActivity extends AppCompatActivity {
                 setResult(Activity.RESULT_OK);
 
                 //Complete and destroy login activity once successful
-                finish();
+                Intent intent = new Intent(LoginActivity.this, MainActivity.class);
+                intent.putExtra(MainActivity.DIRECTORY_NAME, "MYDIR");
+                startActivityForResult(intent, NEW_MAIN_ACTIVITY_REQUEST_CODE);
+//                finish();
             }
         });
 
@@ -128,10 +131,6 @@ public class LoginActivity extends AppCompatActivity {
                 loadingProgressBar.setVisibility(View.VISIBLE);
                 loginViewModel.login(usernameEditText.getText().toString(),
                         passwordEditText.getText().toString());
-
-                Intent intent = new Intent(LoginActivity.this, MainActivity.class);
-                intent.putExtra(MainActivity.DIRECTORY_NAME, "MYDIR");
-                startActivityForResult(intent, NEW_MAIN_ACTIVITY_REQUEST_CODE);
             }
         });
 

@@ -13,7 +13,7 @@ import java.util.List;
 public interface JwtDao {
 
     @Insert(onConflict = OnConflictStrategy.IGNORE)
-    Long insert(JwtEntity jwt);
+    void insert(JwtEntity jwt);
 
     @Query("SELECT * FROM jwt_table")
     List<JwtEntity> findAll();

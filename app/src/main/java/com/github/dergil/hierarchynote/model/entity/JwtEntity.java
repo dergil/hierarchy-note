@@ -49,4 +49,13 @@ public class JwtEntity {
     public void setEmail(String email) {
         this.email = email;
     }
+
+    @Override
+    public String toString() {
+        return "JwtEntity{" +
+                "id=" + id +
+                ", email='" + email + '\'' +
+                ", jwt='" + jwt + '\'' +
+                '}';
+    }
 }

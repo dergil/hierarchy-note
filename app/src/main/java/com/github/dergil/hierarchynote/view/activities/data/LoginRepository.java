@@ -5,6 +5,7 @@ import android.app.Application;
 import com.github.dergil.hierarchynote.AppExecutors;
 import com.github.dergil.hierarchynote.model.dao.JwtDao;
 import com.github.dergil.hierarchynote.model.db.FileRoomDatabase;
+import com.github.dergil.hierarchynote.model.entity.JwtEntity;
 import com.github.dergil.hierarchynote.view.activities.data.model.LoggedInUser;
 
 /**
@@ -38,6 +39,7 @@ public class LoginRepository {
 
     private LoginRepository(FileRoomDatabase database, LoginDataSource dataSource) {
         this.dataSource = dataSource;
+        jwtDao = database.jwtDao();
     }
 
     public static LoginRepository getInstance(FileRoomDatabase database, LoginDataSource dataSource) {
@@ -65,12 +67,19 @@ public class LoginRepository {
     public Result<LoggedInUser> login(String username, String password) {
 //        appExecutors.networkIO().execute(() -> {
 
-
+//todo: determine signup or login
             final Result<LoggedInUser> result;
             // handle login
             result = dataSource.login(username, password);
             if (result instanceof Result.Success) {
-                setLoggedInUser(((Result.Success<LoggedInUser>) result).getData());
+                LoggedInUser loggedInUser = ((Result.Success<LoggedInUser>) result).getData();
+                setLoggedInUser(loggedInUser);
+                JwtEntity jwtEntity = new JwtEntity();
+                jwtEntity.setId(Long.parseLong(loggedInUser.getUserId()));
+                jwtEntity.setEmail(loggedInUser.getEmail());
+                jwtEntity.setJwt(loggedInUser.getJwt());
+                System.out.println(jwtEntity.toString());
+                jwtDao.insert(jwtEntity);
             }
             return result;
 //        });

@@ -121,8 +121,8 @@ public class MainActivity extends AppCompatActivity {
             }
         });
 
-        Intent intent = new Intent(MainActivity.this, LoginActivity.class);
-        startActivityForResult(intent, EDIT_NOTE_ACTIVITY_REQUEST_CODE);
+//        Intent intent = new Intent(MainActivity.this, LoginActivity.class);
+//        startActivityForResult(intent, EDIT_NOTE_ACTIVITY_REQUEST_CODE);
 
 
     }
