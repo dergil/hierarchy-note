@@ -1,6 +1,9 @@
 package com.github.dergil.hierarchynote.view.activities.data;
 
+import android.app.Application;
+
 import com.github.dergil.hierarchynote.AppExecutors;
+import com.github.dergil.hierarchynote.model.dao.JwtDao;
 import com.github.dergil.hierarchynote.model.db.FileRoomDatabase;
 import com.github.dergil.hierarchynote.view.activities.data.model.LoggedInUser;
 
@@ -19,18 +22,27 @@ public class LoginRepository {
 
     private LoginDataSource dataSource;
 
+    private JwtDao jwtDao;
+
     // If user credentials will be cached in local storage, it is recommended it be encrypted
     // @see https://developer.android.com/training/articles/keystore
     private LoggedInUser user = null;
 
     // private constructor : singleton access
-    private LoginRepository(LoginDataSource dataSource) {
+//    private LoginRepository(Application application, LoginDataSource dataSource) {
+//        this.dataSource = dataSource;
+//        FileRoomDatabase db = FileRoomDatabase.getInstance(application, new AppExecutors());
+//        jwtDao = db.jwtDao();
+//    }
+
+
+    private LoginRepository(FileRoomDatabase database, LoginDataSource dataSource) {
         this.dataSource = dataSource;
     }
 
-    public static LoginRepository getInstance(LoginDataSource dataSource) {
+    public static LoginRepository getInstance(FileRoomDatabase database, LoginDataSource dataSource) {
         if (instance == null) {
-            instance = new LoginRepository(dataSource);
+            instance = new LoginRepository(database, dataSource);
         }
         return instance;
     }

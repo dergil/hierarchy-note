@@ -10,6 +10,7 @@ import androidx.room.RoomDatabase;
 import androidx.sqlite.db.SupportSQLiteDatabase;
 
 import com.github.dergil.hierarchynote.AppExecutors;
+import com.github.dergil.hierarchynote.model.dao.JwtDao;
 import com.github.dergil.hierarchynote.model.entity.FileEntity;
 import com.github.dergil.hierarchynote.model.dao.FileDao;
 import com.github.dergil.hierarchynote.model.entity.JwtEntity;
@@ -21,6 +22,7 @@ import java.util.concurrent.Executors;
 public abstract class FileRoomDatabase extends RoomDatabase {
 
     public abstract FileDao fileDao();
+    public abstract JwtDao jwtDao();
 
     @VisibleForTesting
     public static final String DATABASE_NAME = "hierarchy-file-db";

@@ -1,9 +1,12 @@
 package com.github.dergil.hierarchynote.view.activities.ui.login;
 
+import androidx.annotation.NonNull;
+import androidx.lifecycle.AndroidViewModel;
 import androidx.lifecycle.LiveData;
 import androidx.lifecycle.MutableLiveData;
 import androidx.lifecycle.ViewModel;
 
+import android.app.Application;
 import android.os.Handler;
 import android.os.Looper;
 import android.util.Patterns;
@@ -16,13 +19,14 @@ import com.github.dergil.hierarchynote.view.activities.data.model.LoggedInUser;
 import java.util.concurrent.ExecutorService;
 import java.util.concurrent.Executors;
 
-public class LoginViewModel extends ViewModel {
+public class LoginViewModel extends AndroidViewModel {
 
     private MutableLiveData<LoginFormState> loginFormState = new MutableLiveData<>();
     private MutableLiveData<LoginResult> loginResult = new MutableLiveData<>();
     private LoginRepository loginRepository;
 
-    LoginViewModel(LoginRepository loginRepository) {
+    LoginViewModel(@NonNull Application application, LoginRepository loginRepository) {
+        super(application);
         this.loginRepository = loginRepository;
     }
 

@@ -49,7 +49,7 @@ public class FileViewModel extends AndroidViewModel implements FileViewModelInte
 
         public Factory(@NonNull Application application) {
             mApplication = application;
-            mRepository = ((HierarchyApp) application).getRepository();
+            mRepository = ((HierarchyApp) application).getFileRepository();
         }
 
         @SuppressWarnings("unchecked")
